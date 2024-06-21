@@ -61,8 +61,8 @@ const Contacts = () => {
      transition={{duration: 1.5}}
      className="flex flex-col min-h-screen text-center md:text-left md:flex max-w-[2000px] px-10 justify-center xl:space-y-0 mx-auto mt-20 mb-12 items-center">
       <h3 className="text-center uppercase tracking-[20px] text-gray-500 text-2xl mb-1">Contact <span className="text-accent">Me</span></h3>
-      <h4 className="text-md text-center uppercase tracking-[6px] text-gray-500">Let's Work Together</h4>
-      <p className="text-gray-500 tracking-[2px] mb-4">Send me a message and let's talk</p>
+      <h4 className="text-md text-center uppercase tracking-[6px] text-gray-500">Let&apos;s Work Together</h4>
+      <p className="text-gray-500 tracking-[2px] mb-4">Send me a message and let&apos;s talk</p>
 
             <div className="flex flex-col-reverse xl:flex-row gap-[100px] mt-10">
                 <form action="#" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 ">
