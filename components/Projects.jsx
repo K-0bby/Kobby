@@ -4,34 +4,35 @@ import React from 'react';
 import Project from './Project';
 import { motion } from 'framer-motion';
 
+
 const projects = [
   {
       title: 'Event Nation',
       image: '/Eventnation.jpg',
-      description: 'This is a description of the project',
+      description: 'This is an event frontend website built using HTML, CSS, JavaScript',
       link: 'https://eventnations.netlify.app/#',
   },
 
   {
-      title: 'Event Nation',
-      image: '/Eventnation.jpg',
-      description: 'This is a description of the project',
-      link: 'https://eventnations.netlify.app/#',
+      title: 'Nersk',
+      image: '/Header.png',
+      description: 'A tech startup using react',
+      link: 'https://nersk-1-0.vercel.app/',
   },
 
-  {
-      title: 'Event Nation',
-      image: '/Eventnation.jpg',
-      description: 'This is a description of the project', 
-      link: 'https://eventnations.netlify.app/#',
-  },
+//   {
+//       title: 'Event Nation',
+//       image: '/Eventnation.jpg',
+//       description: 'This is a description of the project', 
+//       link: 'https://eventnations.netlify.app/#',
+//   },
 
-  {
-    title: 'Event Nation',
-    image: '/Eventnation.jpg',
-    description: 'This is a description of the project',
-    link: 'https://eventnations.netlify.app/#',
-},
+//   {
+//     title: 'Event Nation',
+//     image: '/Eventnation.jpg',
+//     description: 'This is a description of the project',
+//     link: 'https://eventnations.netlify.app/#',
+// },
 ]
 const Projects = () => {
   return (
