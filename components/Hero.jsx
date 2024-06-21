@@ -25,25 +25,25 @@ const Hero = () => {
       </div>
       <div className="flex flex-row items-center justify-center">
           <SocialIcon 
-          url="https://www.github.com/K-0bby"
+          url="https://github.com/K-0bby"
           fgColor="gray"
           bgColor="transparent"
           target="_blank"
           />
           <SocialIcon 
-          url="https://www.x.com/K-0bby"
+          url="https://x.com/HoenyefiaGideon"
           fgColor="gray"
           bgColor="transparent"
           target="_blank"
           />
           <SocialIcon 
-          url="https://www.linkedin.com/K-0bby"
+          url="https://www.linkedin.com/in/gideon-hoenyefia-74a93a233/"
           fgColor="gray"
           bgColor="transparent"
           target="_blank"
           />
           <SocialIcon 
-          url="https://www.instagram.com/K-0bby"
+          url="https://www.instagram.com/__kobb.y/?hl=en"
           fgColor="gray"
           bgColor="transparent"
           target="_blank"
