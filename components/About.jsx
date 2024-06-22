@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 // import Link from 'next/link';
 import { Button } from "./ui/button";
+import { Download } from 'lucide-react';
 
 const PDF_FILE_URL = 'https://drive.google.com/file/d/1m-IAv2yghKPPmqCUek8dCiYUp2NcdV8b/view?usp=sharing';
 const About = () => {
@@ -40,7 +41,10 @@ const About = () => {
           I am constantly seeking to expand my knowledge and skills, and I am excited to continue learning and growing as a web developer.
           When I am not coding, you will often find me on the basketball court, honing my skills and enjoying the thrill of the game. I am also an avid reader, constantly exploring new topics and expanding my knowledge beyond the world of technology.</p>
           
-          <Button className="tracking-[3px] mt-4" onClick={()=>{downloadFileAtURL(PDF_FILE_URL)}} target="_blank" rel="noopener noreferrer">Download CV</Button>
+          <Button className="tracking-[2px] mt-4" onClick={()=>{downloadFileAtURL(PDF_FILE_URL)}} target="_blank" rel="noopener noreferrer">
+            Download CV
+          <Download className="ml-3"/>
+          </Button>
           {/* <Link href="/" target="_blank" rel="noopener noreferrer">
             <Button className="tracking-[3px] mt-4" onClick={()=>{downloadFileAtURL(PDF_FILE_URL)}}>Download CV</Button>
           </Link> */}
