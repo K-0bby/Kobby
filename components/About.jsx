@@ -3,11 +3,20 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { Button } from "./ui/button";
 
-
+const PDF_FILE_URL = 'https://drive.google.com/file/d/1m-IAv2yghKPPmqCUek8dCiYUp2NcdV8b/view?usp=sharing';
 const About = () => {
+  const downloadFileAtURL= (url) =>  {
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'https://drive.google.com/file/d/1m-IAv2yghKPPmqCUek8dCiYUp2NcdV8b/view?usp=sharing');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <motion.div
     initial={{opacity: 0,}}
@@ -30,10 +39,11 @@ const About = () => {
           <p className="text-md text-base">As a frontend web developer, I have a passion for coding and designing visually appealing websites and web apps. My expertise lies in creating interfaces that are easy to use, utilizing HTML, CSS, and JavaScript, with a particular emphasis on React. My ultimate goal is to develop innovative digital environments that engage and connect with my users.
           I am constantly seeking to expand my knowledge and skills, and I am excited to continue learning and growing as a web developer.
           When I am not coding, you will often find me on the basketball court, honing my skills and enjoying the thrill of the game. I am also an avid reader, constantly exploring new topics and expanding my knowledge beyond the world of technology.</p>
-
-          <Link href="/">
-            <Button className="tracking-[3px] mt-4">Download CV</Button>
-          </Link>
+          
+          <Button className="tracking-[3px] mt-4" onClick={()=>{downloadFileAtURL(PDF_FILE_URL)}} target="_blank" rel="noopener noreferrer">Download CV</Button>
+          {/* <Link href="/" target="_blank" rel="noopener noreferrer">
+            <Button className="tracking-[3px] mt-4" onClick={()=>{downloadFileAtURL(PDF_FILE_URL)}}>Download CV</Button>
+          </Link> */}
         </div>  
       </div>
     </motion.div>
