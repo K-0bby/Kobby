@@ -10,7 +10,7 @@ const Project = ({project}) => {
             src={project.image}
             alt={project.alt}
             width={300}
-            height={100}
+            height={200}
             className="rounded-lg border border-solid border-gray-950 object-cover shadow-lg w-[300px] h-[200px] xl:w-[400px] xl:h-[200px] filter group-hover:accent transition duration-300 ease-in-out"
         />
       <div className="absolute opacity-0 group-hover:opacity-80 transition duration-300 ease-in-out group-hover:bg-accent w-[300px] h-[200px]  xl:w-[400px] xl:h-[200px] rounded-lg z-0">
