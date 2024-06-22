@@ -9,7 +9,7 @@ const projects = [
   {
       title: 'Event Nation',
       image: '/Eventnation.jpg',
-      altName: 'Event Nation',
+      alt: 'Event Nation',
       description: 'This is an event frontend website built using HTML, CSS, JavaScript',
       link: 'https://eventnations.netlify.app/#',
   },
@@ -17,7 +17,7 @@ const projects = [
   {
       title: 'Nersk',
       image: '/Header.png',
-      altName: 'Nersk',
+      alt: 'Nersk',
       description: 'A tech startup using react',
       link: 'https://nersk-1-0.vercel.app/',
   },
