@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import Nav from "./Nav";
 import { motion } from "framer-motion";
 import MobileNav from "./MobileNav";
+import { Download } from 'lucide-react';
 const Header = () => {
   return (
     <header className="text-white sticky top-0 p-5 flex bg-inherit items-start xl:items-center justify-between max-w-7xl mx-auto z-20">
@@ -48,8 +49,11 @@ const Header = () => {
             }}
             className="hidden lg:flex xl:flex items-center gap-8">
                 <Nav />
-                <Link href="#contacts">
+                {/* <Link href="#contacts">
                     <Button className="tracking-[3px]">Hire me</Button>
+                </Link> */}
+                <Link href="/" target="_blank" rel="noopener noreferrer">
+                    <Button className="tracking-[3px] mt-4" onClick={()=>{downloadFileAtURL(PDF_FILE_URL)}}>Download CV <Download className="ml-3"/></Button>
                 </Link>
             </motion.div>
 
