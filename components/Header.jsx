@@ -6,7 +6,17 @@ import Nav from "./Nav";
 import { motion } from "framer-motion";
 import MobileNav from "./MobileNav";
 // import { Download } from 'lucide-react';
+const PDF_FILE_URL = 'https://drive.google.com/file/d/1m-IAv2yghKPPmqCUek8dCiYUp2NcdV8b/view?usp=sharing';
 const Header = () => {
+    const downloadFileAtURL= (url) =>  {
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'https://drive.google.com/file/d/1m-IAv2yghKPPmqCUek8dCiYUp2NcdV8b/view?usp=sharing');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <header className="text-white sticky top-0 p-5 flex bg-inherit items-start xl:items-center justify-between max-w-7xl mx-auto z-20">
         <div 
