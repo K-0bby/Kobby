@@ -53,7 +53,7 @@ const Header = () => {
                     <Button className="tracking-[3px]">Hire me</Button>
                 </Link> */}
                 <Link href="/" target="_blank" rel="noopener noreferrer">
-                    <Button className="tracking-[3px] mt-4" onClick={()=>{downloadFileAtURL(PDF_FILE_URL)}}>Download CV <Download className="ml-3"/></Button>
+                    <Button className="tracking-[1px] mt-4" onClick={()=>{downloadFileAtURL(PDF_FILE_URL)}}>Download CV <Download className="ml-3"/></Button>
                 </Link>
             </motion.div>
 
