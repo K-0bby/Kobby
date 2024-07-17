@@ -15,6 +15,13 @@ const projects = [
   },
 
   {
+      title: 'Chic En Vogue',
+      image: '/Chic En Vogue.png',
+      description: 'An ecommerce site', 
+      link: 'https://chic-en-vogue.vercel.app/',
+  },
+
+  {
       title: 'Nersk',
       image: '/Header.png',
       alt: 'Nersk',
@@ -22,12 +29,6 @@ const projects = [
       link: 'https://nersk-1-0.vercel.app/',
   },
 
-//   {
-//       title: 'Event Nation',
-//       image: '/Eventnation.jpg',
-//       description: 'This is a description of the project', 
-//       link: 'https://eventnations.netlify.app/#',
-//   },
 
 //   {
 //     title: 'Event Nation',
