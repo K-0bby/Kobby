@@ -21,13 +21,7 @@ const projects = [
       link: 'https://chic-en-vogue.vercel.app/',
   },
 
-  {
-      title: 'Nersk',
-      image: '/Header.png',
-      alt: 'Nersk',
-      description: 'A tech startup using react',
-      link: 'https://nersk-1-0.vercel.app/',
-  },
+
 
 
 //   {
