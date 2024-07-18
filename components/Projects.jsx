@@ -21,16 +21,8 @@ const projects = [
       link: 'https://chic-en-vogue.vercel.app/',
   },
 
-
-
-
-//   {
-//     title: 'Event Nation',
-//     image: '/Eventnation.jpg',
-//     description: 'This is a description of the project',
-//     link: 'https://eventnations.netlify.app/#',
-// },
 ]
+
 const Projects = () => {
   return (
     <motion.div
