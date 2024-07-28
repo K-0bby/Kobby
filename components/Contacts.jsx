@@ -27,7 +27,7 @@ const info = [
     {
         icon: <FaMapMarkerAlt className="text-xl text-accent animate-pulse"/>,
         title: "Location",
-        description: "Ghana, Accra"    
+        description: "Accra, Ghana"    
     },
 ]
 
