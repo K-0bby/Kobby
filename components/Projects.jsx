@@ -20,6 +20,12 @@ const projects = [
       description: 'An ecommerce site', 
       link: 'https://chic-en-vogue.vercel.app/',
   },
+  {
+    title: 'S&S Kids Beauty Palour',
+    image: '/S&S.png',
+    description: 'A beauty parlour for kids', 
+    link: '/',
+},
 
 ]
 
