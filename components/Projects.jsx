@@ -24,8 +24,8 @@ const projects = [
     title: 'S&S Kids Beauty Palour',
     image: '/S&S.png',
     description: 'A beauty parlour for kids', 
-    link: '/',
-},
+    link: 'https://s-s-kids-beauty-parlour.vercel.app/',
+  },
 
 ]
 
