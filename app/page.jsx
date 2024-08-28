@@ -8,25 +8,25 @@ import Contact from "@/components/Contacts";
 import Footer from "@/components/Footer";
 export default function Home() {
   return (
-    <main className="bg-[#242424] h-screen text-white snap-y snap-mandatory overflow-y-scroll overflow-x-hidden z-0 scroll-smooth scrollbar scrollbar-track-gray-400/2 scrollbar-thumb-accent">
+    <main className="bg-[#242424] h-screen text-white  overflow-y-scroll overflow-x-hidden z-0 scroll-smooth scrollbar scrollbar-track-gray-400/2 scrollbar-thumb-accent">
       <Header />
-      <section id="hero" className="snap-start h-full">
+      <section id="hero" className=" h-full">
       <Hero />
       </section>
       
-      <section id="about" className="snap-center h-full">
+      <section id="about" className=" h-full">
       <About />
       </section>
   
-      <section id="skills" className="snap-start h-full">
+      <section id="skills" className=" h-full">
       <Skills />
       </section>
       
-      <section id="projects" className="snap-start h-full">
+      <section id="projects" className=" h-full">
       <Projects />
       </section>
 
-      <section id="contacts" className="snap-start h-full">
+      <section id="contacts" className=" h-full">
       <Contact />
       <Footer />
       </section>
