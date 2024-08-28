@@ -8,14 +8,14 @@ import Image from "next/image";
 
 const Hero = () => {
     const [text, count] = useTypewriter({
-        words: ['Hi 👋', `The name's Gideon Hoenyefia`, 'I am a <Frontend-Developer />', '<UI/UX Designer />'],
+        words: ['Hi 👋', `My name's Gideon Hoenyefia`, 'I am a <Frontend-Developer />', '<UI/UX Designer />'],
         loop: true,
         delaySpeed: 2000,
     });
   return (
     <div className="h-screen flex flex-col space-y-8 items-center justify-center text-center overflow-hidden">
       <BackgroundCircles />
-      <Image src="/me(2).png" alt="profile" width={200} height={200} priority className="relative rounded-full w-32 h-32 mx-auto my-4 object-cover"/>
+      <Image src="/kobby.jpg" alt="profile" width={200} height={200} priority className="relative rounded-full w-32 h-32 mx-auto my-4 object-cover"/>
       <div>
       <h3 className="text-sm uppercase text-gray-500 pb-2 mt-6 tracking-[10px]">Computer Scientist/Software Engineer</h3>
       <h1 className="text-4xl lg:text-5xl font-semibold px-10 mt-2">
