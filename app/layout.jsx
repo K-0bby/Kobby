@@ -8,7 +8,7 @@ const quicksand = Quicksand({ subsets: ["latin"],
 
 export const metadata = {
   title: "Kobby's Portfolio",
-  description: "About Kobby's and his projects",
+  description: "About Gideon and his projects",
 };
 
 export default function RootLayout({ children }) {
