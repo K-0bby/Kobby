@@ -8,7 +8,7 @@ import Contact from "@/components/Contacts";
 import Footer from "@/components/Footer";
 export default function Home() {
   return (
-    <main className="bg-[#242424] max-w-screen-2xl h-screen text-white  overflow-y-scroll overflow-x-hidden z-0 scroll-smooth scrollbar scrollbar-track-gray-400/2 scrollbar-thumb-accent">
+    <main className="bg-[#242424] max-w-screen-7xl h-screen text-white  overflow-y-scroll overflow-x-hidden z-0 scroll-smooth scrollbar scrollbar-track-gray-400/2 scrollbar-thumb-accent">
       <Header />
       <section id="hero" className=" h-full">
       <Hero />
