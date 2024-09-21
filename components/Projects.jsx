@@ -21,6 +21,12 @@ const projects = [
       link: 'https://chic-en-vogue.vercel.app/',
   },
   {
+    title: 'All Together Africa',
+    image: '/AAA.png',
+    description: 'We serve as a bridge, working as a non-profit organization to facilitate ongoing success for Africa.', 
+    link: 'https://www.alltogetherafrica.org/',
+  },
+  {
     title: 'S&S Kids Beauty Palour',
     image: '/S&S.png',
     description: 'A beauty parlour for kids', 
