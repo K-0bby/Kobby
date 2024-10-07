@@ -20,18 +20,18 @@ const projects = [
       description: 'An ecommerce site', 
       link: 'https://chic-en-vogue.vercel.app/',
   },
-  {
-    title: 'All Together Africa',
-    image: '/AAA.png',
-    description: 'We serve as a bridge, working as a non-profit organization to facilitate ongoing success for Africa.', 
-    link: 'https://www.alltogetherafrica.org/',
-  },
-  {
-    title: 'S&S Kids Beauty Palour',
-    image: '/S&S.png',
-    description: 'A beauty parlour for kids', 
-    link: 'https://s-s-kids-beauty-parlour.vercel.app/',
-  },
+  // {
+  //   title: 'All Together Africa',
+  //   image: '/AAA.png',
+  //   description: 'We serve as a bridge, working as a non-profit organization to facilitate ongoing success for Africa.', 
+  //   link: 'https://www.alltogetherafrica.org/',
+  // },
+  // {
+  //   title: 'S&S Kids Beauty Palour',
+  //   image: '/S&S.png',
+  //   description: 'A beauty parlour for kids', 
+  //   link: 'https://s-s-kids-beauty-parlour.vercel.app/',
+  // },
 
 ]
 
