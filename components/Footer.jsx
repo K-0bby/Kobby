@@ -20,7 +20,7 @@ const Footer = () => {
         </div>
 
         {/* Copyright Text */}
-        <p className="text-sm tracking-wider text-center text-gray-400">
+        <p className="text-sm tracking-wider text-center mx-auto text-gray-400">
           Copyright &copy; {new Date().getFullYear()} by Gideon Korbla Hoenyefia | All Rights Reserved
         </p>
       </div>
