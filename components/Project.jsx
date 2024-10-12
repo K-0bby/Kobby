@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const Project = ({ project }) => {
   return (
-    <div className="group flex relative project-box">
+    <div className="group flex relative project-box mb-6"> {/* Reduced mb-6 for smaller spacing */}
       <Image
         src={project.image}
         alt={project.alt}
