@@ -20,7 +20,7 @@ const links = [
     },
     {
         name: "projects",
-        path: "#project",
+        path: "#projects",
     },
     {
         name: "contact",
