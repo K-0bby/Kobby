@@ -19,16 +19,16 @@ const projects = [
     link: 'https://chic-en-vogue.vercel.app/',
   },
   {
-    title: 'All Together Africa',
-    image: '/AAA.png',
-    description: 'We serve as a bridge, working as a non-profit organization to facilitate ongoing success for Africa.',
-    link: 'https://www.alltogetherafrica.org/',
-  },
-  {
     title: 'DigiGrowth',
     image: '/DG.png',
     description: 'Empower Your Business with Digital Excellence',
     link: 'https://digi-growth.vercel.app/',
+  },
+  {
+    title: 'All Together Africa',
+    image: '/AAA.png',
+    description: 'We serve as a bridge, working as a non-profit organization to facilitate ongoing success for Africa.',
+    link: 'https://www.alltogetherafrica.org/',
   },
 ];
 
