@@ -69,20 +69,20 @@ const Contacts = () => {
       <form action="#" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 ">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
           <label htmlFor="firstname" className="text-semibold capitalize">
-            <Input {...register('firstName')} type="firstname" placeholder="First Name" />
+            <Input {...register('firstName')} type="firstname" placeholder="First Name" required/>
           </label>
           <label htmlFor="lastname" className="text-semibold">
-            <Input {...register('lastName')} type="lastname" placeholder="Last Name" />
+            <Input {...register('lastName')} type="lastname" placeholder="Last Name" required/>
           </label>
           <label htmlFor="email">
-            <Input {...register('email')} type="email" placeholder="Email" />
+            <Input {...register('email')} type="email" placeholder="Email" required/>
           </label>
           <label htmlFor="number">
-            <Input {...register('number')} type="number" placeholder="Phone Number" /> 
+            <Input {...register('number')} type="number" placeholder="Phone Number" required/> 
           </label>
         </div>
         <label htmlFor="message">
-          <Textarea {...register('message')} className="h-[30px]" placeholder="Type your message..." />
+          <Textarea {...register('message')} className="h-[30px]" placeholder="Type your message..." required/>
         </label>
         <Button size="md" className="max-w-40 py-3" type="submit">Submit</Button>
       </form>
