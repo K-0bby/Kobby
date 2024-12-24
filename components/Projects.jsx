@@ -25,6 +25,12 @@ const projects = [
     link: 'https://digi-growth.vercel.app/',
   },
   {
+    title: 'BuukMeNow',
+    image: '/Buuk.png',
+    description: 'Say goodbye to scheduling hassles with BuukMeNow—streamline appointments, attract more clients, and elevate your business effortlessly.',
+    link: 'https://buukme-now.vercel.app/',
+  },
+  {
     title: 'All Together Africa',
     image: '/AAA.png',
     description: 'We serve as a bridge, working as a non-profit organization to facilitate ongoing success for Africa.',
