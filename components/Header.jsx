@@ -6,12 +6,12 @@ import Nav from "./Nav";
 import { motion } from "framer-motion";
 import MobileNav from "./MobileNav";
 // import { Download } from 'lucide-react';
-const PDF_FILE_URL = 'https://drive.google.com/file/d/1QinNa_HbjZ7Vq6taVmih7ubaAfZl4bMw/view?usp=sharing';
+const PDF_FILE_URL = 'https://drive.google.com/file/d/10cTqJB6yw3MQw8bv4etrVaKn5Yf0P09A/view?usp=sharing';
 const Header = () => {
     const downloadFileAtURL= (url) =>  {
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'https://drive.google.com/file/d/1QinNa_HbjZ7Vq6taVmih7ubaAfZl4bMw/view?usp=sharing');
+    link.setAttribute('download', 'https://drive.google.com/file/d/10cTqJB6yw3MQw8bv4etrVaKn5Yf0P09A/view?usp=sharing');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
