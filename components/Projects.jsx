@@ -19,16 +19,10 @@ const projects = [
     link: 'https://chic-en-vogue.vercel.app/',
   },
   {
-    title: 'DigiGrowth',
-    image: '/DG.png',
-    description: 'Empower Your Business with Digital Excellence',
-    link: 'https://digi-growth.vercel.app/',
-  },
-  {
-    title: 'BuukMeNow',
-    image: '/Buuk.png',
-    description: 'Say goodbye to scheduling hassles with BuukMeNow—streamline appointments, attract more clients, and elevate your business effortlessly.',
-    link: 'https://buukme-now.vercel.app/',
+    title: 'Royal Shekinah City',
+    image: '/Shekinah.png',
+    description: 'Discover Comfort, Elegance, and Excellence at Shekinah Glory Highway Rest Stop',
+    link: 'https://royalcity.shekinahgloryhotel.org/',
   },
   {
     title: 'All Together Africa',
