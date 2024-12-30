@@ -33,7 +33,7 @@ const projects = [
   {
     title: 'BuukMeNow',
     image: '/Buuk.png',
-    description: 'Say goodbye to scheduling hassles with BuukMeNow—streamline appointments, attract more clients, and elevate your business effortlessly.',
+    description: 'Streamline scheduling with BuukMeNow—boost clients and grow your business effortlessly.',
     link: 'https://buukme-now.vercel.app/',
   },
   {
