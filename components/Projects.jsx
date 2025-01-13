@@ -6,17 +6,10 @@ import { motion } from 'framer-motion';
 
 const projects = [
   {
-    title: 'Event Nation',
-    image: '/Eventnation.jpg',
-    alt: 'Event Nation',
-    description: 'This is an event frontend website built using HTML, CSS, and JavaScript',
-    link: 'https://eventnations.netlify.app/#',
-  },
-  {
-    title: 'Chic En Vogue',
-    image: '/Chic En Vogue.png',
-    description: 'An ecommerce site',
-    link: 'https://chic-en-vogue.vercel.app/',
+    title: 'BuukMeNow',
+    image: '/Buuk.png',
+    description: 'Streamline scheduling with BuukMeNow—boost clients and grow your business effortlessly.',
+    link: 'https://buukme-now.vercel.app/',
   },
   {
     title: 'DigiGrowth',
@@ -25,16 +18,23 @@ const projects = [
     link: 'https://digi-growth.vercel.app/',
   },
   {
+    title: 'Chic En Vogue',
+    image: '/Chic En Vogue.png',
+    description: 'An ecommerce site',
+    link: 'https://chic-en-vogue.vercel.app/',
+  },
+  {
+    title: 'Event Nation',
+    image: '/Eventnation.jpg',
+    alt: 'Event Nation',
+    description: 'This is an event frontend website built using HTML, CSS, and JavaScript',
+    link: 'https://eventnations.netlify.app/#',
+  },
+  {
     title: 'Royal Shekinah City',
     image: '/Shekinah.png',
     description: 'Discover Comfort, Elegance, and Excellence at Shekinah Glory Highway Rest Stop',
     link: 'https://royalcity.shekinahgloryhotel.org/',
-  },
-  {
-    title: 'BuukMeNow',
-    image: '/Buuk.png',
-    description: 'Streamline scheduling with BuukMeNow—boost clients and grow your business effortlessly.',
-    link: 'https://buukme-now.vercel.app/',
   },
   {
     title: 'All Together Africa',
