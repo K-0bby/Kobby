@@ -36,12 +36,12 @@ const projects = [
     description: 'Discover Comfort, Elegance, and Excellence at Shekinah Glory Highway Rest Stop',
     link: 'https://royalcity.shekinahgloryhotel.org/',
   },
-  {
-    title: 'All Together Africa',
-    image: '/AAA.png',
-    description: 'We serve as a bridge, working as a non-profit organization to facilitate ongoing success for Africa.',
-    link: 'https://www.alltogetherafrica.org/',
-  },
+  // {
+  //   title: 'All Together Africa',
+  //   image: '/AAA.png',
+  //   description: 'We serve as a bridge, working as a non-profit organization to facilitate ongoing success for Africa.',
+  //   link: 'https://www.alltogetherafrica.org/',
+  // },
 ];
 
 const Projects = () => {
