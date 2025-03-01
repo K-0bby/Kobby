@@ -6,6 +6,12 @@ import { motion } from 'framer-motion';
 
 const projects = [
   {
+    title: 'POS System',
+    image: '/POS.png',
+    description: 'A Point of Sale system used to manage sales and inventory',
+    link: 'https://pos-system-pearl.vercel.app/',
+  },
+  {
     title: 'BuukMeNow',
     image: '/Buuk.png',
     description: 'Streamline scheduling with BuukMeNow—boost clients and grow your business effortlessly.',
