@@ -9,9 +9,9 @@ const Hero = () => {
   const [text, count] = useTypewriter({
     words: [
       "Hi 👋",
-      `My name's Gideon Hoenyefia`,
-      "I am a <Frontend-Developer />",
-      "<UI/UX Designer />",
+      `I'm Gideon Hoenyefia`,
+      "I am a <Programmer />",
+      "<Frontend-Developer />",
     ],
     loop: true,
     delaySpeed: 2000,
@@ -29,7 +29,7 @@ const Hero = () => {
       />
       <div>
         <h3 className="text-sm uppercase text-gray-500 pb-2 mt-6 tracking-[10px]">
-          Computer Scientist/Software Engineer
+          Computer Scientist/Programmer
         </h3>
         <h1 className="text-4xl lg:text-5xl font-semibold px-10 mt-2">
           <span className="mr-3 z-40">{text}</span>
