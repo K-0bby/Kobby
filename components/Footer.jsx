@@ -1,46 +1,48 @@
 import React from "react";
 import Link from "next/link";
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { Github, Linkedin, Twitter } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className=" text-white py-6 mt-10">
-      <div className="container mx-auto flex flex-col items-center justify-center space-y-4">
-        {/* Social Media Icons */}
-        <div className="flex space-x-6">
+    <div className="border-t border-border/20 mt-12 pt-8 text-center text-sm text-muted-foreground">
+      <>
+        <div className="flex justify-center gap-4 mb-4">
           <Link
             href="https://github.com/K-0bby"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="GitHub"
+            className="hover:text-[#55b1e3] transition-colors"
           >
-            <FaGithub className="text-xl hover:text-accent transition duration-300" />
+            <Github className="w-5 h-5 text-gray-600" />
           </Link>
           <Link
             href="https://www.linkedin.com/in/gideon-hoenyefia-74a93a233/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="LinkedIn"
+            className="hover:text-[#55b1e3] transition-colors"
           >
-            <FaLinkedin className="text-xl hover:text-accent transition duration-300" />
+            <Linkedin className="w-5 h-5 text-gray-600" />
           </Link>
           <Link
             href="https://x.com/HoenyefiaGideon"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Twitter"
+            className="hover:text-[#55b1e3] transition-colors"
           >
-            <FaTwitter className="text-xl hover:text-accent transition duration-300" />
+            <Twitter className="w-5 h-5 text-gray-600" />
           </Link>
         </div>
+        {/* Footer Text */}
 
-        {/* Copyright Text */}
-        <p className="text-sm tracking-wider text-center mx-auto text-gray-400">
-          Copyright &copy; {new Date().getFullYear()} by Gideon Korbla Hoenyefia
-          | All Rights Reserved
+        <p>
+          © {currentYear}{" "}
+          <span className="font-medium text-[#55b1e3]">
+            Gideon Korbla Hoenyefia
+          </span>
+          . All rights reserved.
         </p>
-      </div>
-    </footer>
+      </>
+    </div>
   );
 };
 

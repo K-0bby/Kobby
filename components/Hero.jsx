@@ -2,11 +2,12 @@
 import React from "react";
 import { Cursor, useTypewriter } from "react-simple-typewriter";
 import BackgroundCircles from "./BackgroundCircles";
-import { SocialIcon } from "react-social-icons";
 import Image from "next/image";
+import Link from "next/link";
+import { Github, Twitter, Linkedin, Instagram } from "lucide-react";
 
 const Hero = () => {
-  const [text, count] = useTypewriter({
+  const [text ] = useTypewriter({
     words: [
       "Hi 👋",
       `I'm Gideon Hoenyefia`,
@@ -16,6 +17,7 @@ const Hero = () => {
     loop: true,
     delaySpeed: 2000,
   });
+
   return (
     <div className="h-screen flex flex-col space-y-8 items-center justify-center text-center overflow-hidden">
       <BackgroundCircles />
@@ -36,31 +38,39 @@ const Hero = () => {
           <Cursor cursorColor="#006994" />
         </h1>
       </div>
-      <div className="flex flex-row items-center justify-center">
-        <SocialIcon
-          url="https://github.com/K-0bby"
-          fgColor="gray"
-          bgColor="transparent"
+      <div className="flex flex-row items-center justify-center space-x-4 mt-4">
+        <Link
+          href="https://github.com/K-0bby"
           target="_blank"
-        />
-        <SocialIcon
-          url="https://x.com/HoenyefiaGideon"
-          fgColor="gray"
-          bgColor="transparent"
+          rel="noopener noreferrer"
+          className="text-gray-500 hover:text-black transition"
+        >
+          <Github size={24} />
+        </Link>
+        <Link
+          href="https://x.com/HoenyefiaGideon"
           target="_blank"
-        />
-        <SocialIcon
-          url="https://www.linkedin.com/in/gideon-hoenyefia-74a93a233/"
-          fgColor="gray"
-          bgColor="transparent"
+          rel="noopener noreferrer"
+          className="text-gray-500 hover:text-black transition"
+        >
+          <Twitter size={24} />
+        </Link>
+        <Link
+          href="https://www.linkedin.com/in/gideon-hoenyefia-74a93a233/"
           target="_blank"
-        />
-        <SocialIcon
-          url="https://www.instagram.com/__kobb.y/?hl=en"
-          fgColor="gray"
-          bgColor="transparent"
+          rel="noopener noreferrer"
+          className="text-gray-500 hover:text-black transition"
+        >
+          <Linkedin size={24} />
+        </Link>
+        {/* <Link
+          href="https://www.instagram.com/__kobb.y/?hl=en"
           target="_blank"
-        />
+          rel="noopener noreferrer"
+          className="text-gray-500 hover:text-black transition"
+        >
+          <Instagram size={24} />
+        </Link> */}
       </div>
     </div>
   );
