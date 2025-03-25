@@ -73,7 +73,7 @@ const Skills = () => {
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 1.5 }}
-      className="flex flex-col min-h-screen text-center md:text-left max-w-[2000px] px-4 md:px-10 justify-center mx-auto items-center mt-10"
+      className="flex flex-col h-screen text-center md:text-left max-w-[2000px] px-4 md:px-10 justify-center mx-auto items-center"
     >
       <h3 className="uppercase tracking-[20px] text-gray-500 text-2xl mb-4">
         Skills
@@ -82,7 +82,7 @@ const Skills = () => {
         Technologies I&apos;m proficient in:
       </h4>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-5">
+      <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-6 ">
         {skillsData.map((skill, index) => (
           <Skill key={index} skill={skill} />
         ))}

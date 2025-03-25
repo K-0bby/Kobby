@@ -11,19 +11,19 @@ export default function Home() {
     <main className="bg-[#242424] max-w-screen-7xl min-h-screen text-white overflow-y-scroll overflow-x-hidden scroll-smooth scrollbar-thin scrollbar-thumb-accent">
       <Header />
       
-      <section id="hero" className="min-h-screen">
+      <section id="hero" >
         <Hero />
       </section>
       
-      <section id="about" className="min-h-screen">
+      <section id="about">
         <About />
       </section>
   
-      <section id="skills" className="min-h-screen">
+      <section id="skills">
         <Skills />
       </section>
       
-      <section id="projects" className="min-h-screen">
+      <section id="projects">
         <Projects />
       </section>
 

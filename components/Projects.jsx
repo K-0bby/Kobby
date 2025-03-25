@@ -56,7 +56,7 @@ const Projects = () => {
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 1.5 }}
-      className="flex flex-col text-center md:text-left max-w-[2000px] px-6 sm:px-10 mx-auto my-6 items-center" // Adjusted margin
+      className="flex flex-col text-center md:text-left max-w-[2000px] px-6 sm:px-10 mx-auto items-center" // Adjusted margin
     >
       <h3 className="uppercase tracking-[20px] text-gray-500 text-2xl mb-0 text-center">Projects</h3> {/* Reduced mb-1 to mb-0 */}
       <h4 className="uppercase tracking-[3px] text-gray-500 text-sm mb-4 text-center">These are some of my projects</h4> {/* Reduced mb-8 to mb-4 */}
