@@ -4,6 +4,7 @@ import { Github, Linkedin, Twitter } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  // Get the current year
   return (
     <div className="border-t border-border/20 mt-12 pt-8 text-center text-sm text-muted-foreground">
       <>
