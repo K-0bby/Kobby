@@ -6,6 +6,12 @@ import { motion } from 'framer-motion';
 
 const projects = [
   {
+    title: 'HDF Ghana',
+    image: '/HDF.png',
+    description: ' Premium Cabinets, Wardrobes & Vanities in Ghana',
+    link: 'https://www.hdfghanaltd.com/',
+  },
+  {
     title: 'POS System',
     image: '/POS.png',
     description: 'A Point of Sale system used to manage sales and inventory',
