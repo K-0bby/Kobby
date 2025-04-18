@@ -18,6 +18,13 @@ const projects = [
     link: 'https://pos-system-pearl.vercel.app/',
   },
   {
+    title: 'Spotless Multimedia',
+    image: '/SM.png',
+    alt: 'Spotless Multimedia',
+    description: 'Spotless Multimedia is a leading provider of high-quality multimedia services.',
+    link: 'https://spotless-multimedia.vercel.app/',
+  },
+  {
     title: 'BuukMeNow',
     image: '/Buuk.png',
     description: 'Streamline scheduling with BuukMeNow—boost clients and grow your business effortlessly.',
