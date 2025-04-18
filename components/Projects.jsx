@@ -42,12 +42,12 @@ const projects = [
     description: 'This is an event frontend website built using HTML, CSS, and JavaScript',
     link: 'https://eventnations.netlify.app/#',
   },
-  {
-    title: 'Royal Shekinah City',
-    image: '/Shekinah.png',
-    description: 'Discover Comfort, Elegance, and Excellence at Shekinah Glory Highway Rest Stop',
-    link: 'https://royalcity.shekinahgloryhotel.org/',
-  },
+  // {
+  //   title: 'Royal Shekinah City',
+  //   image: '/Shekinah.png',
+  //   description: 'Discover Comfort, Elegance, and Excellence at Shekinah Glory Highway Rest Stop',
+  //   link: 'https://royalcity.shekinahgloryhotel.org/',
+  // },
   // {
   //   title: 'All Together Africa',
   //   image: '/AAA.png',
