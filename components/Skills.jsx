@@ -24,22 +24,22 @@ const skillsData = [
     altName: "JavaScript",
   },
   {
-    name: "TailwindCSS",
+    name: "TypeScript",
     image:
-      "https://raw.githubusercontent.com/tandpfun/skill-icons/65dea6c4eaca7da319e552c09f4cf5a9a8dab2c8/icons/TailwindCSS-Light.svg",
-    altName: "TailwindCSS",
-  },
-  {
-    name: "Wordpress",
-    image:
-      "https://raw.githubusercontent.com/tandpfun/skill-icons/65dea6c4eaca7da319e552c09f4cf5a9a8dab2c8/icons/Wordpress.svg",
-    altName: "Wordpress",
+      "https://raw.githubusercontent.com/tandpfun/skill-icons/65dea6c4eaca7da319e552c09f4cf5a9a8dab2c8/icons/TypeScript.svg",
+    altName: "TypeScript",
   },
   {
     name: "React",
     image:
       "https://raw.githubusercontent.com/tandpfun/skill-icons/65dea6c4eaca7da319e552c09f4cf5a9a8dab2c8/icons/React-Light.svg",
     altName: "React",
+  },
+  {
+    name: "TailwindCSS",
+    image:
+      "https://raw.githubusercontent.com/tandpfun/skill-icons/65dea6c4eaca7da319e552c09f4cf5a9a8dab2c8/icons/TailwindCSS-Light.svg",
+    altName: "TailwindCSS",
   },
   {
     name: "NextJS",
@@ -54,10 +54,16 @@ const skillsData = [
     altName: "Git",
   },
   {
-    name: "TypeScript",
+    name: "React Native",
     image:
-      "https://raw.githubusercontent.com/tandpfun/skill-icons/65dea6c4eaca7da319e552c09f4cf5a9a8dab2c8/icons/TypeScript.svg",
-    altName: "TypeScript",
+      "https://raw.githubusercontent.com/tandpfun/skill-icons/65dea6c4eaca7da319e552c09f4cf5a9a8dab2c8/icons/ReactNative.svg",
+    altName: "React Native",
+  },
+  {
+    name: "Wordpress",
+    image:
+      "https://raw.githubusercontent.com/tandpfun/skill-icons/65dea6c4eaca7da319e552c09f4cf5a9a8dab2c8/icons/Wordpress.svg",
+    altName: "Wordpress",
   },
   {
     name: "C++",
