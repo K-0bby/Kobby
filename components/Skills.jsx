@@ -56,7 +56,7 @@ const skillsData = [
   {
     name: "React Native",
     image:
-      "https://raw.githubusercontent.com/tandpfun/skill-icons/65dea6c4eaca7da319e552c09f4cf5a9a8dab2c8/icons/ReactNative.svg",
+      "https://raw.githubusercontent.com/tandpfun/skill-icons/65dea6c4eaca7da319e552c09f4cf5a9a8dab2c8/icons/React-Dark.svg",
     altName: "React Native",
   },
   {
@@ -65,12 +65,12 @@ const skillsData = [
       "https://raw.githubusercontent.com/tandpfun/skill-icons/65dea6c4eaca7da319e552c09f4cf5a9a8dab2c8/icons/Wordpress.svg",
     altName: "Wordpress",
   },
-  {
-    name: "C++",
-    image:
-      "https://raw.githubusercontent.com/tandpfun/skill-icons/65dea6c4eaca7da319e552c09f4cf5a9a8dab2c8/icons/CPP.svg",
-    altName: "C++",
-  },
+  // {
+  //   name: "C++",
+  //   image:
+  //     "https://raw.githubusercontent.com/tandpfun/skill-icons/65dea6c4eaca7da319e552c09f4cf5a9a8dab2c8/icons/CPP.svg",
+  //   altName: "C++",
+  // },
 ];
 
 const Skills = () => {
