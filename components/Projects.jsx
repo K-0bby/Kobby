@@ -18,6 +18,12 @@ const projects = [
     link: 'https://pos-system-pearl.vercel.app/',
   },
   {
+    title: 'ME-FIE',
+    image: '/me-fie.png',
+    description: 'MeFie is more than a competition platform — its a celebration of Ghanaian culture, connecting Ghanaians worldwide.',
+    link: 'https://www.me-fie.com/',
+  },
+  {
     title: 'Spotless Multimedia',
     image: '/SM.png',
     alt: 'Spotless Multimedia',
