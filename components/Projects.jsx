@@ -11,12 +11,12 @@ const projects = [
     description: ' Premium Cabinets, Wardrobes & Vanities in Ghana',
     link: 'https://www.hdfghanaltd.com/',
   },
-  {
-    title: 'POS System',
-    image: '/POS.png',
-    description: 'A Point of Sale system used to manage sales and inventory',
-    link: 'https://pos-system-pearl.vercel.app/',
-  },
+  // {
+  //   title: 'POS System',
+  //   image: '/POS.png',
+  //   description: 'A Point of Sale system used to manage sales and inventory',
+  //   link: 'https://pos-system-pearl.vercel.app/',
+  // },
   {
     title: 'ME-FIE',
     image: '/me-fie.png',
@@ -30,23 +30,23 @@ const projects = [
     description: 'Spotless Multimedia is a leading provider of high-quality multimedia services.',
     link: 'https://spotless-multimedia.vercel.app/',
   },
+  // {
+  //   title: 'BuukMeNow',
+  //   image: '/Buuk.png',
+  //   description: 'Streamline scheduling with BuukMeNow—boost clients and grow your business effortlessly.',
+  //   link: 'https://buukme-now.vercel.app/',
+  // },
   {
-    title: 'BuukMeNow',
-    image: '/Buuk.png',
-    description: 'Streamline scheduling with BuukMeNow—boost clients and grow your business effortlessly.',
-    link: 'https://buukme-now.vercel.app/',
+    title: 'Chic En Vogue',
+    image: '/Chic En Vogue.png',
+    description: 'An ecommerce site',
+    link: 'https://chic-en-vogue.vercel.app/',
   },
   {
     title: 'DigiGrowth',
     image: '/DG.png',
     description: 'Empower Your Business with Digital Excellence',
     link: 'https://digi-growth.vercel.app/',
-  },
-  {
-    title: 'Chic En Vogue',
-    image: '/Chic En Vogue.png',
-    description: 'An ecommerce site',
-    link: 'https://chic-en-vogue.vercel.app/',
   },
   {
     title: 'Event Nation',
