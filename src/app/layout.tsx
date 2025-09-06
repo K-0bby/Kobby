@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Poppins } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/ui/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -68,7 +69,7 @@ export const metadata: Metadata = {
     yandex: "yandex-verification",
     yahoo: "yahoo-site-verification",
   },
-  themeColor: '#000',
+  themeColor: '#fff',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -85,8 +86,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${poppins.variable} antialiased`}
+        className={`${geistSans.variable} ${poppins.variable} antialiased ` }
       >
+        <Navbar />
         {children}
       </body>
     </html>
