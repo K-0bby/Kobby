@@ -87,7 +87,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${poppins.variable} antialiased ` }
+        className={`${geistSans.variable} ${poppins.variable} antialiased` }
       >
         <CustomCursor type="developer"/>
         <Navbar />

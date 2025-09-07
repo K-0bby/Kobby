@@ -20,7 +20,7 @@ export default function Navbar() {
         "fixed top-0 md:top-6 left-1/2 transform -translate-x-1/2 z-40 w-full md:w-[31rem] md:px-4"
       )}
     >
-      <nav className="flex items-center justify-between bg-white/80 backdrop-blur-md md:border-2 border-gray-200/50 border-b-2 md:rounded-2xl px-4 py-4 md:py-3">
+      <nav className="flex items-center justify-between bg-white/50 backdrop-blur-xs md:border-2 border-gray-200/50 border-b-2 md:rounded-2xl px-4 py-4 md:py-3">
         {/* Left: Home button */}
         <button className="md:hidden p-2 hover:bg-gray-200/50 rounded-lg transition-all duration-300 transform hover:scale-110 cursor-pointer">
           <Home size={20} className="text-gray-600" />
