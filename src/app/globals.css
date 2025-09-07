@@ -133,7 +133,7 @@ body {
   overflow-y: scroll;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  background-color: #fff;
+  background-color: #f5f5f5;
   color: white;
   font-family: var(--font-poppins);
 }

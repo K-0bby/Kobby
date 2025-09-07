@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/ui/navbar";
+import CustomCursor from "@/components/custom-cursor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -69,13 +70,13 @@ export const metadata: Metadata = {
     yandex: "yandex-verification",
     yahoo: "yahoo-site-verification",
   },
-  themeColor: '#fff',
-  manifest: '/manifest.json',
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'default',
-    title: 'Gideon Hoenyefia',
-  },
+  // themeColor: '#fff',
+  // manifest: '/manifest.json',
+  // appleWebApp: {
+  //   capable: true,
+  //   statusBarStyle: 'default',
+  //   title: 'Gideon Hoenyefia',
+  // },
 };
 
 export default function RootLayout({
@@ -88,6 +89,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${poppins.variable} antialiased ` }
       >
+        <CustomCursor type="developer"/>
         <Navbar />
         {children}
       </body>
