@@ -49,7 +49,7 @@ export default function Navbar() {
 
           <div className="w-px h-8 bg-gray-200/50 mx-6"></div>
 
-          {/* Blog button */}
+          {/* Contact button */}
           <button className="flex items-center gap-1 bg-black/90 text-white px-6 py-2 rounded-xl font-medium hover:bg-black transition-all duration-300 transform hover:scale-105 cursor-pointer">
             <span>Contact</span> <span className="hidden md:block">Me</span>
           </button>
@@ -84,7 +84,7 @@ export default function Navbar() {
             <Scroll size={18} /> Blog
           </button>
 
-          {/* Blog button */}
+          {/* Contact button */}
           <button className="flex items-center gap-1 bg-black/90 text-white px-6 py-2 rounded-xl font-medium hover:bg-black transition-all duration-300 transform hover:scale-105 cursor-pointer w-full mx-auto">
             <span className="text-center mx-auto">Contact Me</span>
           </button>

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/ui/navbar";
@@ -14,6 +14,14 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#ffffff',
+}
 
 export const metadata: Metadata = {
   title: "Gideon Hoenyefia",
@@ -70,13 +78,6 @@ export const metadata: Metadata = {
     yandex: "yandex-verification",
     yahoo: "yahoo-site-verification",
   },
-  // themeColor: '#fff',
-  // manifest: '/manifest.json',
-  // appleWebApp: {
-  //   capable: true,
-  //   statusBarStyle: 'default',
-  //   title: 'Gideon Hoenyefia',
-  // },
 };
 
 export default function RootLayout({
@@ -86,10 +87,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+      </head>
       <body
-        className={`${geistSans.variable} ${poppins.variable} antialiased` }
+        className={`${geistSans.variable} ${poppins.variable} antialiased`}
       >
-        <CustomCursor type="developer"/>
+        <CustomCursor type="figma"/>
         <Navbar />
         {children}
       </body>

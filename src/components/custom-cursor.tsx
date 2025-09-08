@@ -1,30 +1,27 @@
+// components/CustomCursor.tsx
 "use client";
+
+import React, { useEffect, useState, useCallback } from "react";
 import {
   motion,
   useMotionValue,
   useSpring,
   AnimatePresence,
 } from "framer-motion";
-import { useEffect, useState } from "react";
 
-type CursorType =
-  | "smooth"
-  | "hoverGrow"
-  | "textReveal"
-  | "blob"
-  | "developer"
-  | "creative";
+type CursorState = "default" | "hover" | "click" | "text";
+type CursorType = "developer" | "creative" | "figma";
 
-interface CursorProps {
+interface CustomCursorProps {
   type?: CursorType;
 }
 
-export default function CustomCursor({ type = "developer" }: CursorProps) {
+const CustomCursor: React.FC<CustomCursorProps> = ({ type = "figma" }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const [hovering, setHovering] = useState(false);
+  const [cursorState, setCursorState] = useState<CursorState>("default");
   const [elementType, setElementType] = useState<string>("");
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   const springX = useSpring(x, { stiffness: 400, damping: 28 });
   const springY = useSpring(y, { stiffness: 400, damping: 28 });
@@ -35,65 +32,176 @@ export default function CustomCursor({ type = "developer" }: CursorProps) {
   const trailSpringX = useSpring(trailX, { stiffness: 150, damping: 25 });
   const trailSpringY = useSpring(trailY, { stiffness: 150, damping: 25 });
 
-  useEffect(() => {
-    const move = (e: MouseEvent) => {
-      x.set(e.clientX - 8); // Centered for small dot
+  const updateCursor = useCallback(
+    (e: MouseEvent) => {
+      x.set(e.clientX - 8);
       y.set(e.clientY - 8);
       // Trail follows with delay
-      trailX.set(e.clientX - 8);
-      trailY.set(e.clientY - 8);
-    };
+      setTimeout(() => {
+        trailX.set(e.clientX - 8);
+        trailY.set(e.clientY - 8);
+      }, 50);
+      setIsVisible(true);
+    },
+    [x, y, trailX, trailY]
+  );
 
-    const handleMouseEnter = () => setIsVisible(false);
-    const handleMouseLeave = () => setIsVisible(true);
+  const handleMouseEnter = useCallback(() => setIsVisible(true), []);
+  const handleMouseLeave = useCallback(() => setIsVisible(false), []);
 
-    window.addEventListener("mousemove", move);
-    document.addEventListener("mouseenter", handleMouseLeave);
-    document.addEventListener("mouseleave", handleMouseEnter);
+  // Reset cursor state when page becomes visible again
+  const handleVisibilityChange = useCallback(() => {
+    if (document.visibilityState === 'visible') {
+      setCursorState("default");
+      setElementType("");
+      setIsVisible(true);
+      // Re-hide default cursor
+      document.body.style.cursor = "none";
+    } else {
+      setIsVisible(false);
+    }
+  }, []);
 
-    // Enhanced hover detection with element types
+  // Reset cursor on page focus
+  const handlePageFocus = useCallback(() => {
+    setCursorState("default");
+    setElementType("");
+    document.body.style.cursor = "none";
+  }, []);
+
+  useEffect(() => {
+    // Event handlers
     const enter = (e: Event) => {
-      setHovering(true);
+      setCursorState("hover");
       const target = e.target as HTMLElement;
-      if (target.tagName === "A") setElementType("link");
+
+      const customTooltip = target.getAttribute("data-tooltip");
+
+      if (customTooltip) {
+        setElementType(customTooltip);
+      } else if (target.tagName === "A") setElementType("link");
       else if (target.tagName === "BUTTON") setElementType("button");
       else if (target.classList.contains("cursor-text")) setElementType("text");
-      else if (target.classList.contains("cursor-image"))
+      else if (
+        target.classList.contains("cursor-image") ||
+        target.tagName === "IMG"
+      )
         setElementType("image");
-      else setElementType("interactive");
+      else if (target.closest('button, a, [role="button"], [tabindex]'))
+        setElementType("interactive");
+      else setElementType("");
     };
 
     const leave = () => {
-      setHovering(false);
+      setCursorState("default");
       setElementType("");
     };
 
-    // Select all interactive elements
-    const interactiveElements = document.querySelectorAll(
-      "a, button, .cursor-hover, .cursor-text, .cursor-image, input, textarea, [role='button'], [tabindex]"
-    );
+    const handleClick = () => setCursorState("click");
+    const handleRelease = () => setCursorState("hover");
 
-    interactiveElements.forEach((el) => {
-      el.addEventListener("mouseenter", enter);
-      el.addEventListener("mouseleave", leave);
-    });
+    const textEnter = () => {
+      setCursorState("text");
+      setElementType("text");
+    };
 
-    return () => {
-      window.removeEventListener("mousemove", move);
-      document.removeEventListener("mouseenter", handleMouseLeave);
-      document.removeEventListener("mouseleave", handleMouseEnter);
-      interactiveElements.forEach((el) => {
+    const handleBlur = () => setIsVisible(false);
+
+    // Attach listeners to elements
+    const attachListeners = () => {
+      const hoverElements = document.querySelectorAll(
+        'button, a, [role="button"], .cursor-hover, .cursor-text, .cursor-image, [tabindex]:not([tabindex="-1"])'
+      );
+      const textElements = document.querySelectorAll(
+        'input, textarea, [contenteditable="true"]'
+      );
+
+      hoverElements.forEach((el) => {
+        el.addEventListener("mouseenter", enter);
+        el.addEventListener("mouseleave", leave);
+        el.addEventListener("mousedown", handleClick);
+        el.addEventListener("mouseup", handleRelease);
+      });
+
+      textElements.forEach((el) => {
+        el.addEventListener("mouseenter", textEnter);
+        el.addEventListener("mouseleave", leave);
+      });
+    };
+
+    // Remove listeners from elements
+    const removeListeners = () => {
+      const hoverElements = document.querySelectorAll(
+        'button, a, [role="button"], .cursor-hover, .cursor-text, .cursor-image, [tabindex]:not([tabindex="-1"])'
+      );
+      const textElements = document.querySelectorAll(
+        'input, textarea, [contenteditable="true"]'
+      );
+
+      hoverElements.forEach((el) => {
         el.removeEventListener("mouseenter", enter);
+        el.removeEventListener("mouseleave", leave);
+        el.removeEventListener("mousedown", handleClick);
+        el.removeEventListener("mouseup", handleRelease);
+      });
+
+      textElements.forEach((el) => {
+        el.removeEventListener("mouseenter", textEnter);
         el.removeEventListener("mouseleave", leave);
       });
     };
-  }, [x, y, trailX, trailY]);
+
+    // Add global event listeners
+    document.addEventListener("mousemove", updateCursor);
+    document.addEventListener("mouseenter", handleMouseEnter);
+    document.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("focus", handlePageFocus);
+    window.addEventListener("blur", handleBlur);
+
+    // Initial attachment
+    attachListeners();
+
+    // MutationObserver for dynamic elements
+    const observer = new MutationObserver(() => {
+      removeListeners();
+      attachListeners();
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'role', 'tabindex', 'data-tooltip']
+    });
+
+    // Hide default cursor
+    document.body.style.cursor = "none";
+    document.body.style.setProperty("--cursor-display", "none");
+
+    return () => {
+      document.removeEventListener("mousemove", updateCursor);
+      document.removeEventListener("mouseenter", handleMouseEnter);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("focus", handlePageFocus);
+      window.removeEventListener("blur", handleBlur);
+
+      removeListeners();
+      observer.disconnect();
+      document.body.style.cursor = "auto";
+    };
+  }, [updateCursor, handleMouseEnter, handleMouseLeave, handleVisibilityChange, handlePageFocus]);
 
   if (!isVisible) return null;
 
+  const isHovering = cursorState === "hover";
+  const isClicking = cursorState === "click";
+  const isText = cursorState === "text";
+
   return (
     <AnimatePresence>
-      {/* Developer Cursor - Simple Blue Dot */}
+      {/* Developer Cursor - Simple Blue Dot with Trail */}
       {type === "developer" && (
         <>
           {/* Main Blue Dot */}
@@ -107,45 +215,34 @@ export default function CustomCursor({ type = "developer" }: CursorProps) {
           >
             <motion.div
               animate={{
-                scale: hovering ? 1.5 : 1,
-                backgroundColor: hovering ? "#3b82f6" : "#1d4ed8",
+                scale: isHovering ? 1.5 : isClicking ? 0.8 : 1,
+                backgroundColor: isHovering
+                  ? "#3b82f6"
+                  : isClicking
+                  ? "#1e40af"
+                  : "#1d4ed8",
               }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="w-3 h-3 rounded-full bg-blue-700 shadow-lg"
             />
           </motion.div>
 
-          {/* Trailing Dots */}
+          {/* Trailing Dot */}
           <motion.div
-            key="developer-trail-1"
+            key="developer-trail"
             className="fixed top-0 left-0 pointer-events-none z-40"
             style={{ x: trailSpringX, y: trailSpringY }}
           >
             <motion.div
               className="w-2 h-2 rounded-full bg-blue-500/60"
-              animate={{ scale: hovering ? 1.2 : 1 }}
+              animate={{ scale: isHovering ? 1.2 : 1 }}
               transition={{ type: "spring", stiffness: 200, damping: 20 }}
             />
           </motion.div>
-
-          {/* <motion.div
-            key="developer-trail-2"
-            className="fixed top-0 left-0 pointer-events-none z-30"
-            style={{
-              x: trailSpringX,
-              y: trailSpringY,
-            }}
-          >
-            <motion.div
-              className="w-1 h-1 rounded-full bg-blue-400/40"
-              animate={{ scale: hovering ? 1.1 : 1 }}
-              transition={{ type: "spring", stiffness: 150, damping: 20 }}
-            />
-          </motion.div> */}
         </>
       )}
 
-      {/* Creative Cursor - Figma Style */}
+      {/* Creative Cursor - Figma Style Arrow */}
       {type === "creative" && (
         <motion.div
           key="creative-cursor"
@@ -159,8 +256,8 @@ export default function CustomCursor({ type = "developer" }: CursorProps) {
             {/* Figma Cursor Shape */}
             <motion.div
               animate={{
-                scale: hovering ? 1.2 : 1,
-                rotate: hovering ? 15 : 0,
+                scale: isHovering ? 1.2 : isClicking ? 0.9 : 1,
+                rotate: isHovering ? 15 : 0,
               }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="relative w-6 h-6"
@@ -173,28 +270,26 @@ export default function CustomCursor({ type = "developer" }: CursorProps) {
                 fill="none"
                 className="drop-shadow-lg"
               >
-                {/* Arrow Body */}
-                <path
-                  d="M3 3L20 12L11 13L9 21L3 3Z"
-                  fill="#000000"
-                  stroke="#ffffff"
-                  strokeWidth="1"
-                />
-                {/* Hover State Color Change */}
                 <motion.path
                   d="M3 3L20 12L11 13L9 21L3 3Z"
-                  fill={hovering ? "#3b82f6" : "#000000"}
+                  fill={
+                    isHovering ? "#3b82f6" : isClicking ? "#1e40af" : "#000000"
+                  }
                   stroke="#ffffff"
                   strokeWidth="1"
                   animate={{
-                    fill: hovering ? "#3b82f6" : "#000000",
+                    fill: isHovering
+                      ? "#3b82f6"
+                      : isClicking
+                      ? "#1e40af"
+                      : "#000000",
                   }}
                   transition={{ duration: 0.2 }}
                 />
               </svg>
 
-              {/* Figma-style Selection Ring */}
-              {hovering && (
+              {/* Selection Ring for Hover */}
+              {isHovering && (
                 <motion.div
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
@@ -204,8 +299,8 @@ export default function CustomCursor({ type = "developer" }: CursorProps) {
               )}
             </motion.div>
 
-            {/* Element Type Indicator (Figma Style) */}
-            {hovering && elementType && (
+            {/* Element Type Tooltip */}
+            {isHovering && elementType && (
               <motion.div
                 key="figma-tooltip"
                 initial={{ opacity: 0, y: 10 }}
@@ -221,11 +316,11 @@ export default function CustomCursor({ type = "developer" }: CursorProps) {
               </motion.div>
             )}
 
-            {/* Figma-style Color Dot Indicator */}
+            {/* Color Dot Indicator */}
             <motion.div
               animate={{
-                scale: hovering ? 1 : 0,
-                opacity: hovering ? 1 : 0,
+                scale: isHovering ? 1 : 0,
+                opacity: isHovering ? 1 : 0,
               }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 border border-white shadow-sm"
@@ -234,135 +329,150 @@ export default function CustomCursor({ type = "developer" }: CursorProps) {
         </motion.div>
       )}
 
-      {/* Enhanced Smooth */}
-      {type === "smooth" && (
-        <motion.div
-          key="smooth-cursor"
-          className="fixed top-0 left-0 pointer-events-none z-50"
-          style={{ x: springX, y: springY }}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0 }}
-        >
-          <div className="relative">
-            <motion.div
-              animate={{
-                scale: hovering ? 2.5 : 1,
-                borderColor: hovering ? "#3b82f6" : "#000000",
-              }}
-              transition={{ type: "spring", stiffness: 200, damping: 15 }}
-              className="w-8 h-8 rounded-full border-2 backdrop-blur-sm"
-            />
-            <motion.div
-              animate={{
-                scale: hovering ? 1 : 0,
-                opacity: hovering ? 0.3 : 0,
-              }}
-              className="absolute inset-0 w-8 h-8 rounded-full bg-blue-500"
-            />
-          </div>
-        </motion.div>
-      )}
-
-      {/* Enhanced Hover Grow */}
-      {type === "hoverGrow" && (
-        <motion.div
-          key="hover-grow-cursor"
-          className="fixed top-0 left-0 pointer-events-none z-50"
-          style={{ x: springX, y: springY }}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0 }}
-        >
+      {/* Enhanced Figma Cursor - Combines Both Styles */}
+      {type === "figma" && (
+        <>
+          {/* Main Cursor */}
           <motion.div
-            animate={{
-              scale: hovering ? 4 : 1,
-              backgroundColor: hovering
-                ? "rgba(59, 130, 246, 0.2)"
-                : "transparent",
-              borderColor: hovering ? "#3b82f6" : "#000000",
-            }}
-            transition={{ type: "spring", stiffness: 200, damping: 15 }}
-            className="w-6 h-6 rounded-full border-2 backdrop-blur-sm shadow-lg"
-          />
-        </motion.div>
-      )}
-
-      {/* Enhanced Text Reveal */}
-      {type === "textReveal" && (
-        <motion.div
-          key="text-reveal-cursor"
-          className="fixed top-0 left-0 pointer-events-none z-50"
-          style={{ x: springX, y: springY }}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0 }}
-        >
-          <motion.div
-            animate={{
-              scale: hovering ? 3 : 1,
-              backgroundColor: hovering ? "#000000" : "transparent",
-              color: hovering ? "#ffffff" : "#000000",
-            }}
-            transition={{ type: "spring", stiffness: 200, damping: 15 }}
-            className="w-12 h-12 rounded-full border-2 border-black flex items-center justify-center text-xs font-semibold backdrop-blur-sm shadow-lg"
+            key="figma-cursor"
+            className="fixed top-0 left-0 pointer-events-none z-[9999]"
+            style={{ x: springX, y: springY }}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0 }}
           >
-            <motion.span
-              animate={{ opacity: hovering ? 1 : 0, scale: hovering ? 1 : 0.5 }}
-              transition={{ duration: 0.2 }}
-            >
-              {elementType === "link"
-                ? "Visit"
-                : elementType === "button"
-                ? "Click"
-                : "View"}
-            </motion.span>
-          </motion.div>
-        </motion.div>
-      )}
+            <div className="relative">
+              {/* Text Cursor State */}
+              {isText ? (
+                <motion.div
+                  initial={{ opacity: 0, scaleY: 0 }}
+                  animate={{ opacity: 1, scaleY: 1 }}
+                  className="w-0.5 h-6 bg-gray-300 rounded-full"
+                />
+              ) : (
+                /* Arrow Cursor for Default/Hover/Click */
+                <motion.div
+                  animate={{
+                    scale: isHovering ? 1.2 : isClicking ? 0.9 : 1,
+                    rotate: isHovering ? 10 : 0,
+                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="relative w-6 h-6"
+                >
+                  {/* Main Arrow Shape */}
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    className="drop-shadow-lg"
+                  >
+                    <motion.path
+                      d="M3 3L20 12L11 13L9 21L3 3Z"
+                      fill={
+                        isHovering
+                          ? "#3b82f6"
+                          : isClicking
+                          ? "#1e40af"
+                          : "#1f2937"
+                      }
+                      stroke="#ffffff"
+                      strokeWidth="1.5"
+                      animate={{
+                        fill: isHovering
+                          ? "#3b82f6"
+                          : isClicking
+                          ? "#1e40af"
+                          : "#1f2937",
+                      }}
+                      transition={{ duration: 0.15 }}
+                    />
+                  </svg>
 
-      {/* Enhanced Blob */}
-      {type === "blob" && (
-        <motion.div
-          key="blob-cursor"
-          className="fixed top-0 left-0 pointer-events-none z-50"
-          style={{ x: springX, y: springY }}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0 }}
-        >
+                  {/* Hover Ring */}
+                  {/* {isHovering && (
+                    <motion.div
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 0.6 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      className="absolute -inset-3 border-2 border-blue-400 rounded-full animate-pulse"
+                    />
+                  )} */}
+
+                  {/* Click Ring */}
+                  {isClicking && (
+                    <motion.div
+                      initial={{ scale: 0, opacity: 1 }}
+                      animate={{ scale: 2, opacity: 0 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="absolute -inset-3 border-2 border-blue-600 rounded-full"
+                    />
+                  )}
+                </motion.div>
+              )}
+
+              {/* Element Type Tooltip */}
+              {isHovering && elementType && !isText && (
+                <motion.div
+                  key="tooltip"
+                  initial={{ opacity: 0, y: 10, x: -10 }}
+                  animate={{ opacity: 1, y: -35, x: 5 }}
+                  exit={{ opacity: 0, y: 10, x: -10 }}
+                  className="absolute top-12 left-5 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap shadow-xl border border-gray-700"
+                >
+                  <div className="relative">
+                    {/* {elementType === "link" && "Link"}
+                    {elementType === "button" && "Button"}
+                    {elementType === "text" && "Text"}
+                    {elementType === "Image" && "Image"}
+                    {elementType === "interactive" && "Interactive"} */}
+
+                    {elementType || ""}
+
+                    {/* Tooltip Arrow */}
+                    <div className="absolute top-full left-2 w-0 h-0 border-l-2 border-r-2 border-t-4 border-l-transparent border-r-transparent border-t-gray-900" />
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Status Indicator Dot */}
+              {/* <motion.div
+                animate={{
+                  scale: isHovering ? 1 : isClicking ? 1.2 : 0,
+                  opacity: isHovering || isClicking ? 1 : 0,
+                }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                className={`absolute -top-1 -right-1 w-3 h-3 rounded-full border-2 border-white shadow-lg ${
+                  isClicking
+                    ? "bg-red-500"
+                    : isHovering
+                    ? "bg-gradient-to-r from-blue-500 to-purple-500"
+                    : "bg-green-500"
+                }`}
+              /> */}
+            </div>
+          </motion.div>
+
+          {/* Trail Effect (Developer Style) */}
           <motion.div
-            animate={{
-              scale: hovering ? 2.5 : 1,
-              borderRadius: [
-                "50% 50% 50% 50%",
-                "60% 40% 70% 30%",
-                "40% 60% 30% 70%",
-                "70% 30% 40% 60%",
-                "30% 70% 60% 40%",
-                "50% 50% 50% 50%",
-              ],
-              background: [
-                "linear-gradient(45deg, #ff6b6b, #4ecdc4)",
-                "linear-gradient(45deg, #4ecdc4, #45b7d1)",
-                "linear-gradient(45deg, #45b7d1, #96ceb4)",
-                "linear-gradient(45deg, #96ceb4, #ffd93d)",
-                "linear-gradient(45deg, #ffd93d, #ff6b6b)",
-              ],
-            }}
-            transition={{
-              borderRadius: {
-                duration: 4,
-                ease: "easeInOut",
-                repeat: Infinity,
-              },
-              background: { duration: 3, ease: "easeInOut", repeat: Infinity },
-              scale: { type: "spring", stiffness: 200, damping: 15 },
-            }}
-            className="w-16 h-16 opacity-60 backdrop-blur-md shadow-xl"
-          />
-        </motion.div>
+            key="figma-trail"
+            className="fixed -top-1 -left-1 pointer-events-none z-50"
+            style={{ x: trailSpringX, y: trailSpringY }}
+          >
+            <motion.div
+              className="w-2 h-2 rounded-full bg-blue-500/90 shadow-sm"
+              animate={{
+                scale: isHovering ? 1.3 : isClicking ? 0.8 : 1,
+                opacity: isText ? 0 : 1,
+              }}
+              transition={{ type: "spring", stiffness: 250, damping: 20 }}
+            />
+          </motion.div>
+        </>
       )}
     </AnimatePresence>
   );
-}
+};
+
+export default CustomCursor;

@@ -127,7 +127,6 @@ html {
 }
 
 body {
-
   scroll-behavior: auto;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -143,7 +142,7 @@ body {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translateX(-33.333%);
   }
 }
 
@@ -151,3 +150,53 @@ body {
   animation: scroll 25s linear infinite;
 }
 
+*, *::before, *::after {
+  cursor: none !important;
+}
+
+/* Fallback for elements that might override */
+body, html {
+  cursor: none !important;
+}
+
+/* Ensure cursor is hidden on all interactive elements */
+button, a, input, textarea, select, [role="button"], [tabindex] {
+  cursor: none !important;
+}
+
+/* Mobile navbar fixes */
+@supports (height: 100dvh) {
+  header[style*="position: fixed"] {
+    position: fixed !important;
+    top: 0 !important;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+}
+
+/* Prevent navbar from moving during mobile scroll */
+@media (max-width: 768px) {
+  header[style*="position: fixed"] {
+    position: fixed !important;
+    top: 0 !important;
+    transform: translate3d(-50%, 0, 0) !important;
+    -webkit-transform: translate3d(-50%, 0, 0) !important;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  
+  /* Ensure body doesn't interfere with fixed positioning */
+  body {
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+  }
+}
+
+/* Contact Section */
+.contact-section {
+  background: url('/images/squiggles.png') center/cover no-repeat;
+  background-color: #131313;
+  object-fit: cover;
+}
