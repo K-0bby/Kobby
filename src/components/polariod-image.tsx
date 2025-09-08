@@ -15,7 +15,7 @@ export default function PolaroidImages() {
             className="rounded-md object-cover w-[250px] md:w-full h-auto aspect-square"
           />
           <p className="text-center text-gray-700 font-medium mt-3 text-sm">
-            @ikwe
+            @HoenyefiaGideon
           </p>
         </div>
 
@@ -29,7 +29,7 @@ export default function PolaroidImages() {
             className="rounded-md object-cover w-[250px] md:w-full h-auto aspect-square"
           />
           <p className="text-center text-gray-700 font-medium mt-3 text-sm">
-            @codewithhonour
+            @HoenyefiaGideon
           </p>
         </div>
         
