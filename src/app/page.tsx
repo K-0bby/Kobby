@@ -183,7 +183,7 @@ const ProjectSection = () => {
                 </h2>
 
                 <p className="text-gray-600 text-base leading-relaxed line-clamp-3">
-                  {project.description}
+                  {project.summary}
                 </p>
 
                 <div className="flex flex-row items-center gap-2">
@@ -233,7 +233,7 @@ const ProjectSection = () => {
 
 const ContactSection = () => (
   <section className="w-full py-16 sm:py-20 lg:py-20" id="contact">
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-4xl mx-auto">
       <div className="contact-section relative overflow-hidden flex items-center justify-center">
         {/* Content Container */}
         <div className="relative z-10 text-center px-4 sm:px-8 lg:px-12 py-8 sm:py-12 lg:py-16 max-w-4xl mx-auto">

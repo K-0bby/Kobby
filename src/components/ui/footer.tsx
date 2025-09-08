@@ -6,7 +6,7 @@ export default function Footer() {
     <footer>
       <div className="max-w-6xl mx-auto pb-10">
         <p className="text-center text-gray-600 text-sm mt-10 mb-3">
-          Copyright &copy; {new Date().getFullYear()} Gideon Hoenyefia. All
+          Copyright &copy; {new Date().getFullYear()} Gideon Korbla Hoenyefia. All
           rights reserved.
         </p>
         <div className="flex flex-col items-center justify-center">

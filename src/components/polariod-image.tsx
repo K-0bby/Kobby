@@ -10,8 +10,8 @@ export default function PolaroidImages() {
           <Image
             src="/images/kobby.jpg"
             alt="Gideon Hoenyefia - Profile 1"
-            width={150}
-            height={150}
+            width={500}
+            height={500}
             className="rounded-md object-cover w-[250px] md:w-full h-auto aspect-square"
           />
           <p className="text-center text-gray-700 font-medium mt-3 text-sm">
@@ -24,8 +24,8 @@ export default function PolaroidImages() {
           <Image
             src="/images/kobby.jpg"
             alt="Gideon Hoenyefia - Profile 2"
-            width={150}
-            height={150}
+            width={500}
+            height={500}
             className="rounded-md object-cover w-[250px] md:w-full h-auto aspect-square"
           />
           <p className="text-center text-gray-700 font-medium mt-3 text-sm">

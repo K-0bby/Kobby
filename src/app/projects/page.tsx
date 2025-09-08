@@ -10,8 +10,8 @@ export default function Projects() {
   const router = useRouter();
   return (
     <>
-      <section className="min-h-screen pb-20 mt-32">
-        <h2 className="text-2xl md:text-3xl font-bold text-black text-center mt-2 mb-16 capitalize">
+      <section className="min-h-screen pb-20 pt-24 md:pt-32 lg:pt-36">
+        <h2 className="text-2xl md:text-3xl font-bold text-black text-center mt-8 mb-16 capitalize px-4">
           Check out some of my recent works
         </h2>
 
@@ -41,7 +41,7 @@ export default function Projects() {
                   </h2>
 
                   <p className="text-gray-600 text-base leading-relaxed line-clamp-3">
-                    {project.description}
+                    {project.summary}
                   </p>
 
                   <div className="flex flex-row items-center gap-2">
