@@ -22,6 +22,7 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ type = "figma" }) => {
   const [cursorState, setCursorState] = useState<CursorState>("default");
   const [elementType, setElementType] = useState<string>("");
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const springX = useSpring(x, { stiffness: 400, damping: 28 });
   const springY = useSpring(y, { stiffness: 400, damping: 28 });
@@ -48,6 +49,22 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ type = "figma" }) => {
 
   const handleMouseEnter = useCallback(() => setIsVisible(true), []);
   const handleMouseLeave = useCallback(() => setIsVisible(false), []);
+
+  // Check if device is mobile/touch device
+  useEffect(() => {
+    const checkMobile = () => {
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth < 768;
+      const isMobileUserAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      
+      setIsMobile(isTouchDevice || isSmallScreen || isMobileUserAgent);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Reset cursor state when page becomes visible again
   const handleVisibilityChange = useCallback(() => {
@@ -192,6 +209,11 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ type = "figma" }) => {
       document.body.style.cursor = "auto";
     };
   }, [updateCursor, handleMouseEnter, handleMouseLeave, handleVisibilityChange, handlePageFocus]);
+
+  // Early return if mobile device - AFTER all hooks
+  if (isMobile) {
+    return null;
+  }
 
   if (!isVisible) return null;
 

@@ -137,6 +137,10 @@ body {
   font-family: var(--font-poppins);
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-outfit);
+}
+
 @keyframes scroll {
   0% {
     transform: translateX(0);
@@ -147,7 +151,7 @@ body {
 }
 
 .animate-scroll {
-  animation: scroll 25s linear infinite;
+  animation: scroll 65s linear infinite;
 }
 
 *, *::before, *::after {

@@ -1,12 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Poppins } from "next/font/google";
+import { Outfit, Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/ui/navbar";
 import CustomCursor from "@/components/custom-cursor";
+import Footer from "@/components/ui/footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 const poppins = Poppins({
@@ -24,6 +26,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://gideonhoenyefia.com'),
   title: "Gideon Hoenyefia",
   description: "Frontend Developer & Programmer with 3+ years of experience, proficient in web development and mobile app development. Building responsive and user-friendly interfaces.",
   keywords: ["Frontend Developer", "Programmer", "Mobile App Development", "Web Developer", "Gideon Hoenyefia"],
@@ -91,11 +94,12 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
       </head>
       <body
-        className={`${geistSans.variable} ${poppins.variable} antialiased`}
+        className={`${outfit.variable} ${poppins.variable} antialiased`}
       >
         <CustomCursor type="figma"/>
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
