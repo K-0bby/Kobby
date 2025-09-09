@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/ui/navbar";
 import CustomCursor from "@/components/custom-cursor";
 import Footer from "@/components/ui/footer";
+import LenisProvider from "@/components/lenis-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -96,10 +98,13 @@ export default function RootLayout({
       <body
         className={`${outfit.variable} ${poppins.variable} antialiased`}
       >
-        <CustomCursor type="figma"/>
-        <Navbar />
-        {children}
-        <Footer />
+        <LenisProvider>
+          <CustomCursor type="figma"/>
+          <Navbar />
+          {children}
+          <Footer />
+          <Toaster />
+        </LenisProvider>
       </body>
     </html>
   );

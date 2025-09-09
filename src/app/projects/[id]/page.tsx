@@ -123,7 +123,7 @@ export default function ProjectPage({
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-row items-center justify-between mx-auto gap-2 mt-10 max-w-2xl">
+        <div className="flex flex-col md:flex-row items-center justify-between mx-auto gap-4 mt-10 max-w-2xl">
           <Link
             href={project.link}
             target="_blank"

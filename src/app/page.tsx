@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import BackgroundCircles from "@/components/background-circles";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import Marquee from "@/components/marquee";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 // Hero Section Component
 const HeroSection = () => {
@@ -231,70 +232,134 @@ const ProjectSection = () => {
   );
 };
 
-const ContactSection = () => (
-  <section className="w-full py-16 sm:py-20 lg:py-20" id="contact">
-    <div className="max-w-4xl mx-auto">
-      <div className="contact-section relative overflow-hidden flex items-center justify-center">
-        {/* Content Container */}
-        <div className="relative z-10 text-center px-4 sm:px-8 lg:px-12 py-8 sm:py-12 lg:py-16 max-w-4xl mx-auto">
-          <div className="space-y-4 px-2">
-            <h2 className="text-2xl font-bold text-white leading-tight tracking-wider capitalize">
-              How may I assist you?
-            </h2>
+const ContactSection = () => {
+  const [formState, setFormState] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-            <p className="text-sm sm:text-base text-gray-200 mx-auto leading-relaxed">
-              Together, we can transform your vision into something remarkable.
-            </p>
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormState((prev) => ({ ...prev, [name]: value }));
+  };
 
-            {/* Responsive Marquee Container */}
-            <>
-              <Marquee />
-            </>
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formState.name,
+          email: formState.email,
+          message: formState.message,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        toast.success("Message sent successfully!");
+        setFormState({ name: "", email: "", message: "" });
+      } else {
+        toast.error(result.error || "Failed to send message.");
+      }
+    } catch {
+      toast.error("Network error. Please try again.");
+    }
+
+    setIsSubmitting(false);
+  };
+
+  return (
+    <section className="w-full py-16 sm:py-20 lg:py-20" id="contact">
+      <div className="max-w-4xl mx-auto">
+        <div className="contact-section relative overflow-hidden flex items-center justify-center">
+          {/* Content Container */}
+          <div className="relative z-10 text-center px-4 sm:px-8 lg:px-12 py-8 sm:py-12 lg:py-16 max-w-4xl mx-auto">
+            <div className="space-y-4 px-2">
+              <h2 className="text-2xl font-bold text-white leading-tight tracking-wider capitalize">
+                How may I assist you?
+              </h2>
+
+              <p className="text-sm sm:text-base text-gray-200 mx-auto leading-relaxed">
+                Together, we can transform your vision into something remarkable.
+              </p>
+
+              {/* Responsive Marquee Container */}
+              <>
+                <Marquee />
+              </>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="mt-20 lg:mt-32 container px-4 lg:px-48">
-        <h2 className="text-2xl font-bold text-black leading-tight tracking-wider capitalize mb-4">
-          Get in touch
-        </h2>
-        <p className="text-sm sm:text-base text-gray-600 mx-auto leading-relaxed mb-8">
-          Let&apos;s create products that work and deliver real results. I am
-          open to new opportunities and collaborations. Please contact me if you
-          want to make ideas happen.
-        </p>
+        <div className="mt-20 lg:mt-32 container px-4 lg:px-48">
+          <h2 className="text-2xl font-bold text-black leading-tight tracking-wider capitalize mb-4">
+            Get in touch
+          </h2>
+          <p className="text-sm sm:text-base text-gray-600 mx-auto leading-relaxed mb-8">
+            Let&apos;s create products that work and deliver real results. I am
+            open to new opportunities and collaborations. Please contact me if you
+            want to make ideas happen.
+          </p>
 
-        <div className="max-w-4xl mx-auto space-y-4">
-          {/* Name and Email Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input
-              type="text"
-              placeholder="Full Name"
-              className="w-full px-6 py-6 text-gray-800 bg-[#f2f2f2] border-2 border-[#bbbbbb] rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-300 placeholder:text-gray-400 shadow-none"
+          <form onSubmit={handleSubmit} className="max-w-4xl mx-auto space-y-4">
+            {/* Name and Email Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                value={formState.name}
+                onChange={handleChange}
+                required
+                className="w-full px-6 py-6 text-gray-800 bg-[#f2f2f2] border-2 border-[#bbbbbb] rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-300 placeholder:text-gray-400 shadow-none"
+              />
+              <Input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                value={formState.email}
+                onChange={handleChange}
+                required
+                className="w-full px-6 py-6 text-gray-800 bg-[#f2f2f2] border-2 border-[#bbbbbb] rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-300 placeholder:text-gray-400 shadow-none"
+              />
+            </div>
+
+            {/* Message Textarea */}
+            <Textarea
+              name="message"
+              placeholder="Write your Message"
+              value={formState.message}
+              onChange={handleChange}
+              required
+              rows={0}
+              className="w-full px-6 py-6 h-[200px] text-gray-800 bg-[#f2f2f2] border-2 border-[#bbbbbb] rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-300 placeholder:text-gray-400 resize-none shadow-none"
             />
-            <Input
-              type="email"
-              placeholder="Email Address"
-              className="w-full px-6 py-6 text-gray-800 bg-[#f2f2f2] border-2 border-[#bbbbbb] rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-300 placeholder:text-gray-400 shadow-none"
-            />
-          </div>
 
-          {/* Message Textarea */}
-          <Textarea
-            placeholder="Write your Message"
-            rows={0}
-            className="w-full px-6 py-6 h-[200px] text-gray-800 bg-[#f2f2f2] border-2 border-[#bbbbbb] rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-300 placeholder:text-gray-400 resize-none shadow-none"
-          />
-
-          {/* Send Button */}
-          <Button className="w-full py-6 bg-black text-white rounded-2xl font-medium text-lg hover:bg-gray-800 transition-colors duration-200 contact-section">
-            Send Message
-          </Button>
+            {/* Send Button */}
+            <Button 
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-6 bg-black text-white rounded-2xl font-medium text-lg hover:bg-gray-800 transition-colors duration-200 contact-section disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? "Sending..." : "Send Message"}
+            </Button>
+          </form>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 // Main Home Component
 export default function Home() {
