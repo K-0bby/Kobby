@@ -4,10 +4,21 @@ import clsx from "clsx";
 import { Home, Github, Linkedin, Menu, X, Scroll } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useLenis } from "@/components/lenis-provider";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const { scrollTo } = useLenis();
+
+  const handleContactClick = () => {
+    if (window.location.pathname === "/") {
+      scrollTo("#contact", { offset: -100, duration: 8 });
+    } else {
+      router.push("/#contact");
+    }
+    setIsOpen(false); // Close mobile menu if open
+  };
 
   return (
     <header
@@ -77,7 +88,7 @@ export default function Navbar() {
 
           {/* Contact button */}
           <button
-            onClick={() => router.push("/#contact")}
+            onClick={handleContactClick}
             className="flex items-center gap-1 bg-black/90 text-white px-6 py-2 rounded-xl font-medium hover:bg-black transition-all duration-300 transform hover:scale-105 cursor-pointer"
           >
             <span>Contact</span> <span className="hidden md:block">Me</span>
@@ -139,7 +150,7 @@ export default function Navbar() {
 
           {/* Contact button */}
           <button
-            onClick={() => router.push("#contact")}
+            onClick={handleContactClick}
             className="flex items-center gap-1 bg-black/90 text-white px-6 py-2 rounded-xl font-medium hover:bg-black transition-all duration-300 transform hover:scale-105 cursor-pointer w-full mx-auto"
           >
             <span className="text-center mx-auto">Contact Me</span>

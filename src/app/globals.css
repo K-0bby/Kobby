@@ -127,7 +127,7 @@ html {
 }
 
 body {
-  scroll-behavior: auto;
+  scroll-behavior: smooth;
   overflow-x: hidden;
   overflow-y: scroll;
   -moz-osx-font-smoothing: grayscale;
