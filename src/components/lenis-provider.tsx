@@ -35,7 +35,7 @@ export default function LenisProvider({ children }: LenisProviderProps) {
   useEffect(() => {
     // Initialize Lenis
     lenisRef.current = new Lenis({
-      duration: 8,
+      duration: 4,
       easing: (t) => Math.min(1, 1.001 - Math.pow(4, -10 * t)),
     })
 
