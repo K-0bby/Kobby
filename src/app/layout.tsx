@@ -6,6 +6,7 @@ import CustomCursor from "@/components/custom-cursor";
 import Footer from "@/components/ui/footer";
 import LenisProvider from "@/components/lenis-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/next";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -20,18 +21,25 @@ const poppins = Poppins({
 });
 
 export const viewport: Viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: '#ffffff',
-}
+  themeColor: "#ffffff",
+};
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://gideonhoenyefia.com'),
+  metadataBase: new URL("https://gideonhoenyefia.com"),
   title: "Gideon Hoenyefia",
-  description: "Frontend Developer & Programmer with 3+ years of experience, proficient in web development and mobile app development. Building responsive and user-friendly interfaces.",
-  keywords: ["Frontend Developer", "Programmer", "Mobile App Development", "Web Developer", "Gideon Hoenyefia"],
+  description:
+    "Frontend Developer & Programmer with 3+ years of experience, proficient in web development and mobile app development. Building responsive and user-friendly interfaces.",
+  keywords: [
+    "Frontend Developer",
+    "Programmer",
+    "Mobile App Development",
+    "Web Developer",
+    "Gideon Hoenyefia",
+  ],
   authors: [{ name: "Gideon Hoenyefia" }],
   creator: "Gideon Hoenyefia",
   publisher: "Gideon Hoenyefia",
@@ -43,8 +51,9 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Gideon Hoenyefia",
-    description: "Frontend Developer & Programmer with 3+ years of experience, proficient in web development and mobile app development. Building responsive and user-friendly interfaces.",
-    url:"https://gideonhoenyefia.com",
+    description:
+      "Frontend Developer & Programmer with 3+ years of experience, proficient in web development and mobile app development. Building responsive and user-friendly interfaces.",
+    url: "https://gideonhoenyefia.com",
     type: "website",
     locale: "en_US",
     siteName: "Gideon Hoenyefia",
@@ -59,7 +68,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     title: "Gideon Hoenyefia",
-    description: "Frontend Developer & Programmer with 3+ years of experience, proficient in web development and mobile app development. Building responsive and user-friendly interfaces.",
+    description:
+      "Frontend Developer & Programmer with 3+ years of experience, proficient in web development and mobile app development. Building responsive and user-friendly interfaces.",
     card: "summary_large_image",
     images: [
       {
@@ -93,14 +103,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+        />
       </head>
-      <body
-        className={`${outfit.variable} ${poppins.variable} antialiased`}
-      >
+      <body className={`${outfit.variable} ${poppins.variable} antialiased`}>
         <LenisProvider>
-          <CustomCursor type="figma"/>
+          <CustomCursor type="figma" />
           <Navbar />
+          <Analytics />
           {children}
           <Footer />
           <Toaster />
