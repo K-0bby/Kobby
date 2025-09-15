@@ -18,7 +18,7 @@ import { toast } from "sonner";
 // Hero Section Component
 const HeroSection = () => {
   return (
-    <section className="h-screen w-full flex flex-col space-y-4 sm:space-y-6 items-center justify-center text-center overflow-hidden relative px-4 sm:px-6 lg:px-8">
+    <section className="h-screen w-full flex flex-col space-y-4 sm:space-y-6 items-center justify-center text-center overflow-hidden relative px-4 sm:px-6 lg:px-8 mb-16 md:mb-0 pb-6 md:pb-0 ">
       <BackgroundCircles />
 
       {/* Floating Animation Elements - Hidden on small screens to prevent overflow */}
@@ -123,7 +123,7 @@ const AboutSection = () => {
           {aboutParagraphs.map((paragraph) => (
             <p
               key={paragraph.id}
-              className="text-sm sm:text-base lg:text-lg text-gray-500 leading-relaxed text-left sm:text-center"
+              className="text-sm sm:text-base lg:text-lg text-gray-500 leading-relaxed text-justify sm:text-center"
             >
               {paragraph.content}
             </p>
@@ -302,11 +302,11 @@ const ContactSection = () => {
           </div>
         </div>
 
-        <div className="mt-20 lg:mt-32 container px-4 lg:px-48">
-          <h2 className="text-2xl font-bold text-black leading-tight tracking-wider capitalize mb-4">
+        <div className="mt-20 lg:mt-32 container mx-auto px-4 lg:px-48">
+          <h2 className="text-2xl font-bold text-black leading-tight tracking-wider capitalize mb-4 text-center">
             Get in touch
           </h2>
-          <p className="text-sm sm:text-base text-gray-600 mx-auto leading-relaxed mb-8">
+          <p className="text-sm sm:text-base text-gray-600 mx-auto leading-relaxed mb-8 text-justify sm:text-center">
             Let&apos;s create products that work and deliver real results. I am
             open to new opportunities and collaborations. Please contact me if you
             want to make ideas happen.
