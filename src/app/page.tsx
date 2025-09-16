@@ -14,9 +14,18 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useLenis } from "@/components/lenis-provider";
 
 // Hero Section Component
 const HeroSection = () => {
+    const { scrollTo } = useLenis();
+
+  const handleContactClick = () => {
+    if (window.location.pathname === "/") {
+      scrollTo("#contact", { offset: -100, duration: 8 });
+    }
+  };
+
   return (
     <section className="h-screen w-full flex flex-col space-y-4 sm:space-y-6 items-center justify-center text-center overflow-hidden relative px-4 sm:px-6 lg:px-8 mb-16 md:mb-0 pb-6 md:pb-0 ">
       <BackgroundCircles />
@@ -53,13 +62,13 @@ const HeroSection = () => {
 
       {/* Action Buttons */}
       <div className="flex flex-row items-center gap-3">
-        <div className="rounded-full bg-green-100 px-3 py-2 sm:px-4 flex items-center space-x-2 flex-shrink-0">
+        <div className="rounded-full bg-green-100 px-3 py-3 sm:px-4 flex items-center space-x-2 flex-shrink-0">
           <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
           <span className="text-green-600 text-xs sm:text-sm font-medium whitespace-nowrap">
             Available for work
           </span>
         </div>
-        <Button className="rounded-xl cursor-pointer hover:scale-105 transition-transform duration-200 px-6 py-2 text-sm sm:text-base">
+        <Button onClick={handleContactClick} className="rounded-xl cursor-pointer hover:scale-105 transition-transform duration-200 px-6 py-2 text-sm sm:text-base">
           Hire Me
         </Button>
       </div>
@@ -187,7 +196,7 @@ const ProjectSection = () => {
                   {project.summary}
                 </p>
 
-                <div className="flex flex-row items-center gap-2">
+                <div className="flex flex-row flex-wrap items-center gap-2">
                   {project.technologies.map((technology) => (
                     <span
                       key={technology}
@@ -285,12 +294,12 @@ const ContactSection = () => {
         <div className="contact-section relative overflow-hidden flex items-center justify-center">
           {/* Content Container */}
           <div className="relative z-10 text-center px-4 sm:px-8 lg:px-12 py-8 sm:py-12 lg:py-16 max-w-4xl mx-auto">
-            <div className="space-y-4 px-2">
+            <div className="space-y-4 px-6">
               <h2 className="text-2xl font-bold text-white leading-tight tracking-wider capitalize">
                 How may I assist you?
               </h2>
 
-              <p className="text-sm sm:text-base text-gray-200 mx-auto leading-relaxed">
+              <p className="text-sm sm:text-base text-gray-200 mx-auto leading-relaxed max-w-xs sm:max-w-md md:max-w-lg">
                 Together, we can transform your vision into something remarkable.
               </p>
 

@@ -93,7 +93,7 @@ export default function ProjectPage({
             <h6 className="text-xl font-bold text-black mt-2 mb-4 capitalize">
               Technologies
             </h6>
-            <div className="flex flex-row items-center gap-2 pb-3">
+            <div className="flex flex-row flex-wrap items-center gap-2 pb-3">
               {project.technologies.map((technology) => (
                 <span
                   key={technology}

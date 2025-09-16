@@ -14,7 +14,7 @@ const skills = [
 export default function Marquee() {
   return (
     <div className="w-full py-4 sm:py-6 lg:py-8">
-      <div className="container mx-auto px-2 sm:px-4 lg:px-8 max-w-6xl">
+      <div className="container mx-auto px-2 sm:px-4 lg:px-8 max-w-sm md:max-w-6xl">
         {/* Scrolling Container */}
         <div className="relative w-full overflow-hidden rounded-xl sm:rounded-2xl">
           {/* Enhanced fading overlays - responsive widths */}
