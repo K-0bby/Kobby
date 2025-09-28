@@ -69,13 +69,23 @@ export const projects: ProjectItem[] = [
   //     "/projects/kweku/kweku-smoke-5.png",
   //   ],
   // },
-  //   {
-  //     id: 4,
-  //     title: "Me-fie",
-  //     image: "/projects/Me-fie.png",
-  //     description:
-  //       "Me Fie is a cultural and lifestyle platform that celebrates Ghana's heritage by connecting people through raffles, events, and community initiatives—promoting authentic experiences, supporting local businesses, and giving back to communities.",
-  //     technologies: ["Laravel Blade", "TailwindCSS", "Laravel", "MySQL"],
-  //     link: "https://www.me-fie.com",
-  //   },
+  {
+    id: 4,
+    date: "2023",
+    title: "DigiGrowth",
+    image: "/projects/digi-growth.png",
+    summary:
+      "DigiGrowth is a digital marketing agency that specializes in SEO, PPC, and social media marketing, helping businesses improve their online presence and drive more traffic to their websites.",
+    description:
+      "DigiGrowth is a digital marketing agency that specializes in SEO, PPC, and social media marketing, helping businesses improve their online presence and drive more traffic to their websites.",
+    technologies: ["Next.js", "TailwindCSS", "TypeScript"],
+    link: "https://digi-growth.vercel.app",
+    client: "DigiGrowth",
+    gallery: [
+      "/projects/digi-growth/digi-growth-2.png",
+      "/projects/digi-growth/digi-growth-3.png",
+      "/projects/digi-growth/digi-growth-4.png",
+      "/projects/digi-growth/digi-growth-5.png",
+    ],
+  },
 ];
