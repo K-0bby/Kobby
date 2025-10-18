@@ -9,6 +9,8 @@ const skills = [
   { name: "React Native" },
   { name: "Laravel Blade" },
   { name: "Git" },
+  { name: "Supabase" },
+  { name: "Prisma" },
 ];
 
 export default function Marquee() {

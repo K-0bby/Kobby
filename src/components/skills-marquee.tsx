@@ -10,6 +10,8 @@ import {
   SiJavascript,
   SiLaravel,
   SiGit,
+  SiSupabase,
+  SiPrisma
 } from "react-icons/si";
 
 const skills = [
@@ -23,6 +25,8 @@ const skills = [
   { icon: <SiReact className="h-8 w-8 text-purple-500" />, name: "React Native" },
   { icon: <SiLaravel className="h-8 w-8 text-red-500" />, name: "Laravel Blade" },
   { icon: <SiGit className="h-8 w-8 text-orange-600" />, name: "Git" },
+  {icon: <SiSupabase className="h-8 w-8 text-green-500" />, name: "Supabase"},
+  {icon: <SiPrisma className="h-8 w-8 text-black" />, name: "Prisma"}
 ];
 
 export default function SkillsMarquee() {
