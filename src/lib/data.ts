@@ -34,6 +34,25 @@ export const projects: ProjectItem[] = [
   {
     id: 2,
     date: "2025",
+    title: "Kweku Smoke",
+    image: "/projects/Kweku-Smoke.png",
+    summary:
+      "Kweku Smoke's website is a modern artist platform that showcases his music, story, tours, and merchandise—highlighting his fusion of Ghanaian rhythms with trap and afrobeats in a sleek, engaging way",
+    description:
+      "Kweku Smoke (via kweku-smoke.vercel.app) is an immersive artist platform showcasing the Ghanaian musician's creative universe. It blends rich biography, media galleries, merchandise, upcoming tour dates, and music previews in a sleek, navigable layout. The site highlights Kweku's connection to Accra, his innovative fusion of West African rhythms and trap/afrobeats, and positions him as a boundary-pushing voice in contemporary African music",
+    technologies: ["Next.js", "TypeScript", "TailwindCSS", "Framer Motion"],
+    link: "https://kwekusmokenow.com",
+    client: "Kweku Smoke",
+    gallery: [
+      "/projects/kweku/kweku-smoke-2.png",
+      "/projects/kweku/kweku-smoke-3.png",
+      "/projects/kweku/kweku-smoke-4.png",
+      "/projects/kweku/kweku-smoke-5.png",
+    ],
+  },
+  {
+    id: 3,
+    date: "2025",
     title: "Me-fie",
     image: "/projects/Me-fie.png",
     summary:
@@ -50,25 +69,6 @@ export const projects: ProjectItem[] = [
       "/projects/me-fie/me-fie-5.png",
     ],
   },
-  // {
-  //   id: 3,
-  //   date: "2025",
-  //   title: "Kweku Smoke",
-  //   image: "/projects/Kweku-Smoke.png",
-  //   summary:
-  //     "Kweku Smoke's website is a modern artist platform that showcases his music, story, tours, and merchandise—highlighting his fusion of Ghanaian rhythms with trap and afrobeats in a sleek, engaging way",
-  //   description:
-  //     "Kweku Smoke (via kweku-smoke.vercel.app) is an immersive artist platform showcasing the Ghanaian musician's creative universe. It blends rich biography, media galleries, merchandise, upcoming tour dates, and music previews in a sleek, navigable layout. The site highlights Kweku's connection to Accra, his innovative fusion of West African rhythms and trap/afrobeats, and positions him as a boundary-pushing voice in contemporary African music",
-  //   technologies: ["Next.js", "TypeScript", "TailwindCSS", "Framer Motion"],
-  //   link: "#",
-  //   client: "Kweku Smoke",
-  //   gallery: [
-  //     "/projects/kweku/kweku-smoke-2.png",
-  //     "/projects/kweku/kweku-smoke-3.png",
-  //     "/projects/kweku/kweku-smoke-4.png",
-  //     "/projects/kweku/kweku-smoke-5.png",
-  //   ],
-  // },
   {
     id: 4,
     date: "2023",
