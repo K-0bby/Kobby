@@ -39,8 +39,8 @@ export const projects: ProjectItem[] = [
     summary:
       "Kweku Smoke's website is a modern artist platform that showcases his music, story, tours, and merchandise—highlighting his fusion of Ghanaian rhythms with trap and afrobeats in a sleek, engaging way",
     description:
-      "Kweku Smoke (via kweku-smoke.vercel.app) is an immersive artist platform showcasing the Ghanaian musician's creative universe. It blends rich biography, media galleries, merchandise, upcoming tour dates, and music previews in a sleek, navigable layout. The site highlights Kweku's connection to Accra, his innovative fusion of West African rhythms and trap/afrobeats, and positions him as a boundary-pushing voice in contemporary African music",
-    technologies: ["Next.js", "TypeScript", "TailwindCSS", "Framer Motion"],
+      "Kweku Smoke is an immersive artist platform showcasing the Ghanaian musician's creative universe. It blends rich biography, media galleries, merchandise, upcoming tour dates, and music previews in a sleek, navigable layout. The site highlights Kweku's connection to Accra, his innovative fusion of West African rhythms and trap/afrobeats, and positions him as a boundary-pushing voice in contemporary African music",
+    technologies: ["Next.js", "TypeScript", "TailwindCSS", "Framer Motion", "Spotify API"],
     link: "https://kwekusmokenow.com",
     client: "Kweku Smoke",
     gallery: [
