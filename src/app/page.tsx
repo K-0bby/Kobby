@@ -38,7 +38,7 @@ const HeroSection = () => {
       {/* Profile Image - Positioned to align with background circles */}
       <div className="relative flex-shrink-0 mt-2 lg:mt-0">
         <Image
-          src="/images/kobby.jpg"
+          src="/images/kobby-1.png"
           alt="Gideon Hoenyefia - Frontend Developer"
           width={150}
           height={150}
