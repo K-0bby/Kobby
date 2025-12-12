@@ -60,7 +60,7 @@ const HeroSection = () => {
         </p>
       </div>
 
-      {/* Action Buttons */}
+      {/* Action Button */}
       <div className="flex flex-row items-center gap-3">
         <div className="rounded-full bg-green-100 px-3 py-3 sm:px-4 flex items-center space-x-2 flex-shrink-0">
           <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
