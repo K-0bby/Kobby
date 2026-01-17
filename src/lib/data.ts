@@ -88,4 +88,23 @@ export const projects: ProjectItem[] = [
       "/projects/digi-growth/digi-growth-5.png",
     ],
   },
+  // {
+  //   id: 5,
+  //   date: "2026",
+  //   title: "iTrain Basketball",
+  //   image: "/projects/digi-growth.png",
+  //   summary:
+  //     "iTrain is a leading basketball academy that develops players' skills through daily training and personalized coaching.",
+  //   description:
+  //     "iTrain is a top basketball academy that helps players improve their skills and prepare for professional careers. The academy focuses on daily, intense training to help athletes succeed at higher levels. Coaches provide personalized attention to ensure players stay fully engaged and dedicated to their development.",
+  //   technologies: ["Next.js", "TailwindCSS", "TypeScript", "Prisma", "NextAuth"],
+  //   link: "https://i-train-phi.vercel.app",
+  //   client: "iTrain Basketball",
+  //   gallery: [
+  //     "/projects/itrain/itrain-2.png",
+  //     "/projects/itrain/itrain-3.png",
+  //     "/projects/itrain/itrain-4.png",
+  //     "/projects/itrain/itrain-5.png",
+  //   ],
+  // },
 ];
