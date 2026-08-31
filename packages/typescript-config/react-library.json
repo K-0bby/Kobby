@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    // These packages are consumed by a bundler (Next via transpilePackages),
+    // not by Node's ESM resolver. NodeNext would require explicit file
+    // extensions on relative specifiers, which many published React libraries
+    // omit in their .d.ts re-exports — resolving those to "no exported member"
+    // instead of the real type.
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
+  }
+}

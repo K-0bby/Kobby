@@ -1,0 +1,94 @@
+/* Tailwind, the shared design tokens, and the @source scan that lets Tailwind
+   see class names inside @repo/ui all come from here. Do not re-import
+   "tailwindcss" or redeclare tokens locally — that would fork the design
+   system away from packages/tailwind-config. App-only rules go below. */
+@import "@repo/tailwind-config/globals.css";
+
+/* Typefaces are app-level, not design-system-level: they're loaded by
+   next/font in this app's layout, which declares --font-poppins and
+   --font-outfit on <html>. */
+@theme inline {
+  --font-sans: var(--font-poppins);
+  --font-heading: var(--font-outfit);
+}
+
+@layer base {
+  html {
+    /* Modern 4-value syntax; rgb(0, 0, 0, 0.4) is invalid and gets dropped. */
+    scrollbar-color: rgb(0 0 0 / 0.4) transparent;
+    scrollbar-width: thin;
+  }
+
+  body {
+    @apply font-sans;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
+  }
+}
+
+/* --- Custom cursor -------------------------------------------------------
+   Paired with <CustomCursor /> in the root layout. Only suppress the native
+   cursor on devices that actually have one — on touch there is no pointer to
+   replace, and the rule needlessly fights the platform. */
+@media (pointer: fine) {
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
+}
+
+/* --- Marquee -------------------------------------------------------------- */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 65s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-scroll {
+    animation: none;
+  }
+}
+
+/* --- Fixed navbar on mobile ----------------------------------------------- */
+@media (max-width: 768px) {
+  header[style*="position: fixed"] {
+    position: fixed !important;
+    top: 0 !important;
+    transform: translate3d(-50%, 0, 0) !important;
+    -webkit-transform: translate3d(-50%, 0, 0) !important;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  body {
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+  }
+}
+
+/* --- Contact section ------------------------------------------------------ */
+.contact-section {
+  background: url("/images/squiggles.png") center / cover no-repeat;
+  background-color: #131313;
+}
