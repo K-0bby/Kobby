@@ -5,14 +5,12 @@ import Image from "next/image";
 import BackgroundCircles from "@/components/ux/background-circles";
 import { Button, Input, Textarea, cn } from "@repo/ui";
 import ProjectCard from "@/components/projects/project-card";
-import {
-  ACTION_BUTTON,
-  ACTION_BUTTON_PRIMARY,
-} from "@/lib/ui";
+import { ACTION_BUTTON, ACTION_BUTTON_PRIMARY } from "@/lib/ui";
 import PolaroidImages from "@/components/ux/polariod-image";
 import SkillsMarquee from "@/components/ux/skills-marquee";
-import { projects } from "@/data/data";
-import { CaretRight } from "@phosphor-icons/react";
+import { projects, contact } from "@/data/data";
+import Link from "next/link";
+import { CaretRight, WhatsappLogo, EnvelopeSimple } from "@phosphor-icons/react";
 import { motion } from "motion/react";
 import Marquee from "@/components/ux/marquee";
 import { useRouter } from "next/navigation";
@@ -73,6 +71,7 @@ const HeroSection = () => {
         </div>
         <Button
           onClick={handleContactClick}
+          data-tooltip="Hire me 👋"
           className={cn(ACTION_BUTTON, ACTION_BUTTON_PRIMARY, "hover:scale-105")}
         >
           Hire Me
@@ -181,7 +180,10 @@ const ProjectSection = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => router.push(`/projects`)}
-          className={cn('inline-flex h-auto cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors duration-200 sm:text-base', ACTION_BUTTON_PRIMARY)}
+          className={cn(
+            "inline-flex h-auto cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors duration-200 sm:text-base",
+            ACTION_BUTTON_PRIMARY
+          )}
         >
           View All Projects{" "}
           <span>
@@ -261,58 +263,111 @@ const ContactSection = () => {
           </div>
         </div>
 
-        <div className="container mx-auto mt-20 px-4 lg:mt-32 lg:px-48" id="contact">
-          <h2 className="mb-4 text-center text-2xl leading-tight font-bold tracking-wider text-black capitalize">
-            Get in touch
-          </h2>
-          <p className="mx-auto mb-8 text-justify text-sm leading-relaxed text-gray-600 sm:text-center sm:text-base">
-            Let&apos;s create products that work and deliver real results. I am open to new
-            opportunities and collaborations. Please contact me if you want to make ideas happen.
-          </p>
+        <div className="container mx-auto mt-20 px-4 lg:mt-32" id="contact">
+          {/* Editorial split: the heading and direct contact routes anchor a
+              left column, the form fills the right. Collapses to one stacked
+              column below lg. */}
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
+            {/* Left column */}
+            <div className="lg:pt-2">
+              <h2 className="mb-4 text-2xl leading-tight font-bold tracking-wider text-black capitalize">
+                Get in touch
+              </h2>
+              <p className="mb-8 text-sm leading-relaxed text-gray-600 sm:text-base">
+                Let&apos;s create products that work and deliver real results. I am open to new
+                opportunities and collaborations. Please contact me if you want to make ideas
+                happen.
+              </p>
 
-          <form onSubmit={handleSubmit} className="mx-auto max-w-4xl space-y-4">
-            {/* Name and Email Row */}
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <Input
-                type="text"
-                name="name"
-                placeholder="Full Name"
-                value={formState.name}
-                onChange={handleChange}
-                required
-                className="w-full rounded-2xl border-2 border-[#bbbbbb] bg-[#f2f2f2] px-6 py-6 text-gray-800 shadow-none placeholder:text-gray-400 focus:ring-2 focus:ring-gray-300 focus:outline-none"
-              />
-              <Input
-                type="email"
-                name="email"
-                placeholder="Email Address"
-                value={formState.email}
-                onChange={handleChange}
-                required
-                className="w-full rounded-2xl border-2 border-[#bbbbbb] bg-[#f2f2f2] px-6 py-6 text-gray-800 shadow-none placeholder:text-gray-400 focus:ring-2 focus:ring-gray-300 focus:outline-none"
-              />
+              {/* Side by side from sm up. Each card stacks its own content so
+                  the address gets the card's full width — laid out beside the
+                  icon it would truncate in this narrow column. */}
+              <div className="grid grid-cols-1 gap-3">
+                <Link
+                  href={`https://wa.me/${contact.whatsappNumber}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex gap-3 rounded-2xl border-2 border-[#bbbbbb] bg-[#f2f2f2] px-5 py-4 transition-colors duration-200 hover:border-gray-400 hover:bg-white"
+                >
+                  <span className="grid h-11 w-11 place-items-center rounded-xl bg-black text-[#f5f5f5]">
+                    <WhatsappLogo size={22} />
+                  </span>
+                  <span className="grid min-w-0 gap-0.5">
+                    <span className="text-xs font-medium tracking-wide text-gray-500 uppercase">
+                      WhatsApp
+                    </span>
+                    <span className="text-sm font-semibold wrap-break-word text-gray-800">
+                      {contact.whatsappLabel}
+                    </span>
+                  </span>
+                </Link>
+
+                <Link
+                  href={`mailto:${contact.email}`}
+                  className="group flex gap-3 rounded-2xl border-2 border-[#bbbbbb] bg-[#f2f2f2] px-5 py-4 transition-colors duration-200 hover:border-gray-400 hover:bg-white"
+                >
+                  <span className="grid h-11 w-11 place-items-center rounded-xl bg-black text-[#f5f5f5]">
+                    <EnvelopeSimple size={22} />
+                  </span>
+                  <span className="grid min-w-0 gap-0.5">
+                    <span className="text-xs font-medium tracking-wide text-gray-500 uppercase">
+                      Email
+                    </span>
+                    <span className="text-sm font-semibold wrap-break-word text-gray-800">
+                      {contact.email}
+                    </span>
+                  </span>
+                </Link>
+              </div>
             </div>
 
-            {/* Message Textarea */}
-            <Textarea
-              name="message"
-              placeholder="Write your Message"
-              value={formState.message}
-              onChange={handleChange}
-              required
-              rows={0}
-              className="h-50 w-full resize-none rounded-2xl border-2 border-[#bbbbbb] bg-[#f2f2f2] px-6 py-6 text-gray-800 shadow-none placeholder:text-gray-400 focus:ring-2 focus:ring-gray-300 focus:outline-none"
-            />
+            {/* Right column. Dropped below the heading's optical line on lg so
+                the form doesn't start above "Get in touch"; no offset while
+                stacked, where it already follows the left column. */}
+            <form onSubmit={handleSubmit} className="space-y-4 lg:pt-12">
+              {/* Name and Email Row */}
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <Input
+                  type="text"
+                  name="name"
+                  placeholder="Full Name"
+                  value={formState.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full rounded-2xl border-2 border-[#bbbbbb] bg-[#f2f2f2] px-6 py-6 text-gray-800 shadow-none placeholder:text-gray-400 focus:ring-2 focus:ring-gray-300 focus:outline-none"
+                />
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="Email Address"
+                  value={formState.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full rounded-2xl border-2 border-[#bbbbbb] bg-[#f2f2f2] px-6 py-6 text-gray-800 shadow-none placeholder:text-gray-400 focus:ring-2 focus:ring-gray-300 focus:outline-none"
+                />
+              </div>
 
-            {/* Send Button */}
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="contact-section w-full rounded-2xl bg-black py-6 text-lg font-medium text-white transition-colors duration-200 hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {isSubmitting ? "Sending..." : "Send Message"}
-            </Button>
-          </form>
+              {/* Message Textarea */}
+              <Textarea
+                name="message"
+                placeholder="Write your Message"
+                value={formState.message}
+                onChange={handleChange}
+                required
+                rows={0}
+                className="h-50 w-full resize-none rounded-2xl border-2 border-[#bbbbbb] bg-[#f2f2f2] px-6 py-6 text-gray-800 shadow-none placeholder:text-gray-400 focus:ring-2 focus:ring-gray-300 focus:outline-none"
+              />
+
+              {/* Send Button */}
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="contact-section w-full rounded-2xl bg-black py-6 text-lg font-medium text-white transition-colors duration-200 hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {isSubmitting ? "Sending..." : "Send Message"}
+              </Button>
+            </form>
+          </div>
         </div>
       </div>
     </section>

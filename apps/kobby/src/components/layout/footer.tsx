@@ -13,6 +13,8 @@ export default function Footer() {
           <div className="flex flex-row items-center justify-center gap-4">
             <Link
               href="https://github.com/K-0bby"
+              data-tooltip="GitHub"
+              aria-label="GitHub"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 hover:text-gray-800"
@@ -21,6 +23,8 @@ export default function Footer() {
             </Link>
             <Link
               href="https://www.linkedin.com/in/gideon-hoenyefia-74a93a233/"
+              data-tooltip="LinkedIn"
+              aria-label="LinkedIn"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 hover:text-gray-800"
@@ -29,6 +33,8 @@ export default function Footer() {
             </Link>
             <Link
               href="https://x.com/HoenyefiaGideon"
+              data-tooltip="X"
+              aria-label="X"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 hover:text-gray-800"

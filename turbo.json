@@ -10,6 +10,9 @@
         "$TURBO_DEFAULT$",
         ".env*"
       ],
+      "env": [
+        "RESEND_API_KEY"
+      ],
       "outputs": [
         ".next/**",
         "!.next/cache/**",

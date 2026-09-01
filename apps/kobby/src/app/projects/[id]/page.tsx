@@ -3,6 +3,7 @@
 import { Button, cn } from "@repo/ui";
 import { ACTION_BUTTON, ACTION_BUTTON_PRIMARY, ACTION_BUTTON_OUTLINE } from "@/lib/ui";
 import { projects } from "@/data/data";
+import BackButton from "@/components/ux/back-button";
 import { CaretRight, CaretLeft, Link as LinkIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useState, use } from "react";
@@ -48,9 +49,12 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
           <h2 className="mt-2 mb-12 text-2xl font-bold text-black md:text-3xl">
             Project Not Found
           </h2>
-          <p className="text-base leading-relaxed text-gray-500">
+          <p className="mb-8 text-base leading-relaxed text-gray-500">
             The project you&apos;re looking for doesn&apos;t exist.
           </p>
+          {/* A bad id is a likely place to arrive from a stale external link,
+              so this is exactly where the fallback matters. */}
+          <BackButton fallbackHref="/projects" />
         </div>
       </section>
     );
@@ -60,6 +64,7 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
     <>
       <section className="min-h-screen px-4 pt-24 pb-20 md:pt-32 lg:pt-36">
         <div className="mx-auto max-w-2xl px-4">
+          <BackButton fallbackHref="/projects" className="mb-8" />
           <h2 className="mt-2 mb-12 text-2xl font-bold text-black capitalize md:text-3xl">
             {project.title}
           </h2>
@@ -105,18 +110,29 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
 
         {/* Buttons */}
         <div className="mx-auto mt-10 flex max-w-2xl flex-col items-center justify-between gap-4 md:flex-row">
-          <Link
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(ACTION_BUTTON, ACTION_BUTTON_PRIMARY)}
-          >
-            View Project <LinkIcon size={20} />
-          </Link>
+          {/* Some projects have no public URL — client systems behind auth, or
+              a deployment that isn't currently healthy. An empty link renders
+              <a href=""> which reloads the page, so omit it entirely. */}
+          {project.link ? (
+            <Link
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-tooltip="Opens in new tab"
+              className={cn(ACTION_BUTTON, ACTION_BUTTON_PRIMARY)}
+            >
+              View Project <LinkIcon size={20} />
+            </Link>
+          ) : (
+            <span />
+          )}
           <div className="flex flex-row items-center gap-2">
             {cameFromNavigation && !isBackToOriginal && (
               <Button
                 onClick={() => previousProject && navigateToProject(previousProject.id)}
+                // The button says "Previous Project"; the cursor says which
+                // one — information the visible label doesn't carry.
+                data-tooltip={previousProject?.title}
                 className={cn(ACTION_BUTTON, ACTION_BUTTON_OUTLINE)}
               >
                 <CaretLeft size={20} /> Previous Project
@@ -124,6 +140,7 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
             )}
             <Button
               onClick={() => nextProject && navigateToProject(nextProject.id)}
+              data-tooltip={nextProject?.title}
               className={cn(ACTION_BUTTON, ACTION_BUTTON_OUTLINE)}
             >
               Next Project <CaretRight size={20} />
@@ -143,7 +160,15 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
             />
           </div>
           <div className="mt-2 grid grid-cols-2 gap-4 pb-4 md:grid-cols-3 lg:grid-cols-6">
-            <div
+            {/* Buttons rather than clickable divs: a div with onClick can't be
+                reached by keyboard or activated with Enter/Space, which made
+                the whole gallery mouse-only. It also gets the custom cursor,
+                whose selector already matches `button`. */}
+            <button
+              type="button"
+              aria-label={`Show main image of ${project.title}`}
+              aria-pressed={selectedImage === project.image}
+              data-tooltip="Preview"
               className={`cursor-pointer rounded-xl border-2 p-0.5 transition-all ${
                 selectedImage === project.image
                   ? "border-blue-500 ring-2 ring-blue-200"
@@ -158,10 +183,14 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
                 height={320}
                 className="h-full w-full rounded-xl object-cover transition-transform duration-700"
               />
-            </div>
-            {project.gallery.map((image) => (
-              <div
+            </button>
+            {project.gallery.map((image, index) => (
+              <button
                 key={image}
+                type="button"
+                aria-label={`Show image ${index + 2} of ${project.title}`}
+                aria-pressed={selectedImage === image}
+                data-tooltip="Preview"
                 className={`cursor-pointer rounded-xl border-2 p-0.5 transition-all ${
                   selectedImage === image
                     ? "border-blue-500 ring-2 ring-blue-200"
@@ -176,7 +205,7 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
                   height={320}
                   className="h-full w-full rounded-xl object-cover transition-transform duration-700"
                 />
-              </div>
+              </button>
             ))}
           </div>
         </div>

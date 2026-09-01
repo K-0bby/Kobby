@@ -32,7 +32,7 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-1/2 z-40 w-full -translate-x-1/2 transform md:top-6 md:px-4"
+        "fixed top-0 left-1/2 z-60 w-full -translate-x-1/2 transform md:top-6 md:px-4"
       )}
     >
       {/* Sizes to its contents on desktop. A fixed width here (previously
@@ -42,6 +42,8 @@ export default function Navbar() {
         {/* Left: Home button */}
         <Link
           href="/"
+          data-tooltip="Home"
+          aria-label="Home"
           className="transform cursor-pointer rounded-lg p-2 transition-all duration-300 hover:scale-110 hover:bg-gray-200/50 md:hidden"
         >
           <House size={20} className="text-gray-600" />
@@ -51,6 +53,8 @@ export default function Navbar() {
         <div className="hidden items-center space-x-4 md:flex">
           <Link
             href="/"
+            data-tooltip="Home"
+            aria-label="Home"
             className="transform cursor-pointer rounded-lg p-2 transition-all duration-300 hover:scale-110 hover:bg-gray-200/50"
           >
             <House size={20} className="text-gray-600" />
@@ -60,6 +64,8 @@ export default function Navbar() {
 
           <Link
             href="https://x.com/HoenyefiaGideon"
+            data-tooltip="X"
+            aria-label="X"
             target="_blank"
             rel="noopener noreferrer"
             className="transform cursor-pointer rounded-lg p-2 transition-all duration-300 hover:scale-110 hover:bg-gray-200/50"
@@ -68,6 +74,8 @@ export default function Navbar() {
           </Link>
           <Link
             href="https://github.com/K-0bby"
+            data-tooltip="GitHub"
+            aria-label="GitHub"
             target="_blank"
             rel="noopener noreferrer"
             className="transform cursor-pointer rounded-lg p-2 transition-all duration-300 hover:scale-110 hover:bg-gray-200/50"
@@ -76,6 +84,8 @@ export default function Navbar() {
           </Link>
           <Link
             href="https://www.linkedin.com/in/gideon-hoenyefia-74a93a233/"
+            data-tooltip="LinkedIn"
+            aria-label="LinkedIn"
             target="_blank"
             rel="noopener noreferrer"
             className="transform cursor-pointer rounded-lg p-2 transition-all duration-300 hover:scale-110 hover:bg-gray-200/50"
@@ -84,6 +94,8 @@ export default function Navbar() {
           </Link>
           <Link
             href="/blog"
+            data-tooltip="Blog"
+            aria-label="Blog"
             className="transform cursor-pointer rounded-lg p-2 transition-all duration-300 hover:scale-110 hover:bg-gray-200/50"
           >
             <Scroll size={20} className="text-gray-600" />
@@ -105,7 +117,10 @@ export default function Navbar() {
 
         {/* Mobile Hamburger */}
         <button
+          type="button"
           onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isOpen}
           className="cursor-pointer rounded-lg p-2 transition-all duration-300 hover:bg-gray-200/50 md:hidden"
         >
           {isOpen ? (
@@ -121,6 +136,8 @@ export default function Navbar() {
         <div className="animate-fadeIn flex flex-col items-start space-y-5 border border-gray-200 bg-white/95 px-6 py-6 backdrop-blur-md md:hidden">
           <Link
             href="https://x.com/HoenyefiaGideon"
+            data-tooltip="X"
+            aria-label="X"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-gray-700 transition-all hover:text-black"
@@ -129,6 +146,8 @@ export default function Navbar() {
           </Link>
           <Link
             href="https://github.com/K-0bby"
+            data-tooltip="GitHub"
+            aria-label="GitHub"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-gray-700 transition-all hover:text-black"
@@ -137,12 +156,16 @@ export default function Navbar() {
           </Link>
           <Link
             href="https://www.linkedin.com/in/gideon-hoenyefia-74a93a233/"
+            data-tooltip="LinkedIn"
+            aria-label="LinkedIn"
             className="flex items-center gap-2 text-gray-700 transition-all hover:text-black"
           >
             <LinkedinLogo size={18} /> Linkedin
           </Link>
           <Link
             href="/blog"
+            data-tooltip="Blog"
+            aria-label="Blog"
             className="flex items-center gap-2 text-gray-700 transition-all hover:text-black"
           >
             <Scroll size={18} /> Blog

@@ -92,21 +92,22 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ type = "figma" }) => {
       setCursorState("hover");
       const target = e.target as HTMLElement;
 
-      const customTooltip = target.getAttribute("data-tooltip");
+      // Label only what has something worth saying. The generic fallbacks that
+      // used to live here announced "link" on every link and "button" on every
+      // button, which is noise on controls whose own text already says it. A
+      // label that appears occasionally reads as deliberate; one that appears
+      // always reads as debug output.
+      //
+      // currentTarget is the element the listener was bound to; closest()
+      // covers the case where the pointer lands on a child (an icon inside a
+      // link, a span inside a button) that carries no attribute of its own.
+      const labelled = (e.currentTarget as HTMLElement | null) ?? target;
+      const tooltip =
+        labelled?.getAttribute("data-tooltip") ??
+        labelled?.closest("[data-tooltip]")?.getAttribute("data-tooltip") ??
+        "";
 
-      if (customTooltip) {
-        setElementType(customTooltip);
-      } else if (target.tagName === "A") setElementType("link");
-      else if (target.tagName === "BUTTON") setElementType("button");
-      else if (target.classList.contains("cursor-text")) setElementType("text");
-      else if (
-        target.classList.contains("cursor-image") ||
-        target.tagName === "IMG"
-      )
-        setElementType("image");
-      else if (target.closest('button, a, [role="button"], [tabindex]'))
-        setElementType("interactive");
-      else setElementType("");
+      setElementType(tooltip);
     };
 
     const leave = () => {
@@ -330,11 +331,7 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ type = "figma" }) => {
                 exit={{ opacity: 0, y: 10 }}
                 className="absolute left-full ml-2 top-0 bg-black text-white text-xs px-2 py-1 rounded whitespace-nowrap shadow-lg"
               >
-                {elementType === "link" && "Link"}
-                {elementType === "button" && "Button"}
-                {elementType === "text" && "Text"}
-                {elementType === "image" && "Image"}
-                {elementType === "interactive" && "Element"}
+                {elementType}
               </motion.div>
             )}
 
@@ -345,7 +342,7 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ type = "figma" }) => {
                 opacity: isHovering ? 1 : 0,
               }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 border border-white shadow-sm"
+              className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-linear-to-r from-purple-500 to-pink-500 border border-white shadow-sm"
             />
           </div>
         </motion.div>
@@ -357,7 +354,7 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ type = "figma" }) => {
           {/* Main Cursor */}
           <motion.div
             key="figma-cursor"
-            className="fixed top-0 left-0 pointer-events-none z-[9999]"
+            className="fixed top-0 left-0 pointer-events-none z-9999"
             style={{ x: springX, y: springY }}
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}

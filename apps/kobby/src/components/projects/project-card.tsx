@@ -45,7 +45,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
         {/* Clamped and min-height'd so a short summary reserves the same
             vertical space as a long one. */}
-        <p className="line-clamp-3 min-h-[4.5rem] text-base leading-relaxed text-gray-600">
+        <p className="line-clamp-3 min-h-18 text-base leading-relaxed text-gray-600">
           {project.summary}
         </p>
 
@@ -65,6 +65,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         <div className="mt-auto pt-4">
           <Button
             onClick={() => router.push(`/projects/${project.id}`)}
+            data-tooltip={project.title}
             className={cn(ACTION_BUTTON, ACTION_BUTTON_SUBTLE)}
           >
             <span>View Project</span>

@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/navbar";
 import CustomCursor from "@/components/ux/custom-cursor";
 import Footer from "@/components/layout/footer";
 import LenisProvider from "@/provider/lenis-provider";
+import NavigationTracker from "@/provider/navigation-tracker";
 import { Toaster } from "@repo/ui";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -108,6 +109,7 @@ export default function RootLayout({
     <html lang="en" className={`${outfit.variable} ${poppins.variable}`}>
       <body className="antialiased">
         <LenisProvider>
+          <NavigationTracker />
           <CustomCursor type="figma" />
           <Navbar />
           <Analytics />

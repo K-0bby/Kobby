@@ -1,10 +1,14 @@
 import { projects } from "@/data/data";
 import ProjectCard from "@/components/projects/project-card";
+import BackButton from "@/components/ux/back-button";
 
 export default function Projects() {
   return (
     <>
       <section className="min-h-screen pt-24 pb-20 md:pt-32 lg:pt-36">
+        <div className="mx-auto mb-4 max-w-4xl px-4">
+          <BackButton fallbackHref="/" />
+        </div>
         <h2 className="mt-8 mb-16 px-4 text-center text-2xl font-bold text-black capitalize md:text-3xl">
           Check out some of my recent works
         </h2>
