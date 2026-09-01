@@ -37,6 +37,31 @@ export const projects: ProjectItem[] = [
   {
     id: 2,
     date: "2026",
+    title: "Me-fie Directory",
+    image: "/projects/mefie-d/mefied.png",
+    summary:
+      "A multi-country directory of Ghanaian-owned businesses, events, and communities across Ghana and the UK — vendors manage their own listings, and visitors filter by country, category, and date with every result shareable straight from the URL.",
+    description:
+      "Ghanaian businesses and events live in fragments: an Instagram bio here, a WhatsApp broadcast there, a flyer forwarded so many times nobody knows whose event it was. If you have just moved to London and want Ghanaian food tonight, or you are in Accra wondering what is on this weekend, there is no single place to look — and for the business owner, being findable means maintaining a presence on platforms that were never built for a small business in the first place. Me-fie Directory is that single place. Businesses, events, and communities sit side by side across Ghana and the United Kingdom, with a country switcher because the same audience lives on both ends of that route. Vendors claim their own listing and keep it current instead of filing a request with somebody; verification badges and customer reviews do the work a personal recommendation used to do; and events carry venue, date, and ticket links so discovery ends in a booking rather than a dead end. The country, category, and date filters are held in the URL, so \"food festivals in Accra this month\" is a link you can send to a friend rather than a set of steps you have to describe. It runs as a Turborepo monorepo — a public client and an operations dashboard — with TanStack Query over a typed Axios layer, React Hook Form and Zod on every input, Mapbox placing listings on a map, one-time-code sign-in so a phone number is enough to get in, and Recharts giving the team a read on what people are actually searching for.",
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "TailwindCSS",
+      "Shadcn/ui",
+      "Mapbox",
+    ],
+    link: "https://mefiedirectory.com",
+    client: "Me Fie",
+    gallery: [
+      "/projects/mefie-d/mefie-1.png",
+      "/projects/mefie-d/mefie-2.png",
+      "/projects/mefie-d/mefie-3.png",
+      "/projects/mefie-d/mefie-4.png",
+    ],
+  },
+  {
+    id: 3,
+    date: "2026",
     title: "EnS Creatives",
     image: "/projects/ens/ens-1.png",
     summary:
@@ -63,7 +88,7 @@ export const projects: ProjectItem[] = [
     ],
   },
   {
-    id: 3,
+    id: 4,
     date: "2025",
     title: "Me-fie",
     image: "/projects/Me-fie.png",
@@ -82,7 +107,7 @@ export const projects: ProjectItem[] = [
     ],
   },
   {
-    id: 4,
+    id: 5,
     date: "2025",
     title: "Kweku Smoke",
     image: "/projects/Kweku-Smoke.png",
@@ -101,7 +126,7 @@ export const projects: ProjectItem[] = [
     ],
   },
   {
-    id: 5,
+    id: 6,
     date: "2026",
     title: "Ghanaian Support Network",
     image: "/projects/gsn/gsn.png",
@@ -132,7 +157,7 @@ export const projects: ProjectItem[] = [
     ],
   },
   {
-    id: 6,
+    id: 7,
     date: "2024",
     title: "HDF Ghana Limited",
     image: "/projects/HDF-Ghana.png",
@@ -151,7 +176,7 @@ export const projects: ProjectItem[] = [
     ],
   },
   {
-    id: 7,
+    id: 8,
     date: "2023",
     title: "DigiGrowth",
     image: "/projects/digi-growth.png",
