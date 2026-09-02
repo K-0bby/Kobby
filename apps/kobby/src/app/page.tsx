@@ -17,6 +17,20 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useLenis } from "@/provider/lenis-provider";
 
+/**
+ * Web3Forms access key.
+ *
+ * This is not a secret and cannot be one: the form posts straight from the
+ * browser, so the key ships inside the JavaScript bundle where anyone can read
+ * it. The env var buys configuration (different keys per environment, rotation
+ * without a code change), not secrecy. Abuse is held off by the honeypot below
+ * and by restricting allowed domains in the Web3Forms dashboard.
+ *
+ * Must be referenced as a full static `process.env.X` expression for Next to
+ * inline it at build time.
+ */
+const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+
 // Hero Section Component
 const HeroSection = () => {
   const { scrollTo } = useLenis();
@@ -200,6 +214,8 @@ const ContactSection = () => {
     name: "",
     email: "",
     message: "",
+    // Honeypot. Stays false for anyone who can see the form.
+    botcheck: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -210,18 +226,31 @@ const ContactSection = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Inlined at build time, so a missing value fails silently at runtime
+    // rather than at deploy. Say so instead of posting `undefined`.
+    if (!WEB3FORMS_ACCESS_KEY) {
+      toast.error("The contact form isn't configured yet — please email me directly.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
           name: formState.name,
           email: formState.email,
           message: formState.message,
+          subject: `Project enquiry from ${formState.name}`,
+          from_name: "gideonhoenyefia.com",
+          botcheck: formState.botcheck,
         }),
       });
 
@@ -229,15 +258,16 @@ const ContactSection = () => {
 
       if (result.success) {
         toast.success("Message sent successfully!");
-        setFormState({ name: "", email: "", message: "" });
+        setFormState({ name: "", email: "", message: "", botcheck: false });
       } else {
-        toast.error(result.error || "Failed to send message.");
+        // Web3Forms reports failures in `message`, not `error`.
+        toast.error(result.message || "Failed to send message.");
       }
     } catch {
       toast.error("Network error. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setIsSubmitting(false);
   };
 
   return (
@@ -358,7 +388,23 @@ const ContactSection = () => {
                 className="h-50 w-full resize-none rounded-2xl border-2 border-[#bbbbbb] bg-[#f2f2f2] px-6 py-6 text-gray-800 shadow-none placeholder:text-gray-400 focus:ring-2 focus:ring-gray-300 focus:outline-none"
               />
 
-              {/* Send Button */}
+              {/* Honeypot. Hidden from people and skipped by the tab order, so
+                only a bot filling every field will set it — Web3Forms then
+                drops the submission. */}
+            <input
+              type="checkbox"
+              name="botcheck"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="hidden"
+              checked={formState.botcheck}
+              onChange={(e) =>
+                setFormState((prev) => ({ ...prev, botcheck: e.target.checked }))
+              }
+            />
+
+            {/* Send Button */}
               <Button
                 type="submit"
                 disabled={isSubmitting}

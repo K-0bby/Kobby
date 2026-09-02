@@ -11,7 +11,8 @@
         ".env*"
       ],
       "env": [
-        "RESEND_API_KEY"
+        "RESEND_API_KEY",
+        "NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY"
       ],
       "outputs": [
         ".next/**",
