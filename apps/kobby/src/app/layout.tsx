@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Gideon Hoenyefia",
     description:
-      "Software Engineer with 3+ years of experience building full-stack web and mobile applications — from data models and APIs through to the interfaces people actually use.",
+      "Software Engineer with 3+ years of experience building scalable, user-focused systems and applications from data models and APIs through to the interfaces people actually use.",
     url: "https://gideonhoenyefia.com",
     type: "website",
     locale: "en_US",
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
   twitter: {
     title: "Gideon Hoenyefia",
     description:
-      "Software Engineer with 3+ years of experience building full-stack web and mobile applications — from data models and APIs through to the interfaces people actually use.",
+      "Software Engineer with 3+ years of experience building scalable, user-focused systems and applications from data models and APIs through to the interfaces people actually use.",
     card: "summary_large_image",
     images: [
       {
@@ -105,10 +105,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // Font variables sit on <html> so the font-sans / font-heading utilities,
-    // which resolve against :root, can actually see them. The viewport <meta>
-    // is emitted by the `viewport` export above — declaring it by hand here
-    // would duplicate the tag.
     <html lang="en" className={`${outfit.variable} ${poppins.variable}`}>
       <body className="antialiased">
         <LenisProvider>
