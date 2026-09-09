@@ -17,18 +17,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useLenis } from "@/provider/lenis-provider";
 
-/**
- * Web3Forms access key.
- *
- * This is not a secret and cannot be one: the form posts straight from the
- * browser, so the key ships inside the JavaScript bundle where anyone can read
- * it. The env var buys configuration (different keys per environment, rotation
- * without a code change), not secrecy. Abuse is held off by the honeypot below
- * and by restricting allowed domains in the Web3Forms dashboard.
- *
- * Must be referenced as a full static `process.env.X` expression for Next to
- * inline it at build time.
- */
+
 const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
 // Hero Section Component
@@ -54,7 +43,7 @@ const HeroSection = () => {
       <div className="relative mt-2 shrink-0 lg:mt-0">
         <Image
           src="/images/me.png"
-          alt="Gideon Hoenyefia - Frontend Developer"
+          alt="Gideon Hoenyefia - Software Engineer"
           width={150}
           height={150}
           priority
@@ -68,10 +57,10 @@ const HeroSection = () => {
           Hi, I&apos;m Gideon Hoenyefia.
         </h1>
         <h2 className="text-sm font-medium tracking-[4px] text-gray-700 uppercase sm:tracking-[6px] md:text-lg lg:tracking-[8px]">
-          Frontend Developer
+          Software Engineer
         </h2>
         <p className="mx-auto max-w-xs px-2 text-sm leading-relaxed text-gray-500 sm:max-w-md md:text-base lg:max-w-lg">
-          &quot;Building modern, responsive apps with a creative touch&quot;
+          &quot;Building modern, scalable software and applications with a creative touch that holds up — from the database to the last detail&quot;
         </p>
       </div>
 
@@ -103,7 +92,7 @@ const AboutSection = () => {
       content: (
         <>
           Hey, I&apos;m <span className="font-semibold">Gideon</span>. I&apos;m a{" "}
-          <span className="font-semibold">Frontend Developer</span> who thrives on turning abstract
+          <span className="font-semibold">Software Engineer</span> who thrives on turning abstract
           ideas into sleek, functional, and impactful web experiences. With{" "}
           <span className="font-semibold">modern web tools and technologies</span>, I focus on
           building clean, scalable, and user-friendly applications that balance performance with

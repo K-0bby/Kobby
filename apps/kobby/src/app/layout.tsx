@@ -33,10 +33,13 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://gideonhoenyefia.com"),
   title: "Gideon Hoenyefia",
   description:
-    "Frontend Developer & Programmer with 3+ years of experience, proficient in web development and mobile app development. Building responsive and user-friendly interfaces.",
+    "Software Engineer with 3+ years of experience building scalable, user-focused systems and applications from data models and APIs through to the interfaces people actually use.",
   keywords: [
+    "Software Engineer",
+    "Full-Stack Developer",
     "Frontend Developer",
-    "Programmer",
+    "React Developer",
+    "Next.js Developer",
     "Mobile App Development",
     "Web Developer",
     "Gideon Hoenyefia",
@@ -53,7 +56,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Gideon Hoenyefia",
     description:
-      "Frontend Developer & Programmer with 3+ years of experience, proficient in web development and mobile app development. Building responsive and user-friendly interfaces.",
+      "Software Engineer with 3+ years of experience building full-stack web and mobile applications — from data models and APIs through to the interfaces people actually use.",
     url: "https://gideonhoenyefia.com",
     type: "website",
     locale: "en_US",
@@ -70,7 +73,7 @@ export const metadata: Metadata = {
   twitter: {
     title: "Gideon Hoenyefia",
     description:
-      "Frontend Developer & Programmer with 3+ years of experience, proficient in web development and mobile app development. Building responsive and user-friendly interfaces.",
+      "Software Engineer with 3+ years of experience building full-stack web and mobile applications — from data models and APIs through to the interfaces people actually use.",
     card: "summary_large_image",
     images: [
       {

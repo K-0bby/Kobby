@@ -259,7 +259,7 @@ export const ContactEmailTemplate = ({
               margin: 0,
             }}
           >
-            © 2025 Gideon Hoenyefia - Frontend Developer
+            © 2025 Gideon Hoenyefia - Software Engineer
           </p>
         </div>
       </div>
@@ -284,5 +284,5 @@ ${message}
 
 ---
 This message was sent from your portfolio contact form.
-© 2025 Gideon Hoenyefia - Frontend Developer
+© 2025 Gideon Hoenyefia - Software Engineer
 `;
