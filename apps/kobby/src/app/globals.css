@@ -296,69 +296,9 @@ html.preloading {
   }
 }
 
-/* --- Lanyard badge decoration --------------------------------------------- */
-.lanyard-strap {
-  position: absolute;
-  bottom: 0;
-  width: 24px;
-  height: 412px;
-  transform-origin: 50% 100%;
-  background: var(--gh-strap);
-  overflow: hidden;
-}
-.lanyard-strap--left {
-  left: 150px;
-  transform: rotate(-5deg);
-  box-shadow:
-    0 0 0 1px var(--gh-strap-edge),
-    2px 0 4px rgb(0 0 0 / 0.18);
-}
-.lanyard-strap--right {
-  left: 166px;
-  transform: rotate(5deg);
-  box-shadow:
-    0 0 0 1px var(--gh-strap-edge),
-    -2px 0 4px rgb(0 0 0 / 0.18);
-}
-.lanyard-strap--left::before,
-.lanyard-strap--right::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-}
-.lanyard-strap--left::before {
-  background:
-    repeating-linear-gradient(0deg, rgb(255 255 255 / 0.035) 0 1px, transparent 1px 3px),
-    linear-gradient(90deg, rgb(0 0 0 / 0.35), rgb(255 255 255 / 0.05) 40%, rgb(0 0 0 / 0.25));
-}
-.lanyard-strap--right::before {
-  background:
-    repeating-linear-gradient(0deg, rgb(255 255 255 / 0.035) 0 1px, transparent 1px 3px),
-    linear-gradient(90deg, rgb(0 0 0 / 0.25), rgb(255 255 255 / 0.06) 55%, rgb(0 0 0 / 0.35));
-}
-.lanyard-stitch {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 3px;
-  right: 3px;
-  border-left: 1px dashed rgb(255 255 255 / 0.2);
-  border-right: 1px dashed rgb(255 255 255 / 0.2);
-}
-.lanyard-text {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 24px;
-  display: flex;
-  justify-content: center;
-  writing-mode: vertical-rl;
-  font: 500 8.5px var(--font-mono);
-  letter-spacing: 0.28em;
-  color: rgb(255 255 255 / 0.72);
-  white-space: nowrap;
-  line-height: 24px;
-}
+/* --- Lanyard badge decoration ----------------------------------------------
+   The ribbons themselves are SVG, shaped by the rope simulation in
+   badge-lanyard.tsx; these style the loop, clip and pass. */
 .lanyard-loop {
   position: absolute;
   bottom: -16px;

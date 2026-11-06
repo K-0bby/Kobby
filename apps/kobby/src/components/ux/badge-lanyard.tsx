@@ -1,49 +1,169 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 import Image from "next/image";
 import { prefersReducedMotion } from "@/lib/motion";
+import { PRELOADED_EVENT } from "@/components/ux/preloader";
 
-/* --- Pendulum tuning ------------------------------------------------------ */
-/** Angle (deg) the badge swings in from on load. */
-const START_ANGLE = 13;
-/** Spring stiffness and damping pulling the badge back to rest. */
-const STIFFNESS = 38;
-const DAMPING = 3.4;
-/** Hard stop (deg) and how much velocity survives bouncing off it. */
-const HARD_LIMIT = 30;
-const LIMIT_BOUNCE = -0.3;
-/** How far a drag may pull the badge (deg). */
-const DRAG_LIMIT = 28;
-/** Max angular velocity carried out of a fling (deg/s). */
-const FLING_LIMIT = 160;
-/** Idle sway toward the mouse: max angle and strength. */
-const SWAY_LIMIT = 3;
-const SWAY_GAIN = 7;
+/* ---------------------------------------------------------------------------
+   The hero's developer pass, hanging from a flexible lanyard.
+
+   Physics, in the layer's own unscaled px (the layer scales with --badge-s):
+   - The pass is a free body hanging from the clip point. It's pulled by
+     gravity and held by the strap, which acts like a stretchy cord: slack
+     when the pass is pushed toward the neck, springing back once it's pulled
+     past its length.
+   - The pass's tilt follows the strap's direction with a little lag, so it
+     wobbles as it moves.
+   - The two ribbons are Verlet ropes pinned at the neck and at the clip, so
+     they bend, fold when slack, and trail behind fast movement.
+   --------------------------------------------------------------------------- */
+
+/** Strap length: neck pivot to clip, rig-local (the clip loop sits at y=400). */
+const STRAP_LENGTH = 400;
+/** Gravity on the pass (px/s²). Sets how fast it falls and swings. */
+const GRAVITY = 6000;
+/** How hard the strap pulls back once stretched past its length (1/s²). */
+const STRAP_STIFFNESS = 900;
+/** Damping along the strap while stretched — stops it twanging forever. */
+const STRAP_DAMPING = 14;
+/** Air drag on the pass (1/s) — enough that swings carry but settle in a few seconds. */
+const AIR_DRAG = 1.1;
+/** Furthest the pass can be dragged from the neck, as a share of the strap. */
+const DRAG_REACH = 1.25;
+/** The strap can stretch, but never beyond this share of its length. */
+const MAX_STRETCH = 1.3;
+/** Fastest the pass can be thrown (px/s) — a hand, not a cannon. */
+const MAX_THROW = 1700;
+
+/** Tilt spring: how quickly the pass lines up with its strap, and its damping. */
+const TILT_STIFFNESS = 70;
+const TILT_DAMPING = 7;
+const TILT_LIMIT = 50;
+/** On phones the pass rests with a slight lean. */
+const MOBILE_REST_TILT = -4;
+
+/** Card yaw from sideways speed, and its clamp (deg). */
+const YAW_GAIN = 0.018;
+const YAW_LIMIT = 12;
+/** Idle sway: a gentle sideways breeze toward the mouse (px/s²). */
+const SWAY_FORCE = 260;
+
+/** Drop-in: start this far above the resting spot, with a sideways nudge. */
+const DROP_HEIGHT = 760;
+const DROP_NUDGE = 260;
+
 /** Longest frame step integrated, so a backgrounded tab can't explode it. */
 const MAX_DT = 0.032;
 const MIN_DRAG_DT = 0.008;
-/** Card yaw from angular velocity, and its clamp (deg). */
-const YAW_GAIN = 0.06;
-const YAW_LIMIT = 10;
-/** Distance (px, unscaled) from the layer's top to the strap pivot (desktop). */
-const PIVOT_OFFSET = 80;
-/**
- * On phones the pass sits in the page flow, so the strap reaches up from it:
- * strap (400) + clip (77) − overlap (34) = 443px above the layer's top.
- */
-const MOBILE_PIVOT_OFFSET = 443;
-/** On phones the pass rests with a slight lean. */
-const MOBILE_REST_TILT = -4;
 const DESKTOP = "(min-width: 980px)";
 
+/* --- Ribbons ---------------------------------------------------------------- */
+const ROPE_POINTS = 16;
+/** Ribbon length relative to the rest distance — a touch of slack. */
+const ROPE_SLACK = 1.03;
+const ROPE_GRAVITY = 2600;
+/** Velocity kept per frame; lower = calmer ribbons. */
+const ROPE_DAMPING = 0.982;
+/** Constraint passes per frame; more = less stretchy. */
+const ROPE_ITERATIONS = 18;
+/** Ribbon ends in rig-local coordinates: at the neck, and into the loop. */
+const RIBBONS = [
+  { top: { x: 126, y: -10 }, bottom: { x: 162, y: 396 } },
+  { top: { x: 214, y: -10 }, bottom: { x: 178, y: 396 } },
+];
+/** Text woven into each ribbon, top to bottom. */
+const RIBBON_TEXT = [
+  "FULL-STACK ENGINEER · GIDEON · FULL-STACK ENGINEER",
+  "GIDEON · DEVELOPER PASS · GIDEON · DEVELOPER PASS",
+];
+
+/** Rig's top edge relative to the layer (desktop hangs from just above). */
+const RIG_TOP = { desktop: -80, phone: -443 };
+const CENTER_X = 170;
+
+type Pt = { x: number; y: number };
+
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
+const toRad = (d: number) => (d * Math.PI) / 180;
+
+/** Smooth SVG path through a chain of points (quadratic through midpoints). */
+function ropePath(pts: Pt[]): string {
+  const first = pts[0];
+  const end = pts[pts.length - 1];
+  if (!first || !end) return "";
+  let d = `M${first.x.toFixed(1)} ${first.y.toFixed(1)}`;
+  for (let i = 1; i < pts.length - 1; i++) {
+    const p = pts[i]!;
+    const n = pts[i + 1]!;
+    d += ` Q${p.x.toFixed(1)} ${p.y.toFixed(1)} ${((p.x + n.x) / 2).toFixed(1)} ${((p.y + n.y) / 2).toFixed(1)}`;
+  }
+  return `${d} L${end.x.toFixed(1)} ${end.y.toFixed(1)}`;
+}
+
+/** A Verlet rope of fixed length, pinned at both ends. */
+class Rope {
+  pts: Pt[] = [];
+  prev: Pt[] = [];
+  seg = 0;
+
+  reset(a: Pt, b: Pt, length: number) {
+    this.seg = length / (ROPE_POINTS - 1);
+    this.pts = Array.from({ length: ROPE_POINTS }, (_, i) => {
+      const t = i / (ROPE_POINTS - 1);
+      return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+    });
+    this.prev = this.pts.map((p) => ({ ...p }));
+  }
+
+  step(a: Pt, b: Pt, dt: number) {
+    const n = this.pts.length;
+    const g = ROPE_GRAVITY * dt * dt;
+    for (let i = 1; i < n - 1; i++) {
+      const p = this.pts[i]!;
+      const q = this.prev[i]!;
+      const vx = (p.x - q.x) * ROPE_DAMPING;
+      const vy = (p.y - q.y) * ROPE_DAMPING;
+      q.x = p.x;
+      q.y = p.y;
+      p.x += vx;
+      p.y += vy + g;
+    }
+    for (let k = 0; k < ROPE_ITERATIONS; k++) {
+      Object.assign(this.pts[0]!, a);
+      Object.assign(this.pts[n - 1]!, b);
+      for (let i = 0; i < n - 1; i++) {
+        const p = this.pts[i]!;
+        const q = this.pts[i + 1]!;
+        const dx = q.x - p.x;
+        const dy = q.y - p.y;
+        const dist = Math.hypot(dx, dy) || 1;
+        // Only pull links that are too long — a ribbon can fold, not push.
+        if (dist <= this.seg) continue;
+        const pinnedP = i === 0;
+        const pinnedQ = i + 1 === n - 1;
+        const share = pinnedP || pinnedQ ? 1 : 0.5;
+        const corr = ((dist - this.seg) / dist) * share;
+        if (!pinnedP) {
+          p.x += dx * corr;
+          p.y += dy * corr;
+        }
+        if (!pinnedQ) {
+          q.x -= dx * corr;
+          q.y -= dy * corr;
+        }
+      }
+    }
+    Object.assign(this.pts[0]!, a);
+    Object.assign(this.pts[n - 1]!, b);
+  }
+}
 
 /**
- * The hero's hanging developer pass. A damped pendulum: it swings in on load,
- * sways gently toward the mouse, and can be grabbed and flung on desktop.
- * Touch devices get the swing-in only, so vertical page scroll is never
- * hijacked. Reduced motion holds it still.
+ * Grab it and move it anywhere within the strap's reach on desktop; let go and
+ * it falls, catches and swings. On load it drops in from above. Touch devices
+ * get the drop and swing only, so page scroll is never hijacked. Reduced
+ * motion hangs it still.
  */
 export default function BadgeLanyard() {
   const layerRef = useRef<HTMLDivElement>(null);
@@ -51,114 +171,261 @@ export default function BadgeLanyard() {
   const holderRef = useRef<HTMLDivElement>(null);
   const glossRef = useRef<HTMLDivElement>(null);
   const shadowRef = useRef<HTMLDivElement>(null);
+  // Per ribbon: [body, stitching, top layer] — the text rides on the body.
+  const ribbonRefs = useRef<(SVGPathElement | null)[]>([]);
+  const ribbonId = useId().replace(/:/g, "");
 
   useEffect(() => {
     const layer = layerRef.current;
     const rig = rigRef.current;
     const holder = holderRef.current;
     if (!layer || !rig || !holder) return;
-    if (prefersReducedMotion()) return;
 
+    const reduced = prefersReducedMotion();
     const desktop = window.matchMedia(DESKTOP);
-    const restAngle = () => (desktop.matches ? 0 : MOBILE_REST_TILT);
+    const rigTop = () => (desktop.matches ? RIG_TOP.desktop : RIG_TOP.phone);
+    const restTilt = () => (desktop.matches ? 0 : MOBILE_REST_TILT);
+    /** The neck: where the strap hangs from. */
+    const neck = (): Pt => ({ x: CENTER_X, y: rigTop() });
+    /** Where the clip rests, straight below the neck. */
+    const restClip = (): Pt => ({ x: CENTER_X, y: rigTop() + STRAP_LENGTH });
 
-    let th = START_ANGLE; // angle (deg)
-    let om = 0; // angular velocity (deg/s)
-    let target = restAngle();
+    // Pass state: clip position, velocity, tilt and its rate.
+    let c = restClip();
+    let v: Pt = { x: 0, y: 0 };
+    let tilt = restTilt();
+    let tiltV = 0;
+    let breeze = 0;
+
+    // Drag state.
     let dragging = false;
-    let grabOff = 0;
+    let grab: Pt = { x: 0, y: 0 };
     let dragT = 0;
-    let last = performance.now();
-    let raf = 0;
-    let visible = true;
 
-    // Scale comes from CSS (--badge-s on .hero), the single source of truth.
-    const scale = () => parseFloat(getComputedStyle(layer).getPropertyValue("--badge-s")) || 1;
-
-    const pivot = () => {
-      const r = layer.getBoundingClientRect();
-      // Both swing from the top of the strap; on phones that's far above.
-      const offset = (desktop.matches ? PIVOT_OFFSET : MOBILE_PIVOT_OFFSET) * scale();
-      return { x: r.left + r.width / 2, y: r.top - offset };
+    // Drop-in: hold it above the screen until the page is revealed.
+    let held = !reduced;
+    if (held) {
+      c = { x: c.x, y: c.y - DROP_HEIGHT };
+    }
+    const release = () => {
+      if (!held) return;
+      held = false;
+      v = { x: (Math.random() < 0.5 ? -1 : 1) * DROP_NUDGE, y: 0 };
     };
 
-    const angleTo = (x: number, y: number) => {
-      const p = pivot();
-      return (Math.atan2(x - p.x, y - p.y) * 180) / Math.PI;
+    /** A rig-local point placed by the current clip position and tilt. */
+    const place = (p: Pt): Pt => {
+      const a = toRad(tilt);
+      const dx = p.x - CENTER_X;
+      const dy = p.y - STRAP_LENGTH;
+      return {
+        x: c.x + dx * Math.cos(a) - dy * Math.sin(a),
+        y: c.y + dx * Math.sin(a) + dy * Math.cos(a),
+      };
+    };
+
+    const ropes = RIBBONS.map(() => new Rope());
+    const ribbonTop = (r: (typeof RIBBONS)[number]): Pt => ({ x: r.top.x, y: rigTop() + r.top.y });
+    const resetRopes = () => {
+      RIBBONS.forEach((r, i) => {
+        const top = ribbonTop(r);
+        const restBottom = { x: r.bottom.x, y: rigTop() + r.bottom.y };
+        const len = Math.hypot(restBottom.x - top.x, restBottom.y - top.y) * ROPE_SLACK;
+        ropes[i]!.reset(top, place(r.bottom), len);
+      });
+    };
+    const stepRopes = (dt: number) =>
+      RIBBONS.forEach((r, i) => ropes[i]!.step(ribbonTop(r), place(r.bottom), dt));
+    const drawRopes = () =>
+      ropes.forEach((rope, i) => {
+        const d = ropePath(rope.pts);
+        for (let k = 0; k < 3; k++) ribbonRefs.current[i * 3 + k]?.setAttribute("d", d);
+      });
+
+    const yawOf = () => clamp(-v.x * YAW_GAIN, -YAW_LIMIT, YAW_LIMIT);
+    const render = () => {
+      // The rig's transform origin is the clip loop, so this lands the loop on
+      // the clip position and tilts the pass around it.
+      const rest = restClip();
+      rig.style.transform = `translate(${(c.x - rest.x).toFixed(1)}px, ${(c.y - rest.y).toFixed(1)}px) rotate(${tilt.toFixed(2)}deg)`;
+      const yaw = yawOf();
+      holder.style.transform = `perspective(900px) rotateY(${yaw.toFixed(2)}deg)`;
+      if (glossRef.current) {
+        glossRef.current.style.backgroundPosition = `${(40 + tilt * 2.2 + yaw * 1.5).toFixed(1)}% 0`;
+      }
+      if (shadowRef.current) {
+        shadowRef.current.style.transform = `translateX(${(-tilt * 1.4).toFixed(1)}px)`;
+      }
+      drawRopes();
+    };
+
+    resetRopes();
+    render();
+
+    // Reduced motion: no drop, no swing — let the ribbons settle into their
+    // natural hang once and draw everything still.
+    if (reduced) {
+      const settle = () => {
+        c = restClip();
+        tilt = restTilt();
+        resetRopes();
+        for (let i = 0; i < 240; i++) stepRopes(1 / 60);
+        render();
+      };
+      settle();
+      desktop.addEventListener("change", settle);
+      return () => desktop.removeEventListener("change", settle);
+    }
+
+    const html = document.documentElement;
+    if (html.classList.contains("preloading")) {
+      window.addEventListener(PRELOADED_EVENT, release, { once: true });
+    } else {
+      release();
+    }
+
+    // Screen ↔ layer coordinates (the layer is scaled about (170, 0)).
+    const scale = () => parseFloat(getComputedStyle(layer).getPropertyValue("--badge-s")) || 1;
+    const toLayer = (clientX: number, clientY: number): Pt => {
+      const r = layer.getBoundingClientRect();
+      const s = scale();
+      return { x: (clientX - r.left) / s, y: (clientY - r.top) / s };
+    };
+
+    /** Keep a point within reach of the neck. */
+    const withinReach = (p: Pt): Pt => {
+      const n = neck();
+      const dx = p.x - n.x;
+      const dy = p.y - n.y;
+      const d = Math.hypot(dx, dy);
+      const max = STRAP_LENGTH * DRAG_REACH;
+      return d <= max ? p : { x: n.x + (dx / d) * max, y: n.y + (dy / d) * max };
     };
 
     const onMove = (e: PointerEvent) => {
       if (dragging) {
-        const nt = clamp(-angleTo(e.clientX, e.clientY) + grabOff, -DRAG_LIMIT, DRAG_LIMIT);
+        const p = toLayer(e.clientX, e.clientY);
+        const next = withinReach({ x: p.x - grab.x, y: p.y - grab.y });
         const now = performance.now();
         const dt = Math.max(MIN_DRAG_DT, (now - dragT) / 1000);
-        om = om * 0.5 + ((nt - th) / dt) * 0.5;
-        th = nt;
+        // Smoothed hand velocity, carried into the throw on release.
+        v = {
+          x: v.x * 0.5 + ((next.x - c.x) / dt) * 0.5,
+          y: v.y * 0.5 + ((next.y - c.y) / dt) * 0.5,
+        };
+        c = next;
         dragT = now;
       } else if (e.pointerType === "mouse" && desktop.matches) {
-        const p = pivot();
-        target = clamp(
-          (-(e.clientX - p.x) / window.innerWidth) * SWAY_GAIN,
-          -SWAY_LIMIT,
-          SWAY_LIMIT
-        );
+        // A soft breeze toward the pointer.
+        const r = layer.getBoundingClientRect();
+        breeze = clamp((e.clientX - (r.left + r.width / 2)) / window.innerWidth, -1, 1) * SWAY_FORCE;
       }
     };
 
     const onUp = () => {
       if (!dragging) return;
       dragging = false;
-      om = clamp(om, -FLING_LIMIT, FLING_LIMIT);
       holder.style.cursor = "grab";
+      // Throw with the hand's speed, capped so a flick can't launch it away.
+      const speed = Math.hypot(v.x, v.y);
+      if (speed > MAX_THROW) v = { x: (v.x / speed) * MAX_THROW, y: (v.y / speed) * MAX_THROW };
     };
 
     const onDown = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse" && !window.matchMedia(DESKTOP).matches) return;
+      if (e.pointerType !== "mouse" && !desktop.matches) return;
+      if (held) return;
       e.preventDefault();
-      grabOff = th + angleTo(e.clientX, e.clientY);
+      const p = toLayer(e.clientX, e.clientY);
+      grab = { x: p.x - c.x, y: p.y - c.y };
       dragging = true;
       dragT = performance.now();
-      om = 0;
+      v = { x: 0, y: 0 };
       holder.style.cursor = "grabbing";
     };
+
+    let last = performance.now();
+    let raf = 0;
+    let visible = true;
 
     const loop = (now: number) => {
       const dt = Math.min(MAX_DT, (now - last) / 1000);
       last = now;
-      if (!dragging) {
-        const acc = -STIFFNESS * (th - target) - DAMPING * om;
-        om += acc * dt;
-        th += om * dt;
+
+      if (!held && !dragging) {
+        // Gravity, a breath of breeze, and air drag.
+        let ax = breeze - AIR_DRAG * v.x;
+        let ay = GRAVITY - AIR_DRAG * v.y;
+        // The strap: slack until it's pulled past its length, then it springs.
+        const n = neck();
+        const dx = c.x - n.x;
+        const dy = c.y - n.y;
+        const d = Math.hypot(dx, dy) || 1;
+        if (d > STRAP_LENGTH) {
+          const ux = dx / d;
+          const uy = dy / d;
+          const stretch = d - STRAP_LENGTH;
+          const along = v.x * ux + v.y * uy;
+          const pull = STRAP_STIFFNESS * stretch + STRAP_DAMPING * along;
+          ax -= ux * pull;
+          ay -= uy * pull;
+        }
+        v = { x: v.x + ax * dt, y: v.y + ay * dt };
+        c = { x: c.x + v.x * dt, y: c.y + v.y * dt };
+
+        // Hard limit: the strap can't stretch past MAX_STRETCH. Snap back onto
+        // that circle and drop the outward part of the velocity.
+        const ex = c.x - n.x;
+        const ey = c.y - n.y;
+        const ed = Math.hypot(ex, ey) || 1;
+        const maxLen = STRAP_LENGTH * MAX_STRETCH;
+        if (ed > maxLen) {
+          const ux = ex / ed;
+          const uy = ey / ed;
+          c = { x: n.x + ux * maxLen, y: n.y + uy * maxLen };
+          const out = v.x * ux + v.y * uy;
+          if (out > 0) v = { x: v.x - out * ux, y: v.y - out * uy };
+        }
       }
-      if (Math.abs(th) > HARD_LIMIT) {
-        th = Math.sign(th) * HARD_LIMIT;
-        om *= LIMIT_BOUNCE;
+
+      // Tilt: line the pass up with its strap — fully when taut, less when
+      // slack — with a springy lag so it wobbles as it moves.
+      if (!held) {
+        const n = neck();
+        const dx = c.x - n.x;
+        const dy = c.y - n.y;
+        const d = Math.hypot(dx, dy) || 1;
+        const strapAngle = -(Math.atan2(dx, dy) * 180) / Math.PI;
+        const taut = clamp(d / STRAP_LENGTH, 0, 1);
+        const goal = clamp(strapAngle * taut + restTilt(), -TILT_LIMIT, TILT_LIMIT);
+        const ta = TILT_STIFFNESS * (goal - tilt) - TILT_DAMPING * tiltV;
+        tiltV += ta * dt;
+        tilt += tiltV * dt;
       }
+
       if (visible) {
-        const yaw = clamp(-om * YAW_GAIN, -YAW_LIMIT, YAW_LIMIT);
-        rig.style.transform = `rotate(${th.toFixed(3)}deg)`;
-        holder.style.transform = `perspective(900px) rotateY(${yaw.toFixed(2)}deg)`;
-        if (glossRef.current) {
-          glossRef.current.style.backgroundPosition = `${(40 + th * 2.2 + yaw * 1.5).toFixed(1)}% 0`;
-        }
-        if (shadowRef.current) {
-          shadowRef.current.style.transform = `translateX(${(-th * 1.4).toFixed(1)}px)`;
-        }
+        stepRopes(dt);
+        render();
       }
       raf = requestAnimationFrame(loop);
     };
 
-    // Crossing the breakpoint swaps between strap and lean.
     const onBreakpoint = () => {
-      target = restAngle();
+      c = restClip();
+      v = { x: 0, y: 0 };
+      tilt = restTilt();
+      tiltV = 0;
+      resetRopes();
+      render();
     };
     desktop.addEventListener("change", onBreakpoint);
 
-    // Skip style writes while the hero is scrolled away.
+    // Skip simulation and style writes while the hero is scrolled away.
     const io = new IntersectionObserver(([e]) => {
       visible = !!e?.isIntersecting;
     });
-    io.observe(holder);
+    // Watch the hero itself: the layer's direct wrapper is `display: contents`
+    // on desktop and never reports as on screen.
+    io.observe(layer.closest("section") ?? layer);
 
     holder.addEventListener("pointerdown", onDown);
     window.addEventListener("pointermove", onMove);
@@ -174,6 +441,7 @@ export default function BadgeLanyard() {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("pointercancel", onUp);
+      window.removeEventListener(PRELOADED_EVENT, release);
     };
   }, []);
 
@@ -185,23 +453,72 @@ export default function BadgeLanyard() {
       // at the scaled size. Desktop: it hangs from the top on its strap.
       className="wide:absolute wide:top-0 wide:left-[calc(100%-clamp(210px,21vw,360px))] wide:-ml-42.5 wide:h-px wide:z-3 relative z-1 mx-auto h-[calc(512px*var(--badge-s))] w-85 shrink-0 origin-[170px_0] scale-(--badge-s)"
     >
+      {/* Lanyard ribbons: shapes come from the rope simulation every frame.
+          Faint on phones, where they run up behind the headline. */}
+      <svg
+        aria-hidden="true"
+        className="wide:opacity-100 pointer-events-none absolute top-0 left-0 h-px w-85 overflow-visible opacity-25"
+      >
+        {RIBBON_TEXT.map((text, i) => (
+          <g key={text}>
+            {/* Ribbon body */}
+            <path
+              id={`${ribbonId}-r${i}`}
+              ref={(el) => {
+                ribbonRefs.current[i * 3] = el;
+              }}
+              fill="none"
+              stroke="var(--gh-strap)"
+              strokeWidth={24}
+              strokeLinejoin="round"
+            />
+            {/* Stitching: a dashed band, mostly covered by the next layer so
+                only its edges show — stitches along both sides. */}
+            <path
+              ref={(el) => {
+                ribbonRefs.current[i * 3 + 1] = el;
+              }}
+              fill="none"
+              stroke="rgb(255 255 255 / 0.22)"
+              strokeWidth={19}
+              strokeDasharray="3 3"
+              strokeLinejoin="round"
+            />
+            <path
+              ref={(el) => {
+                ribbonRefs.current[i * 3 + 2] = el;
+              }}
+              fill="none"
+              stroke="var(--gh-strap)"
+              strokeWidth={17}
+              strokeLinejoin="round"
+            />
+            {/* Woven text, following the ribbon's curve. */}
+            <text
+              fill="rgb(255 255 255 / 0.72)"
+              fontFamily="var(--font-mono)"
+              fontSize={8.5}
+              fontWeight={500}
+              letterSpacing="0.28em"
+              dominantBaseline="central"
+            >
+              <textPath href={`#${ribbonId}-r${i}`} startOffset="12%">
+                {text}
+              </textPath>
+            </text>
+          </g>
+        ))}
+      </svg>
+
       <div
         ref={rigRef}
-        className="wide:-top-20 absolute -top-110.75 left-0 w-85 origin-[170px_0] will-change-transform"
+        // Transform origin is the clip loop (170, 400): the physics places the
+        // loop and tilts the pass around it.
+        className="wide:-top-20 absolute -top-110.75 left-0 w-85 origin-[170px_400px] will-change-transform"
       >
-        {/* Strap — on phones it runs up behind the headline, so it's kept
-            faint enough to read through. */}
+        {/* Strap length — the ribbons themselves are drawn by the SVG above;
+            this keeps the clip and pass where they hang. */}
         <div aria-hidden="true" className="wide:opacity-100 relative h-100 opacity-25">
-          <div className="lanyard-strap lanyard-strap--left">
-            <div className="lanyard-stitch" />
-            <div className="lanyard-text rotate-180">
-              FULL-STACK ENGINEER · GIDEON · FULL-STACK ENGINEER · GIDEON
-            </div>
-          </div>
-          <div className="lanyard-strap lanyard-strap--right">
-            <div className="lanyard-stitch" />
-            <div className="lanyard-text">GIDEON · DEVELOPER PASS · GIDEON · DEVELOPER PASS</div>
-          </div>
           <div className="lanyard-loop">
             <div className="absolute top-3 right-1 left-1 border-t border-dashed border-white/22" />
           </div>
