@@ -67,6 +67,8 @@ export default function LenisProvider({ children }: LenisProviderProps) {
     const instance = new Lenis({
       duration: WHEEL_DURATION,
       easing: SCROLL_EASING,
+      // In-page links (#work, #contact, #top) glide instead of jumping.
+      anchors: { duration: SCROLL_DURATION, easing: SCROLL_EASING },
     });
     lenisRef.current = instance;
     setLenis(instance);

@@ -1,426 +1,352 @@
-"use client";
-
-import React, { useState } from "react";
-import Image from "next/image";
-import BackgroundCircles from "@/components/ux/background-circles";
-import { Button, Input, Textarea, cn } from "@repo/ui";
-import ProjectCard from "@/components/projects/project-card";
-import { ACTION_BUTTON, ACTION_BUTTON_PRIMARY } from "@/lib/ui";
-import PolaroidImages from "@/components/ux/polariod-image";
-import SkillsMarquee from "@/components/ux/skills-marquee";
-import { projects, contact } from "@/data/data";
 import Link from "next/link";
-import { CaretRight, WhatsappLogo, EnvelopeSimple } from "@phosphor-icons/react";
-import { motion } from "motion/react";
-import Marquee from "@/components/ux/marquee";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { useLenis } from "@/provider/lenis-provider";
+import BadgeLanyard from "@/components/ux/badge-lanyard";
+import FitText from "@/components/ux/fit-text";
+import Keyword from "@/components/ux/keyword";
+import PhotoStrip, { type StripPhoto } from "@/components/ux/photo-strip";
+import {
+  Basketball,
+  BookOpen,
+  Compass,
+  Cursor,
+  Database,
+  Flask,
+  IdentificationBadge,
+  MapPin,
+  PencilSimpleLine,
+  ShieldCheck,
+} from "@phosphor-icons/react/ssr";
+import PageIntro from "@/components/ux/page-intro";
+import StackedProjects from "@/components/projects/stacked-projects";
+import {
+  capabilities,
+  featuredProjects,
+  otherProjects,
+  pad2,
+  processSteps,
+  projectHref,
+  stackLine,
+} from "@/data/data";
 
+const HEADLINE = ["I build digital", "experiences that", "feel as good as", "they work."];
 
-const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+const HERO_FACTS = [
+  "3+ YEARS BUILDING FOR THE WEB",
+  "NEXT.JS · EXPRESS.JS · POSTGRESQL",
+  "ACCRA 2026, ACCREDITATION PLATFORM",
+  "ENS CREATIVES, FULL-STACK SITE & CMS",
+];
 
-// Hero Section Component
-const HeroSection = () => {
-  const { scrollTo } = useLenis();
+/**
+ * The About strip reads left to right as a day: build, recharge, play. Add a
+ * photo here when there's a good one and the strip spaces itself.
+ */
+const ABOUT_PHOTOS: StripPhoto[] = [
+  {
+    src: "/images/code-1.jpg",
+    alt: "Feet up at the desk beside an open laptop and a cold drink",
+    caption: "01 · BUILDING IT",
+    tilt: -5,
+  },
+  {
+    src: "/images/cafe-accra.png",
+    alt: "Gideon reading a book in headphones at Café Accra",
+    caption: "02 · A FEW CHAPTERS IN",
+    tilt: 2,
+  },
+  {
+    src: "/images/basketball.jpg",
+    alt: "A basketball on a rain-soaked indoor court",
+    caption: "03 · THEN, THE COURT",
+    tilt: 5,
+  },
+];
 
-  const handleContactClick = () => {
-    if (window.location.pathname === "/") {
-      scrollTo("#contact", { offset: -100, duration: 8 });
-    }
-  };
+const SECTION_X ="px-[clamp(20px,5vw,80px)]";
+const H2 = "m-0 text-[clamp(44px,6vw,96px)] leading-[.95] font-bold tracking-[-0.058em]";
 
-  return (
-    <section className="relative mb-16 flex h-screen w-full flex-col items-center justify-center space-y-4 overflow-hidden px-4 pb-6 text-center sm:space-y-6 sm:px-6 md:mb-0 md:pb-0 lg:px-8">
-      <BackgroundCircles />
-
-      {/* Floating Animation Elements - Hidden on small screens to prevent overflow */}
-      <div className="absolute top-20 left-20 h-4 w-4 animate-bounce rounded-full bg-blue-400/30 delay-1000" />
-      <div className="absolute top-32 right-32 h-6 w-6 animate-pulse rounded-full bg-purple-400/20 delay-500" />
-      <div className="absolute bottom-40 left-40 h-3 w-3 animate-bounce rounded-full bg-amber-400/40 delay-700" />
-
-      {/* Profile Image - Positioned to align with background circles */}
-      <div className="relative mt-2 shrink-0 lg:mt-0">
-        <Image
-          src="/images/me.png"
-          alt="Gideon Hoenyefia - Software Engineer"
-          width={150}
-          height={150}
-          priority
-          className="relative z-10 mx-auto h-40 w-40 rounded-full object-cover object-center ring-4 ring-gray-500/50"
-        />
-      </div>
-
-      {/* Hero Content */}
-      <div className="mx-auto max-w-4xl space-y-4">
-        <h1 className="text-xl leading-tight font-bold text-black sm:text-2xl md:text-3xl">
-          Hi, I&apos;m Gideon Hoenyefia.
-        </h1>
-        <h2 className="text-sm font-medium tracking-[4px] text-gray-700 uppercase sm:tracking-[6px] md:text-lg lg:tracking-[8px]">
-          Software Engineer
-        </h2>
-        <p className="mx-auto max-w-xs px-2 text-sm leading-relaxed text-gray-500 sm:max-w-md md:text-base lg:max-w-lg">
-          &quot;Building modern, scalable software and applications with a creative touch that holds up — from the database to the last detail&quot;
-        </p>
-      </div>
-
-      {/* Action Button */}
-      <div className="flex flex-row items-center gap-3">
-        <div className="flex shrink-0 items-center space-x-2 rounded-full bg-green-100 px-3 py-3 sm:px-4">
-          <div className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
-          <span className="text-xs font-medium whitespace-nowrap text-green-600 sm:text-sm">
-            Available for work
-          </span>
-        </div>
-        <Button
-          onClick={handleContactClick}
-          data-tooltip="Hire me 👋"
-          className={cn(ACTION_BUTTON, ACTION_BUTTON_PRIMARY, "hover:scale-105")}
-        >
-          Hire Me
-        </Button>
-      </div>
-    </section>
-  );
-};
-
-// About Section Component
-const AboutSection = () => {
-  const aboutParagraphs = [
-    {
-      id: 1,
-      content: (
-        <>
-          Hey, I&apos;m <span className="font-semibold">Gideon</span>. I&apos;m a{" "}
-          <span className="font-semibold">Software Engineer</span> who thrives on turning abstract
-          ideas into sleek, functional, and impactful web experiences. With{" "}
-          <span className="font-semibold">modern web tools and technologies</span>, I focus on
-          building clean, scalable, and user-friendly applications that balance performance with
-          design.
-        </>
-      ),
-    },
-    {
-      id: 2,
-      content: (
-        <>
-          My work is driven by curiosity and a builder&apos;s mentality. I believe code should be
-          efficient, maintainable, and purposeful, and I enjoy exploring new technologies to keep
-          pushing the boundaries of what&apos;s possible. Along with frontend development, I&apos;m
-          passionate about cybersecurity and the role it plays in creating secure, reliable digital
-          products.
-        </>
-      ),
-    },
-    {
-      id: 3,
-      content: (
-        <>
-          Beyond coding, I enjoy basketball, experimenting with side projects, and reading to stay
-          inspired. At my core, I&apos;m focused on curiosity, growth, and leaving everything I work
-          on better than I found it.
-        </>
-      ),
-    },
-  ];
-
-  return (
-    <section className="-mt-40 w-full overflow-hidden py-12 lg:-mt-32">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-center space-y-6 px-4 text-center sm:space-y-8 sm:px-6 md:px-8 lg:px-16 xl:px-32">
-        <h2 className="text-2xl font-bold text-black sm:text-3xl lg:text-4xl xl:text-5xl">
-          About Me
-        </h2>
-
-        <div className="mx-auto max-w-4xl space-y-4 sm:space-y-6">
-          {aboutParagraphs.map((paragraph) => (
-            <p
-              key={paragraph.id}
-              className="text-justify text-sm leading-relaxed text-gray-500 sm:text-center sm:text-base lg:text-lg"
-            >
-              {paragraph.content}
-            </p>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-8 sm:mt-12 lg:mt-16">
-        <PolaroidImages />
-      </div>
-    </section>
-  );
-};
-
-// Section Divider Component
-const SectionDivider = () => (
-  <div className="mx-auto h-px w-full max-w-xs bg-gray-200 sm:max-w-md md:max-w-lg lg:max-w-4xl" />
-);
-
-// Skills Section Component
-const SkillsSection = () => (
-  <section className="w-full">
-    <SkillsMarquee />
-  </section>
-);
-
-const ProjectSection = () => {
-  const router = useRouter();
-  return (
-    <section className="min-h-screen pb-20">
-      <h2 className="mt-2 mb-20 text-center text-2xl font-bold text-black capitalize md:text-3xl">
-        Check out some of my recent works
-      </h2>
-
-      <div className="mx-auto max-w-4xl px-4">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          {projects.slice(0, 4).map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-8 flex items-center justify-center sm:mt-12">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => router.push(`/projects`)}
-          className={cn(
-            "inline-flex h-auto cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors duration-200 sm:text-base",
-            ACTION_BUTTON_PRIMARY
-          )}
-        >
-          View All Projects{" "}
-          <span>
-            <CaretRight size={20} />
-          </span>
-        </motion.button>
-      </div>
-    </section>
-  );
-};
-
-const ContactSection = () => {
-  const [formState, setFormState] = useState({
-    name: "",
-    email: "",
-    message: "",
-    // Honeypot. Stays false for anyone who can see the form.
-    botcheck: false,
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormState((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Inlined at build time, so a missing value fails silently at runtime
-    // rather than at deploy. Say so instead of posting `undefined`.
-    if (!WEB3FORMS_ACCESS_KEY) {
-      toast.error("The contact form isn't configured yet — please email me directly.");
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_ACCESS_KEY,
-          name: formState.name,
-          email: formState.email,
-          message: formState.message,
-          subject: `Project enquiry from ${formState.name}`,
-          from_name: "gideonhoenyefia.com",
-          botcheck: formState.botcheck,
-        }),
-      });
-
-      const result = await res.json();
-
-      if (result.success) {
-        toast.success("Message sent successfully!");
-        setFormState({ name: "", email: "", message: "", botcheck: false });
-      } else {
-        // Web3Forms reports failures in `message`, not `error`.
-        toast.error(result.message || "Failed to send message.");
-      }
-    } catch {
-      toast.error("Network error. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  return (
-    <section className="w-full py-16 sm:py-20 lg:py-20">
-      <div className="mx-auto max-w-4xl">
-        <div className="contact-section relative flex items-center justify-center overflow-hidden">
-          {/* Content Container */}
-          <div className="relative z-10 mx-auto max-w-4xl px-4 py-8 text-center sm:px-8 sm:py-12 lg:px-12 lg:py-16">
-            <div className="space-y-4 px-6">
-              <h2 className="text-2xl leading-tight font-bold tracking-wider text-white capitalize">
-                How may I assist you?
-              </h2>
-
-              <p className="mx-auto max-w-xs text-sm leading-relaxed text-gray-200 sm:max-w-md sm:text-base md:max-w-lg">
-                Together, we can transform your vision into something remarkable.
-              </p>
-
-              {/* Responsive Marquee Container */}
-              <>
-                <Marquee />
-              </>
-            </div>
-          </div>
-        </div>
-
-        <div className="container mx-auto mt-20 px-4 lg:mt-32" id="contact">
-          {/* Editorial split: the heading and direct contact routes anchor a
-              left column, the form fills the right. Collapses to one stacked
-              column below lg. */}
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
-            {/* Left column */}
-            <div className="lg:pt-2">
-              <h2 className="mb-4 text-2xl leading-tight font-bold tracking-wider text-black capitalize">
-                Get in touch
-              </h2>
-              <p className="mb-8 text-sm leading-relaxed text-gray-600 sm:text-base">
-                Let&apos;s create products that work and deliver real results. I am open to new
-                opportunities and collaborations. Please contact me if you want to make ideas
-                happen.
-              </p>
-
-              {/* Side by side from sm up. Each card stacks its own content so
-                  the address gets the card's full width — laid out beside the
-                  icon it would truncate in this narrow column. */}
-              <div className="grid grid-cols-1 gap-3">
-                <Link
-                  href={`https://wa.me/${contact.whatsappNumber}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex gap-3 rounded-2xl border-2 border-[#bbbbbb] bg-[#f2f2f2] px-5 py-4 transition-colors duration-200 hover:border-gray-400 hover:bg-white"
-                >
-                  <span className="grid h-11 w-11 place-items-center rounded-xl bg-black text-[#f5f5f5]">
-                    <WhatsappLogo size={22} />
-                  </span>
-                  <span className="grid min-w-0 gap-0.5">
-                    <span className="text-xs font-medium tracking-wide text-gray-500 uppercase">
-                      WhatsApp
-                    </span>
-                    <span className="text-sm font-semibold wrap-break-word text-gray-800">
-                      {contact.whatsappLabel}
-                    </span>
-                  </span>
-                </Link>
-
-                <Link
-                  href={`mailto:${contact.email}`}
-                  className="group flex gap-3 rounded-2xl border-2 border-[#bbbbbb] bg-[#f2f2f2] px-5 py-4 transition-colors duration-200 hover:border-gray-400 hover:bg-white"
-                >
-                  <span className="grid h-11 w-11 place-items-center rounded-xl bg-black text-[#f5f5f5]">
-                    <EnvelopeSimple size={22} />
-                  </span>
-                  <span className="grid min-w-0 gap-0.5">
-                    <span className="text-xs font-medium tracking-wide text-gray-500 uppercase">
-                      Email
-                    </span>
-                    <span className="text-sm font-semibold wrap-break-word text-gray-800">
-                      {contact.email}
-                    </span>
-                  </span>
-                </Link>
-              </div>
-            </div>
-
-            {/* Right column. Dropped below the heading's optical line on lg so
-                the form doesn't start above "Get in touch"; no offset while
-                stacked, where it already follows the left column. */}
-            <form onSubmit={handleSubmit} className="space-y-4 lg:pt-12">
-              {/* Name and Email Row */}
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <Input
-                  type="text"
-                  name="name"
-                  placeholder="Full Name"
-                  value={formState.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full rounded-2xl border-2 border-[#bbbbbb] bg-[#f2f2f2] px-6 py-6 text-gray-800 shadow-none placeholder:text-gray-400 focus:ring-2 focus:ring-gray-300 focus:outline-none"
-                />
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="Email Address"
-                  value={formState.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full rounded-2xl border-2 border-[#bbbbbb] bg-[#f2f2f2] px-6 py-6 text-gray-800 shadow-none placeholder:text-gray-400 focus:ring-2 focus:ring-gray-300 focus:outline-none"
-                />
-              </div>
-
-              {/* Message Textarea */}
-              <Textarea
-                name="message"
-                placeholder="Write your Message"
-                value={formState.message}
-                onChange={handleChange}
-                required
-                rows={0}
-                className="h-50 w-full resize-none rounded-2xl border-2 border-[#bbbbbb] bg-[#f2f2f2] px-6 py-6 text-gray-800 shadow-none placeholder:text-gray-400 focus:ring-2 focus:ring-gray-300 focus:outline-none"
-              />
-
-              {/* Honeypot. Hidden from people and skipped by the tab order, so
-                only a bot filling every field will set it — Web3Forms then
-                drops the submission. */}
-            <input
-              type="checkbox"
-              name="botcheck"
-              tabIndex={-1}
-              autoComplete="off"
-              aria-hidden="true"
-              className="hidden"
-              checked={formState.botcheck}
-              onChange={(e) =>
-                setFormState((prev) => ({ ...prev, botcheck: e.target.checked }))
-              }
-            />
-
-            {/* Send Button */}
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="contact-section w-full rounded-2xl bg-black py-6 text-lg font-medium text-white transition-colors duration-200 hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {isSubmitting ? "Sending..." : "Send Message"}
-              </Button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// Main Home Component
 export default function Home() {
   return (
-    <main className="min-h-screen w-full overflow-x-hidden">
-      <HeroSection />
-      <AboutSection />
-      <SectionDivider />
-      <SkillsSection />
-      <ProjectSection />
-      <SectionDivider />
-      <ContactSection />
-      <SectionDivider />
+    <main>
+      <PageIntro lineDelay={120} lineStep={80} fadeDelay={520} hero />
+
+      {/* ------------------------------------------------------------- Hero */}
+      <section
+        id="top"
+        aria-label="Introduction"
+        className="hero wide:min-h-[max(100vh,880px)] relative overflow-hidden"
+      >
+        <BadgeLanyard />
+
+        <div
+          className={`relative z-2 mx-auto box-border max-w-360 ${SECTION_X} wide:pt-[clamp(150px,21vh,230px)] pt-[calc(900px*var(--badge-s)+24px)] pb-[calc(15vw+48px)]`}
+        >
+          <h1
+            aria-label="I build digital experiences that feel as good as they work."
+            className="wide:max-w-[58%] m-0 max-w-full text-[clamp(38px,6.3vw,112px)] leading-[.98] font-bold tracking-[-0.058em]"
+          >
+            {HEADLINE.map((line) => (
+              <span
+                key={line}
+                aria-hidden="true"
+                className="mb-[-0.06em] block overflow-hidden pb-[.06em]"
+              >
+                <span data-line="" className="block">
+                  {line}
+                </span>
+              </span>
+            ))}
+          </h1>
+          <p
+            data-fade=""
+            className="text-ink-2 mt-9 mb-0 max-w-125 text-[clamp(17px,1.35vw,20px)] leading-normal text-pretty"
+          >
+            I&apos;m Gideon Hoenyefia, a full-stack engineer turning ambitious ideas into fast,
+            intuitive, and beautifully crafted products, from the database to the interface.
+          </p>
+          <ul
+            data-fade=""
+            className="text-ink-2 mt-8 mb-0 flex list-none flex-col gap-2.25 p-0 font-mono text-[clamp(11px,1vw,14px)] tracking-[0.12em]"
+          >
+            {HERO_FACTS.map((f) => (
+              <li key={f}>{f}</li>
+            ))}
+          </ul>
+          <div data-fade="" className="mt-11 flex flex-wrap items-center gap-8">
+            <a
+              href="#work"
+              className="border-ink flex items-center gap-2.5 border-b-[1.5px] pb-1 text-[clamp(17px,1.4vw,21px)] font-medium no-underline transition-[gap] duration-250 hover:gap-3.5"
+            >
+              See selected work <span aria-hidden="true">↓</span>
+            </a>
+            <a
+              href="#contact"
+              className="text-ink-2 hover:text-ink flex items-center gap-2 text-[clamp(15px,1.2vw,18px)] font-medium no-underline transition-colors"
+            >
+              Let&apos;s Connect <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <div
+          aria-hidden="true"
+          data-name=""
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-1 overflow-hidden"
+        >
+          {/* Scaled to exactly span the viewport so the full name always shows. */}
+          <FitText className="text-ink translate-x-[-0.035em] translate-y-[0.17em] pr-[0.02em] text-[10.6vw] leading-[.78] font-extrabold tracking-[-0.07em] transition-colors duration-250">
+            GIDEON HOENYEFIA
+          </FitText>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------ Selected work */}
+      <section
+        id="work"
+        aria-labelledby="work-title"
+        className={`mx-auto box-border max-w-360 ${SECTION_X} pt-[clamp(96px,11vw,160px)] pb-10`}
+      >
+        <div
+          data-reveal=""
+          className="mb-[clamp(56px,7vw,96px)] grid grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] items-end gap-x-12 gap-y-8"
+        >
+          <div className="flex flex-col gap-7">
+            <span className="eyebrow">01 / SELECTED WORK</span>
+            <h2
+              id="work-title"
+              className="m-0 text-[clamp(48px,8vw,128px)] leading-[.9] font-bold tracking-[-0.06em]"
+            >
+              Selected work
+            </h2>
+          </div>
+          <p className="text-ink-2 m-0 max-w-105 justify-self-end text-[clamp(17px,1.35vw,20px)] leading-normal text-pretty">
+            A collection of digital experiences I&apos;ve helped bring to life.
+          </p>
+        </div>
+
+        <StackedProjects projects={featuredProjects} />
+
+        <div data-reveal="" className="mt-[clamp(96px,10vw,140px)]">
+          <div className="border-ink flex items-center justify-between gap-4 border-b pb-5">
+            <span className="eyebrow">ALSO BUILT</span>
+            <Link
+              href="/projects"
+              className="flex items-center gap-2 text-[15px] font-semibold no-underline transition-[gap] duration-250 hover:gap-3.5"
+            >
+              All projects <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+          {otherProjects.map((m) => (
+            <Link
+              key={m.slug}
+              data-view=""
+              href={projectHref(m.slug)}
+              className="border-line ease-out-soft grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] items-baseline gap-x-10 gap-y-2.5 border-b py-7 text-inherit no-underline transition-[padding] duration-350 hover:pl-4"
+            >
+              <div className="text-[clamp(24px,2.4vw,34px)] font-bold tracking-[-0.04em]">
+                {m.title}
+              </div>
+              <div className="text-ink-2 text-base leading-normal text-pretty">{m.summary}</div>
+              <div className="text-ink-3 font-mono text-xs leading-[1.7] tracking-widest">
+                {stackLine(m)}
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* -------------------------------------------------------------- About */}
+      <section
+        id="about"
+        aria-labelledby="about-title"
+        className="bg-paper-2 mt-[clamp(96px,10vw,140px)] transition-colors duration-250"
+      >
+        <div className={`mx-auto box-border max-w-360 ${SECTION_X} py-[clamp(96px,11vw,160px)]`}>
+          <span data-reveal="" className="eyebrow mb-10 block">
+            02 / ABOUT
+          </span>
+          <div
+            data-reveal=""
+            className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-start gap-x-[clamp(48px,6vw,120px)] gap-y-12"
+          >
+            <h2 id="about-title" className={`${H2} text-balance`}>
+              Curiosity drives me. Craft defines my work.
+            </h2>
+            <div className="flex max-w-155 flex-col gap-5.5 pt-2">
+              <p className="m-0 text-[clamp(18px,1.5vw,22px)] leading-[1.6] text-pretty text-ink-2">
+                I&apos;m a full-stack engineer based in{" "}
+                <Keyword icon={<MapPin weight="fill" />} motion="bounce">
+                  Accra
+                </Keyword>
+                , turning abstract ideas into clean, scalable products, from the{" "}
+                <Keyword icon={<Database weight="fill" />} motion="pop">
+                  database
+                </Keyword>{" "}
+                to the{" "}
+                <Keyword icon={<Cursor weight="fill" />} motion="wiggle">
+                  interface
+                </Keyword>{" "}
+                people actually use.
+              </p>
+              <p className="m-0 text-[17px] leading-[1.7] text-pretty text-ink-2">
+                Over 3+ years I&apos;ve shipped an{" "}
+                <Keyword icon={<IdentificationBadge weight="fill" />} motion="flip">
+                  accreditation platform
+                </Keyword>{" "}
+                for an international athletics event, a{" "}
+                <Keyword icon={<Compass weight="fill" />} motion="spin">
+                  directory
+                </Keyword>{" "}
+                connecting Ghanaians across Ghana and the UK, and{" "}
+                <Keyword icon={<PencilSimpleLine weight="fill" />} motion="wiggle">
+                  CMS-powered sites
+                </Keyword>{" "}
+                that small teams run themselves.
+              </p>
+              <p className="m-0 text-[17px] leading-[1.7] text-pretty text-ink-2">
+                I believe code should be efficient, maintainable, and purposeful. Alongside
+                building, I&apos;m drawn to{" "}
+                <Keyword icon={<ShieldCheck weight="fill" />} motion="pop">
+                  cybersecurity
+                </Keyword>{" "}
+                and the part it plays in products people can trust.
+              </p>
+              <p className="m-0 text-[17px] leading-[1.7] text-pretty text-ink-2">
+                Off the keyboard you&apos;ll find me on the{" "}
+                <Keyword icon={<Basketball weight="fill" />} motion="spin">
+                  basketball court
+                </Keyword>
+                , deep in a{" "}
+                <Keyword icon={<Flask weight="fill" />} motion="wiggle">
+                  side project
+                </Keyword>
+                , or with a good{" "}
+                <Keyword icon={<BookOpen weight="fill" />} motion="flip">
+                  book
+                </Keyword>
+                .
+              </p>
+              <a
+                href="#capabilities"
+                className="border-ink mt-2 flex items-center gap-2.5 self-start border-b-[1.5px] pb-0.75 text-base font-semibold no-underline transition-[gap] duration-250 hover:gap-4"
+              >
+                More about me <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+          <div data-reveal="" className="mt-[clamp(56px,7vw,96px)]">
+            <PhotoStrip photos={ABOUT_PHOTOS} />
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------- Capabilities */}
+      <section
+        id="capabilities"
+        aria-labelledby="cap-title"
+        className={`mx-auto box-border max-w-360 ${SECTION_X} py-[clamp(96px,11vw,160px)]`}
+      >
+        <div data-reveal="" className="mb-[clamp(48px,6vw,80px)] flex flex-col gap-7">
+          <span className="eyebrow">03 / CAPABILITIES</span>
+          <h2 id="cap-title" className={H2}>
+            What I work with
+          </h2>
+        </div>
+        <div className="border-ink border-t">
+          {capabilities.map((c, i) => (
+            <div
+              key={c.title}
+              data-reveal=""
+              className="border-line grid grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-start gap-x-12 gap-y-5 border-b py-[clamp(28px,3.5vw,44px)]"
+            >
+              <div className="flex items-baseline gap-6">
+                <span className="text-ink-3 font-mono text-[13px]">{pad2(i + 1)}</span>
+                <h3 className="m-0 text-[clamp(26px,2.6vw,40px)] leading-none font-bold tracking-[-0.045em]">
+                  {c.title}
+                </h3>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {c.items.map((t) => (
+                  <span
+                    key={t}
+                    className="border-line bg-surface hover:border-ink rounded-full border px-3.5 py-2 text-[15px] font-medium transition-colors duration-150"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------ Process */}
+      <section
+        id="process"
+        aria-labelledby="proc-title"
+        className={`mx-auto box-border max-w-360 ${SECTION_X} pb-[clamp(96px,11vw,160px)]`}
+      >
+        <div data-reveal="" className="mb-[clamp(48px,6vw,80px)] flex flex-col gap-7">
+          <span className="eyebrow">04 / HOW I BUILD</span>
+          <h2 id="proc-title" className={H2}>
+            How I build
+          </h2>
+        </div>
+        <ol className="border-line bg-line m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))] gap-px overflow-hidden rounded-lg border p-0">
+          {processSteps.map((s, i) => (
+            <li
+              key={s.title}
+              data-reveal=""
+              className="bg-paper hover:bg-surface flex min-h-70 flex-col gap-4 p-[clamp(28px,3vw,40px)] transition-colors duration-250"
+            >
+              <span className="eyebrow">{pad2(i + 1)}</span>
+              <h3 className="mt-auto mb-0 text-[clamp(30px,2.8vw,40px)] leading-none font-bold tracking-[-0.045em]">
+                {s.title}
+              </h3>
+              <p className="text-ink-2 m-0 text-base leading-[1.55] text-pretty">{s.text}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
     </main>
   );
 }

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed -i '' 's/className=\"eyebrow text-xs\"/className=\"font-mono text-xs font-medium tracking-[0.14em] text-ink-3\"/' src/components/projects/*.tsx && rtk proxy grep -rn \"eyebrow text\" src || echo ok)",
+      "Bash(node /private/tmp/claude-501/-Users-gideonkorblahoenyefia-Desktop-Kobby-MyProjects-kobby-v2/90b5b98e-bd0d-41ec-bf57-3c2d6012f13b/scratchpad/canon.mjs src/app/page.tsx src/app/not-found.tsx src/app/blog/page.tsx src/app/projects/page.tsx \"src/app/projects/[slug]/page.tsx\" src/components/layout/navbar.tsx src/components/layout/footer.tsx src/components/projects/stacked-projects.tsx src/components/projects/case-study-card.tsx src/components/projects/other-work-card.tsx src/components/ux/badge-lanyard.tsx src/components/ux/view-cursor.tsx src/components/ux/logo-mark.tsx src/components/ux/copy-email-button.tsx src/components/ux/fit-text.tsx src/components/ux/theme-icon.tsx src/components/ux/parallax-image.tsx)",
+      "ClaudeInChromeDomain(evora-rust.vercel.app)",
+      "ClaudeInChromeDomain(www.mirayavandiepen.com)",
+      "Bash(sips -Z 500 \"Cozy Café Accra Reading Nook.png\" --out /private/tmp/claude-501/-Users-gideonkorblahoenyefia-Desktop-Kobby-MyProjects-kobby-v2/90b5b98e-bd0d-41ec-bf57-3c2d6012f13b/scratchpad/thumbs/cafe.jpg -s format jpeg)",
+      "Bash(sips -g pixelWidth -g pixelHeight \"Cozy Café Accra Reading Nook.png\")"
+    ],
+    "additionalDirectories": [
+      "/Users/gideonkorblahoenyefia/Desktop/Kobby/MyProjects/kobby-v2/apps/kobby/src/components/projects"
+    ]
+  }
+}

@@ -1,31 +1,69 @@
-export interface ProjectItem {
-  id: number;
-  date: string;
-  title: string;
-  image: string;
-  summary: string;
-  description: string;
-  technologies: string[];
-  link: string;
-  client: string;
-  gallery: string[];
-}
+import type { ContactDetails, Project, SocialLink } from "@/types/project";
 
-// Display order is the array order. The home page shows the first four; the
-// /projects page shows all of them.
-export const projects: ProjectItem[] = [
+// Display order is the array order. Featured projects render as case-study
+// cards (home stack + /projects); the rest appear under "Also built".
+export const projects: Project[] = [
   {
     id: 1,
-    date: "2026",
+    slug: "accra-2026",
+    featured: true,
     title: "ACCRA 2026 Accreditation Management System",
-    image: "/projects/accra/accreditation-system.png",
-    summary:
-      "An end-to-end accreditation platform for an international athletics event in Accra — replacing spreadsheets and hand-printed passes with delegation self-onboarding, QR badges, and zone-level venue access control for thousands of athletes, officials, media, and VIP guests.",
-    description:
-      "A major athletics event moves thousands of people into a city in a matter of days — athletes, team officials, media, and VIP guests arriving from dozens of countries, every one of whom has to be verified, badged, and routed through secured venue zones. That work traditionally runs on spreadsheets, email chains, and hand-printed passes: slow to administer, painful to correct, and leaving real gaps at the gate on competition day. ACCRA 2026 replaces it with one system. Federations and delegations receive tokenized invite links and onboard their own members, moving data entry to the people who actually hold the information; organisers then review applications by accreditation category and issue QR-coded badges generated as print-ready PDFs that holders can download themselves. An access matrix maps each category to the venue zones it may enter, and gate staff scan badges on site to check people in against those rules — so access control is enforced by the badge rather than by a printed list. Certificates are issued with public verification by number, and every action is written to an audit trail for post-event reporting. It ships as two Next.js applications against a shared API — a public portal for applicants and delegations, and an operations dashboard for accreditation staff — localized in English, French, Spanish, and Portuguese so international delegations can complete onboarding in their own language.",
-    technologies: ["Next.js", "TypeScript", "TailwindCSS", "TanStack Query", "pdf-lib", "next-intl"],
-    link: "https://www.fasigms.africa/",
+    short: "ACCRA 2026",
+    category: "EVENT PLATFORM",
+    year: "2026",
     client: "Ghana Athletics Association",
+    image: "/projects/accra/accreditation-system.png",
+    hue: 80,
+    walkthrough: [
+      {
+        src: "/projects/accra/Accreditation-Portal-05-31-2026_07_29_PM.png",
+        title: "Track an application",
+        text: "Applicants check their accreditation status with nothing but the email they applied with. No account, no password to forget.",
+      },
+      {
+        src: "/projects/accra/Accreditation-Portal-05-31-2026_07_35_PM.png",
+        title: "Delegation portal",
+        text: "Federation admins share a tokenized onboarding link with their members, then follow applications, approvals, and issued badges from one dashboard.",
+      },
+      {
+        src: "/projects/accra/Accredit-Pro-—-Admin-05-31-2026_07_34_PM.png",
+        title: "Staff sign-in",
+        text: "Accreditation staff work in a separate operations app, kept apart from the public portal.",
+      },
+      {
+        src: "/projects/accra/Accredit-Pro-—-Admin-05-31-2026_07_31_PM.png",
+        title: "Operations dashboard",
+        text: "Live counts of accredited participants, badges issued, pending reviews, and on-site scans, with a review queue and zone activity as it happens.",
+      },
+      {
+        src: "/projects/accra/Accredit-Pro-—-Admin-05-31-2026_07_33_PM.png",
+        title: "Print-ready badges",
+        text: "Approved participants get QR-coded badges, front and back, listing exactly which venue zones they can enter. Ready to print or download as PDF.",
+      },
+    ],
+    summary:
+      "An end-to-end accreditation platform for an international athletics event in Accra, replacing spreadsheets and hand-printed passes with delegation self-onboarding, QR badges, and zone-level venue access control for thousands of athletes, officials, media, and VIP guests.",
+    challenge:
+      "A major athletics event moves thousands of people into a city in a matter of days — athletes, team officials, media, and VIP guests arriving from dozens of countries, every one of whom has to be verified, badged, and routed through secured venue zones. That work traditionally runs on spreadsheets, email chains, and hand-printed passes: slow to administer, painful to correct, and leaving real gaps at the gate on competition day.",
+    approach:
+      "ACCRA 2026 replaces it with one system. Federations and delegations receive tokenized invite links and onboard their own members, moving data entry to the people who actually hold the information; organisers then review applications by accreditation category and issue QR-coded badges generated as print-ready PDFs that holders can download themselves. An access matrix maps each category to the venue zones it may enter, and gate staff scan badges on site to check people in against those rules — so access control is enforced by the badge rather than by a printed list. Certificates are issued with public verification by number, and every action is written to an audit trail for post-event reporting.",
+    features: [
+      "Delegation self-onboarding",
+      "QR-coded accreditation badges",
+      "Zone-level venue access control",
+      "Multi-language interface",
+    ],
+    decisions:
+      "It ships as two Next.js applications against a shared API — a public portal for applicants and delegations, and an operations dashboard for accreditation staff — localized in English, French, Spanish, and Portuguese so international delegations can complete onboarding in their own language.",
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "TanStack Query",
+      "pdf-lib",
+      "next-intl",
+    ],
+    link: "https://www.fasigms.africa/",
     gallery: [
       "/projects/accra/Accreditation-Portal-05-31-2026_07_29_PM.png",
       "/projects/accra/Accreditation-Portal-05-31-2026_07_35_PM.png",
@@ -36,22 +74,53 @@ export const projects: ProjectItem[] = [
   },
   {
     id: 2,
-    date: "2026",
+    slug: "mefie-directory",
+    featured: true,
     title: "Me-fie Directory",
-    image: "/projects/mefie-d/mefied.png",
-    summary:
-      "A multi-country directory of Ghanaian-owned businesses, events, and communities across Ghana and the UK — vendors manage their own listings, and visitors filter by country, category, and date with every result shareable straight from the URL.",
-    description:
-      "Ghanaian businesses and events live in fragments: an Instagram bio here, a WhatsApp broadcast there, a flyer forwarded so many times nobody knows whose event it was. If you have just moved to London and want Ghanaian food tonight, or you are in Accra wondering what is on this weekend, there is no single place to look — and for the business owner, being findable means maintaining a presence on platforms that were never built for a small business in the first place. Me-fie Directory is that single place. Businesses, events, and communities sit side by side across Ghana and the United Kingdom, with a country switcher because the same audience lives on both ends of that route. Vendors claim their own listing and keep it current instead of filing a request with somebody; verification badges and customer reviews do the work a personal recommendation used to do; and events carry venue, date, and ticket links so discovery ends in a booking rather than a dead end. The country, category, and date filters are held in the URL, so \"food festivals in Accra this month\" is a link you can send to a friend rather than a set of steps you have to describe. It runs as a Turborepo monorepo — a public client and an operations dashboard — with TanStack Query over a typed Axios layer, React Hook Form and Zod on every input, Mapbox placing listings on a map, one-time-code sign-in so a phone number is enough to get in, and Recharts giving the team a read on what people are actually searching for.",
-    technologies: [
-      "Next.js",
-      "TypeScript",
-      "TailwindCSS",
-      "Shadcn/ui",
-      "Mapbox",
-    ],
-    link: "https://mefiedirectory.com",
+    short: "Me-fie Directory",
+    category: "DIRECTORY",
+    year: "2026",
     client: "Me Fie",
+    image: "/projects/mefie-d/mefied.png",
+    hue: 135,
+    walkthrough: [
+      {
+        src: "/projects/mefie-d/mefie-1.png",
+        title: "Discover what's near",
+        text: "Visitors land on top businesses for their country, with verification badges and reviews doing the work a personal recommendation used to.",
+      },
+      {
+        src: "/projects/mefie-d/mefie-2.png",
+        title: "Browse businesses",
+        text: "Category chips, a country switcher, and search narrow the directory, and every filter lives in the URL so a result can be shared as a link.",
+      },
+      {
+        src: "/projects/mefie-d/mefie-3.png",
+        title: "Find events",
+        text: "Upcoming events with dates, venues, and ticket links, so discovery ends in a booking rather than a forwarded flyer.",
+      },
+      {
+        src: "/projects/mefie-d/mefie-4.png",
+        title: "Connect with communities",
+        text: "Community groups, charities, and consular services for Ghanaians in Ghana and the UK, side by side with businesses and events.",
+      },
+    ],
+    summary:
+      "A multi-country directory of Ghanaian-owned businesses, events, and communities across Ghana and the UK. Vendors manage their own listings, and visitors filter by country, category, and date with every result shareable straight from the URL.",
+    challenge:
+      "Ghanaian businesses and events live in fragments: an Instagram bio here, a WhatsApp broadcast there, a flyer forwarded so many times nobody knows whose event it was. If you have just moved to London and want Ghanaian food tonight, or you are in Accra wondering what is on this weekend, there is no single place to look — and for the business owner, being findable means maintaining a presence on platforms that were never built for a small business in the first place.",
+    approach:
+      'Me-fie Directory is that single place. Businesses, events, and communities sit side by side across Ghana and the United Kingdom, with a country switcher because the same audience lives on both ends of that route. Vendors claim their own listing and keep it current instead of filing a request with somebody; verification badges and customer reviews do the work a personal recommendation used to do; and events carry venue, date, and ticket links so discovery ends in a booking rather than a dead end. The country, category, and date filters are held in the URL, so "food festivals in Accra this month" is a link you can send to a friend rather than a set of steps you have to describe.',
+    features: [
+      "Vendor-managed listings",
+      "Filtering by country, category, and date",
+      "Shareable, URL-driven search state",
+      "Map-based discovery",
+    ],
+    decisions:
+      "It runs as a Turborepo monorepo — a public client and an operations dashboard — with TanStack Query over a typed Axios layer, React Hook Form and Zod on every input, Mapbox placing listings on a map, one-time-code sign-in so a phone number is enough to get in, and Recharts giving the team a read on what people are actually searching for.",
+    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "Mapbox"],
+    link: "https://mefiedirectory.com",
     gallery: [
       "/projects/mefie-d/mefie-1.png",
       "/projects/mefie-d/mefie-2.png",
@@ -61,24 +130,68 @@ export const projects: ProjectItem[] = [
   },
   {
     id: 3,
-    date: "2026",
+    slug: "ens-creatives",
+    featured: true,
     title: "EnS Creatives",
+    short: "EnS Creatives",
+    category: "FULL-STACK · CMS",
+    year: "2026",
+    client: "EnS Creatives",
     image: "/projects/ens/ens-1.png",
+    hue: 25,
+    walkthrough: [
+      {
+        src: "/projects/ens/ens-2.png",
+        title: "The showcase",
+        text: "The gallery is the sales pitch: finished work up front, filterable by metal fabrication or POP ceilings.",
+      },
+      {
+        src: "/projects/ens/ens-3.png",
+        title: "The studio",
+        text: "The about page sets out the studio's mission and track record, so clients know who is behind the work.",
+      },
+      {
+        src: "/projects/ens/ens-4.png",
+        title: "Why EnS",
+        text: "A bold, industrial voice that matches the work itself, built on the studio's standards for precision.",
+      },
+      {
+        src: "/projects/ens/ens-5.png",
+        title: "Request a project",
+        text: "A structured project request form, direct contact lines, and a map to the workshop. Every request lands in the team's inbox.",
+      },
+      {
+        src: "/projects/ens/ens-6.png",
+        title: "Their own CMS",
+        text: "The team adds new work, sets its category, orders the gallery, and toggles each piece live or draft. No developer needed.",
+      },
+    ],
     summary:
-      "A fabrication and design studio whose portfolio is its sales pitch — so instead of a static site they'd have to email me to update, I built them a full-stack website with a custom CMS that lets them publish new work, reorder the gallery, and answer inquiries themselves.",
-    description:
-      "EnS Creatives builds physical things — laser-cut metal panels, pergola canopies, estate gates, patterned screens, sculpted POP ceilings. For a studio like that the portfolio *is* the sales pitch: a prospective client decides whether to call based on whether the last job looks like the one they're imagining. The problem is that finished work arrives constantly, and on a static site every new photo means emailing a developer and waiting. The gallery goes stale, the best jobs never make it online, and the site slowly stops representing the business. So rather than hand over a site they couldn't touch, I built the CMS with it. The team signs in and manages the gallery directly — uploading a project, tagging it by category, dragging it into the order they want it seen, and toggling it live or holding it back as a draft. They maintain their own service listings and team profiles, and inbound project requests land in an Inquiries inbox inside the same dashboard instead of scattering across a shared email account. It runs as a Turborepo monorepo with two Next.js apps — the public site and the admin dashboard — sharing one typed Prisma schema against PostgreSQL, with images offloaded to Cloudflare R2 so a gallery that grows every month never bloats the database or the repository. The result is a site the client actually owns: I hand over the keys, and their newest work is online the same day it's finished.",
+      "A fabrication and design studio whose portfolio is its sales pitch. A full-stack website with a custom CMS that lets the team publish new work, reorder the gallery, and answer inquiries themselves.",
+    challenge:
+      "EnS Creatives builds physical things — laser-cut metal panels, pergola canopies, estate gates, patterned screens, sculpted POP ceilings. For a studio like that the portfolio is the sales pitch: a prospective client decides whether to call based on whether the last job looks like the one they're imagining. The problem is that finished work arrives constantly, and on a static site every new photo means emailing a developer and waiting. The gallery goes stale, the best jobs never make it online, and the site slowly stops representing the business.",
+    approach:
+      "So rather than hand over a site they couldn't touch, I built the CMS with it. The team signs in and manages the gallery directly — uploading a project, tagging it by category, dragging it into the order they want it seen, and toggling it live or holding it back as a draft. They maintain their own service listings and team profiles, and inbound project requests land in an Inquiries inbox inside the same dashboard instead of scattering across a shared email account.",
+    features: [
+      "Custom CMS for publishing new work",
+      "Drag-to-reorder gallery",
+      "Inquiry management",
+      "Media storage on Cloudflare R2",
+    ],
+    decisions:
+      "It runs as a Turborepo monorepo with two Next.js apps — the public site and the admin dashboard — sharing one typed Prisma schema against PostgreSQL, with images offloaded to Cloudflare R2 so a gallery that grows every month never bloats the database or the repository.",
+    results:
+      "The result is a site the client actually owns: I hand over the keys, and their newest work is online the same day it's finished.",
     technologies: [
       "Next.js",
       "TypeScript",
-      "TailwindCSS",
+      "Tailwind CSS",
       "Prisma",
       "PostgreSQL",
       "Cloudflare R2",
       "Turborepo",
     ],
     link: "https://ens-ens-client.vercel.app/",
-    client: "EnS Creatives",
     gallery: [
       "/projects/ens/ens-2.png",
       "/projects/ens/ens-3.png",
@@ -89,16 +202,44 @@ export const projects: ProjectItem[] = [
   },
   {
     id: 4,
-    date: "2025",
+    slug: "mefie",
+    featured: true,
     title: "Me-fie",
-    image: "/projects/Me-fie.png",
-    summary:
-      "Me Fie is a cultural platform that celebrates Ghana's heritage through raffles, events, and community initiatives, fostering authentic experiences and supporting local businesses.",
-    description:
-      "Me Fie is a cultural and lifestyle platform dedicated to showcasing and celebrating Ghana's vibrant heritage—welcoming Ghanaians, the diaspora, and curious explorers alike. Through prize competitions, events, and community initiatives, Me Fie connects people with authentic Ghanaian experiences, promotes local businesses, and builds a global, culturally rooted community. Their mission is to make Ghana inspiring, accessible, and unforgettable—delivering this through engaging raffles, collaborations with iconic brands and events, and impactful “Give Back” campaigns that support communities across Ghana",
-    technologies: ["Laravel Blade", "TailwindCSS", "Laravel", "MySQL"],
-    link: "https://www.me-fie.com",
+    short: "Me-fie",
+    category: "CULTURAL PLATFORM",
+    year: "2025",
     client: "Me Fie",
+    image: "/projects/Me-fie.png",
+    hue: 120,
+    walkthrough: [
+      {
+        src: "/projects/me-fie/me-fie-3.png",
+        title: "Enter competitions",
+        text: "Live prize draws, from holidays in Ghana to concert tickets, filterable by live competitions, rewards, and top picks.",
+      },
+      {
+        src: "/projects/me-fie/me-fie-2.png",
+        title: "Meet the winners",
+        text: "Real winners and what they won, front and centre, so every entry feels like a real chance.",
+      },
+      {
+        src: "/projects/me-fie/me-fie-4.png",
+        title: "Give back Ghana",
+        text: "The community projects that entries help fund, each with its location and the impact it made.",
+      },
+      {
+        src: "/projects/me-fie/me-fie-5.png",
+        title: "The story",
+        text: "Who Me-fie is and its mission: making Ghana accessible to everyone, wherever they are in the world.",
+      },
+    ],
+    summary:
+      "A cultural platform that celebrates Ghana's heritage through raffles, events, and community initiatives, fostering authentic experiences and supporting local businesses.",
+    overview:
+      "Me Fie is a cultural and lifestyle platform dedicated to showcasing and celebrating Ghana's vibrant heritage — welcoming Ghanaians, the diaspora, and curious explorers alike. Through prize competitions, events, and community initiatives, Me Fie connects people with authentic Ghanaian experiences, promotes local businesses, and builds a global, culturally rooted community. Their mission is to make Ghana inspiring, accessible, and unforgettable — delivering this through engaging raffles, collaborations with iconic brands and events, and impactful “Give Back” campaigns that support communities across Ghana.",
+    features: ["Raffles", "Events", "Community initiatives", "Local business support"],
+    technologies: ["Laravel Blade", "Tailwind CSS", "MySQL"],
+    link: "https://www.me-fie.com",
     gallery: [
       "/projects/me-fie/me-fie-2.png",
       "/projects/me-fie/me-fie-3.png",
@@ -107,47 +248,84 @@ export const projects: ProjectItem[] = [
     ],
   },
   {
-    id: 5,
-    date: "2025",
-    title: "Kweku Smoke",
-    image: "/projects/Kweku-Smoke.png",
-    summary:
-      "Kweku Smoke's website is a modern artist platform that showcases his music, story, tours, and merchandise—highlighting his fusion of Ghanaian rhythms with trap and afrobeats in a sleek, engaging way",
-    description:
-      "Kweku Smoke is an immersive artist platform showcasing the Ghanaian musician's creative universe. It blends rich biography, media galleries, merchandise, upcoming tour dates, and music previews in a sleek, navigable layout. The site highlights Kweku's connection to Accra, his innovative fusion of West African rhythms and trap/afrobeats, and positions him as a boundary-pushing voice in contemporary African music",
-    technologies: ["Next.js", "TypeScript", "TailwindCSS", "Framer Motion", "Spotify API"],
-    link: "https://kwekusmokenow.com",
-    client: "Kweku Smoke",
-    gallery: [
-      "/projects/kweku/kweku-smoke-2.png",
-      "/projects/kweku/kweku-smoke-3.png",
-      "/projects/kweku/kweku-smoke-4.png",
-      "/projects/kweku/kweku-smoke-5.png",
+    id: 9,
+    slug: "bridgecap",
+    featured: false,
+    title: "Bridgecap Microcredit",
+    short: "Bridgecap",
+    category: "FINTECH WEBSITE",
+    year: "2026",
+    client: "Bridgecap Microcredit Enterprise",
+    image: "/projects/bridgecap/bridgecap-1.png",
+    hue: 255,
+    walkthrough: [
+      {
+        src: "/projects/bridgecap/bridgecap-1.png",
+        title: "Apply or ask",
+        text: "The first screen offers two clear paths: apply for a loan, or chat on WhatsApp first.",
+      },
+      {
+        src: "/projects/bridgecap/bridgecap-2.png",
+        title: "Built on trust",
+        text: "The mission and the numbers that matter to a borrower: clients served and average approval time.",
+      },
+      {
+        src: "/projects/bridgecap/bridgecap-3.png",
+        title: "Why Bridgecap",
+        text: "Transparent terms, local understanding, and long-term partnership, explained without financial jargon.",
+      },
     ],
+    summary:
+      "A website for a Ghanaian microcredit enterprise offering fast, accessible, and flexible loans to individuals, entrepreneurs, and small businesses, built to turn visitors into loan applicants.",
+    overview:
+      "Bridgecap was founded on the belief that access to capital should be a catalyst, not a hurdle. The site presents its loan products, requirements, and impact in plain language, for the market trader restocking inventory, the young professional bridging a rent gap, and the SME scaling operations. Every page leads to one of two clear next steps: apply for a loan, or start a conversation on WhatsApp.",
+    features: [
+      "Loan products and requirements explained in plain language",
+      "Apply-for-loan flow surfaced from every page",
+      "Direct WhatsApp chat for questions before applying",
+      "Impact and mission storytelling for trust",
+    ],
+    technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
+    gallery: ["/projects/bridgecap/bridgecap-2.png", "/projects/bridgecap/bridgecap-3.png"],
   },
   {
     id: 6,
-    date: "2026",
+    slug: "ghanaian-support-network",
+    featured: false,
     title: "Ghanaian Support Network",
+    short: "GSN",
+    category: "COMMUNITY · CMS",
+    year: "2026",
+    client: "Ghanaian Support Network CIC",
     image: "/projects/gsn/gsn.png",
+    hue: 155,
     summary:
-      "A full-stack website and custom CMS for a UK community interest company supporting Ghanaians and Black and ethnic minority communities — every page and content collection editable in-house, with live preview, so a small team can keep the site current without a developer.",
-    description:
-      "The Ghanaian Support Network is a UK community interest company supporting Ghanaians and Black and ethnic minority communities through advice, education, wellbeing, and practical support. An organisation like this lives or dies on looking active: funders, partners, and the people who actually need the help all judge it by whether the programme listed on the site is running this month or finished last year. But a small charity has no developer on call, so on a static site every event date, gallery photo, and partner logo becomes a request someone has to make and then wait for — and in practice the site quietly freezes while the work carries on without it. So the website ships with its own CMS, built on the same model the commercial headless platforms use: single types for the pages that exist exactly once — Home, About, Programs, Get Involved, Contact — and collection types for everything that recurs, including hero slides, programs and events, articles, gallery images, partners, team members, involvement ways, and testimonials. Each page is edited section by section through structured fields rather than a wall of markup — an eyebrow, a heading, a rich-text body, an image — and a live preview renders the result beside the editor, so a coordinator can see exactly what a visitor will see before anything is published. Nobody needs to understand the layout to change a headline. It runs as a Turborepo monorepo with two Next.js applications, the public site and the admin dashboard, over one typed Prisma schema on PostgreSQL, with media offloaded to Cloudflare R2. The charity owns its own website, and I am not a bottleneck in the middle of it.",
+      "A full-stack website and custom CMS for a UK community interest company supporting Ghanaians and Black and ethnic minority communities, with every page editable in-house and a live preview, so a small team can keep the site current without a developer.",
+    challenge:
+      "The Ghanaian Support Network is a UK community interest company supporting Ghanaians and Black and ethnic minority communities through advice, education, wellbeing, and practical support. An organisation like this lives or dies on looking active: funders, partners, and the people who actually need the help all judge it by whether the programme listed on the site is running this month or finished last year. But a small charity has no developer on call, so on a static site every event date, gallery photo, and partner logo becomes a request someone has to make and then wait for — and in practice the site quietly freezes while the work carries on without it.",
+    approach:
+      "So the website ships with its own CMS, built on the same model the commercial headless platforms use: single types for the pages that exist exactly once — Home, About, Programs, Get Involved, Contact — and collection types for everything that recurs, including hero slides, programs and events, articles, gallery images, partners, team members, involvement ways, and testimonials. Each page is edited section by section through structured fields rather than a wall of markup — an eyebrow, a heading, a rich-text body, an image — and a live preview renders the result beside the editor, so a coordinator can see exactly what a visitor will see before anything is published. Nobody needs to understand the layout to change a headline.",
+    features: [
+      "Single and collection content types",
+      "Section-by-section structured editing",
+      "Live preview beside the editor",
+      "Media storage on Cloudflare R2",
+    ],
+    decisions:
+      "It runs as a Turborepo monorepo with two Next.js applications, the public site and the admin dashboard, over one typed Prisma schema on PostgreSQL, with media offloaded to Cloudflare R2.",
+    results: "The charity owns its own website, and I am not a bottleneck in the middle of it.",
     technologies: [
       "Next.js",
       "TypeScript",
-      "TailwindCSS",
+      "Tailwind CSS",
       "Prisma",
       "PostgreSQL",
       "Cloudflare R2",
       "Turborepo",
     ],
-    // Live URL withheld — the deployed site currently has an issue. Restore
-    // https://www.ghanaiansupportnetwork.com once it's resolved; an empty
-    // string hides the external "View Project" link on the detail page.
+    // Live URL withheld from the public domain while the deployed site has an
+    // issue — restore https://www.ghanaiansupportnetwork.com once resolved.
     link: "https://gsncic-gsncic-two.vercel.app/",
-    client: "Ghanaian Support Network CIC",
     gallery: [
       "/projects/gsn/gsn-1.png",
       "/projects/gsn/gsn-2.png",
@@ -158,16 +336,20 @@ export const projects: ProjectItem[] = [
   },
   {
     id: 7,
-    date: "2024",
+    slug: "hdf-ghana",
+    featured: false,
     title: "HDF Ghana Limited",
+    short: "HDF Ghana",
+    category: "BUSINESS WEBSITE",
+    year: "2024",
+    client: "HDF Ghana Limited",
     image: "/projects/HDF-Ghana.png",
-    summary:
-      "HDF Ghana Limited, established in 2019 in Accra, specializes in custom cabinetry for kitchens, wardrobes, and bathrooms, blending craftsmanship with functional design",
-    description:
-      "HDF Ghana Limited, founded in 2019 in Accra, delivers tailor-made cabinetry solutions for kitchens, wardrobes, and bathroom vanities—blending craftsmanship with functional design to create elegant, durable spaces through design, survey, and expert installation services.",
+    hue: 55,
+    summary: "A modern digital presence for a custom cabinetry and interior solutions business.",
+    overview:
+      "HDF Ghana Limited, founded in 2019 in Accra, delivers tailor-made cabinetry solutions for kitchens, wardrobes, and bathroom vanities — blending craftsmanship with functional design to create elegant, durable spaces through design, survey, and expert installation services.",
     technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Vimeo"],
     link: "https://hdf-ghana.vercel.app",
-    client: "HDF Ghana Limited",
     gallery: [
       "/projects/hdf/hdf-2.png",
       "/projects/hdf/hdf-3.png",
@@ -176,17 +358,46 @@ export const projects: ProjectItem[] = [
     ],
   },
   {
-    id: 8,
-    date: "2023",
-    title: "DigiGrowth",
-    image: "/projects/digi-growth.png",
+    id: 5,
+    slug: "kweku-smoke",
+    featured: false,
+    title: "Kweku Smoke",
+    short: "Kweku Smoke",
+    category: "ARTIST WEBSITE",
+    year: "2025",
+    client: "Kweku Smoke",
+    image: "/projects/Kweku-Smoke.png",
+    hue: 10,
     summary:
-      "DigiGrowth is a digital marketing agency that specializes in SEO, PPC, and social media marketing, helping businesses improve their online presence and drive more traffic to their websites.",
-    description:
-      "DigiGrowth is a digital marketing agency that specializes in SEO, PPC, and social media marketing, helping businesses improve their online presence and drive more traffic to their websites.",
-    technologies: ["Next.js", "TailwindCSS", "TypeScript"],
-    link: "https://digi-growth.vercel.app",
+      "An artist-focused digital experience showcasing music, identity, tours, and merchandise.",
+    overview:
+      "Kweku Smoke is an immersive artist platform showcasing the Ghanaian musician's creative universe. It blends rich biography, media galleries, merchandise, upcoming tour dates, and music previews in a sleek, navigable layout. The site highlights Kweku's connection to Accra, his innovative fusion of West African rhythms and trap/afrobeats, and positions him as a boundary-pushing voice in contemporary African music.",
+    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Spotify API"],
+    link: "https://kwekusmokenow.com",
+    gallery: [
+      "/projects/kweku/kweku-smoke-2.png",
+      "/projects/kweku/kweku-smoke-3.png",
+      "/projects/kweku/kweku-smoke-4.png",
+      "/projects/kweku/kweku-smoke-5.png",
+    ],
+  },
+  {
+    id: 8,
+    slug: "digigrowth",
+    featured: false,
+    title: "DigiGrowth",
+    short: "DigiGrowth",
+    category: "AGENCY WEBSITE",
+    year: "2023",
     client: "DigiGrowth",
+    image: "/projects/digi-growth.png",
+    hue: 225,
+    summary:
+      "A digital marketing agency website focused on communicating services and driving business growth.",
+    overview:
+      "DigiGrowth is a digital marketing agency that specializes in SEO, PPC, and social media marketing, helping businesses improve their online presence and drive more traffic to their websites.",
+    technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
+    link: "https://digi-growth.vercel.app",
     gallery: [
       "/projects/digi-growth/digi-growth-2.png",
       "/projects/digi-growth/digi-growth-3.png",
@@ -194,41 +405,74 @@ export const projects: ProjectItem[] = [
       "/projects/digi-growth/digi-growth-5.png",
     ],
   },
-  // {
-  //   id: 7,
-  //   date: "2026",
-  //   title: "iTrain Basketball",
-  //   image: "/projects/digi-growth.png",
-  //   summary:
-  //     "iTrain is a leading basketball academy that develops players' skills through daily training and personalized coaching.",
-  //   description:
-  //     "iTrain is a top basketball academy that helps players improve their skills and prepare for professional careers. The academy focuses on daily, intense training to help athletes succeed at higher levels. Coaches provide personalized attention to ensure players stay fully engaged and dedicated to their development.",
-  //   technologies: ["Next.js", "TailwindCSS", "TypeScript", "Prisma", "NextAuth"],
-  //   link: "https://i-train-phi.vercel.app",
-  //   client: "iTrain Basketball",
-  //   gallery: [
-  //     "/projects/itrain/itrain-2.png",
-  //     "/projects/itrain/itrain-3.png",
-  //     "/projects/itrain/itrain-4.png",
-  //     "/projects/itrain/itrain-5.png",
-  //   ],
-  // },
 ];
 
-export interface ContactDetails {
-  /** Shown as the mailto: target and the visible label. */
-  email: string;
-  /**
-   * Digits only, including country code and no "+" or spaces — this is what
-   * wa.me expects (e.g. "233201234567" for +233 20 123 4567).
-   */
-  whatsappNumber: string;
-  /** Human-readable form of the same number, shown to the reader. */
-  whatsappLabel: string;
-}
+export const featuredProjects = projects.filter((p) => p.featured);
+export const otherProjects = projects.filter((p) => !p.featured);
+
+export const projectHref = (slug: string) => `/projects/${slug}`;
+
+export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
+
+/** "Next.js, TypeScript" → "NEXT.JS · TYPESCRIPT" — the mono stack line. */
+export const stackLine = (p: Project) => p.technologies.join(" · ").toUpperCase();
+
+/** Every screen a project has, cover first, without duplicates. */
+export const projectShots = (p: Project) => Array.from(new Set([p.image, ...p.gallery]));
+
+/** Two-digit index label: 1 → "01". */
+export const pad2 = (n: number) => String(n).padStart(2, "0");
 
 export const contact: ContactDetails = {
   email: "k.hoenyefia@gmail.com",
   whatsappNumber: "233557742987",
   whatsappLabel: "+233 55 774 2987",
 };
+
+export const socials: SocialLink[] = [
+  { label: "GITHUB", href: "https://github.com/K-0bby" },
+  { label: "LINKEDIN", href: "https://www.linkedin.com/in/gideon-hoenyefia-74a93a233/" },
+  { label: "X", href: "https://x.com/HoenyefiaGideon" },
+  { label: "WHATSAPP", href: `https://wa.me/${contact.whatsappNumber}` },
+];
+
+/** Leave empty to point the nav "Resume" button at the contact footer. */
+export const RESUME_URL = "";
+
+export const capabilities = [
+  {
+    title: "Frontend Development",
+    items: [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Next.js",
+      "Laravel Blade",
+      "Tailwind CSS",
+    ],
+  },
+  { title: "Mobile & Cross-Platform", items: ["React Native"] },
+  {
+    title: "Backend & Data",
+    items: ["Node.js", "Express.js", "Prisma", "PostgreSQL", "Supabase"],
+  },
+  {
+    title: "Tools & Workflow",
+    items: [
+      "Git",
+      "Responsive Development",
+      "Component Architecture",
+      "Performance Optimization",
+      "Accessibility",
+    ],
+  },
+];
+
+export const processSteps = [
+  { title: "Understand", text: "Understand the problem, users, and desired outcome." },
+  { title: "Architect", text: "Plan maintainable components and scalable solutions." },
+  { title: "Build", text: "Translate designs into responsive, functional interfaces." },
+  { title: "Refine", text: "Test, optimize, and improve the experience." },
+];

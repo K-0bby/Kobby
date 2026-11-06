@@ -1,10 +1,43 @@
-import BackButton from "@/components/ux/back-button";
+import type { Metadata } from "next";
+import Link from "next/link";
+import PageIntro from "@/components/ux/page-intro";
 
-export default function Blog() {
+export const metadata: Metadata = {
+  title: "Blog",
+  description: "Writing by Gideon Hoenyefia — coming soon.",
+};
+
+export default function BlogPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-8 px-4 text-center">
-      <h1 className="text-6xl font-extrabold text-gray-900 md:text-9xl">Coming Soon...</h1>
-      <BackButton fallbackHref="/" />
-    </div>
+    <main>
+      <PageIntro lineDelay={80} fadeDelay={260} />
+      <section className="mx-auto box-border flex min-h-[80vh] max-w-360 flex-col justify-center px-[clamp(20px,5vw,80px)] pt-[clamp(140px,19vh,200px)] pb-[clamp(64px,8vw,112px)]">
+        <span data-fade="" className="eyebrow mb-8 block">
+          BLOG
+        </span>
+        <div className="overflow-hidden pb-[.08em]">
+          <h1
+            data-line=""
+            className="m-0 text-[clamp(56px,10vw,168px)] leading-[.9] font-bold tracking-[-0.065em]"
+          >
+            Coming soon.
+          </h1>
+        </div>
+        <p
+          data-fade=""
+          className="text-ink-2 mt-8 mb-0 max-w-130 text-[clamp(17px,1.35vw,20px)] leading-normal text-pretty"
+        >
+          Notes on building for the web are on the way. Until then, the work speaks for itself.
+        </p>
+        <div data-fade="" className="mt-11">
+          <Link
+            href="/projects"
+            className="border-ink inline-flex items-center gap-2.5 border-b-[1.5px] pb-1 text-[clamp(17px,1.4vw,21px)] font-medium no-underline transition-[gap] duration-250 hover:gap-3.5"
+          >
+            See the projects <span aria-hidden="true">→</span>
+          </Link>
+        </div>
+      </section>
+    </main>
   );
 }
