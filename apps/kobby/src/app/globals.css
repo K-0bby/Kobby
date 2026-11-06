@@ -207,7 +207,9 @@ html[data-theme="dark"] {
     margin: 0;
     background: var(--gh-bg);
     color: var(--gh-tx);
-    overflow-x: hidden;
+    /* Clip sideways overflow without making body a scroll container: Safari
+       otherwise anchors the sticky project cards to body. */
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition:

@@ -220,8 +220,7 @@ export default function Home() {
         aria-labelledby="about-title"
         className="bg-paper-2 mt-[clamp(96px,10vw,140px)] transition-colors duration-250"
       >
-        {/* Phones end on the sliding strip, so the section closes tight
-            beneath it rather than adding a full section gap. */}
+        {/* Phones end on the swipeable strip, so the section closes tight beneath it rather than adding a full section gap. */}
         <div
           className={`mx-auto box-border max-w-360 ${SECTION_X} wide:pb-[clamp(96px,11vw,160px)] pt-[clamp(96px,11vw,160px)] pb-8`}
         >
