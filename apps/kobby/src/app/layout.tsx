@@ -24,7 +24,7 @@ const geistMono = Geist_Mono({
 });
 
 const DESCRIPTION =
-  "Full-stack engineer building fast, intuitive, and beautifully crafted digital products, from the database to the interface.";
+  "Full-stack engineer building fast, intuitive, and beautifully crafted digital products, from the interface to the database.";
 const SITE_TITLE = "Gideon Hoenyefia — Full-Stack Engineer";
 
 export const viewport: Viewport = {

@@ -13,8 +13,13 @@ import Lenis from "lenis";
 
 /** Shared easing + timings, so no raw curve literals end up in components. */
 const SCROLL_EASING = (t: number) => Math.min(1, 1.001 - Math.pow(4, -10 * t));
-const WHEEL_DURATION = 4;
-const SCROLL_DURATION = 2;
+/**
+ * Wheel smoothing: how far the page closes the gap to its target each frame
+ * (0–1). Higher feels tighter and more direct; 0.1 is Lenis's default.
+ */
+const WHEEL_LERP = 0.13;
+/** Duration (s) of programmatic jumps: in-page links, hash scrolls, back-to-top. */
+const SCROLL_DURATION = 1.1;
 const HASH_SETTLE_MS = 100;
 const HASH_OFFSET = -100;
 
@@ -65,8 +70,9 @@ export default function LenisProvider({ children }: LenisProviderProps) {
     }
 
     const instance = new Lenis({
-      duration: WHEEL_DURATION,
-      easing: SCROLL_EASING,
+      // A light follow rather than a long timed glide, so the page stays
+      // under the visitor's hand.
+      lerp: WHEEL_LERP,
       // In-page links (#work, #contact, #top) glide instead of jumping.
       anchors: { duration: SCROLL_DURATION, easing: SCROLL_EASING },
     });

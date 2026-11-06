@@ -169,7 +169,7 @@ export default function Navbar() {
                   </Link>
                 );
               })}
-              <a
+              <Link
                 href={resume}
                 className="group/resume bg-btn text-btn-ink hover:text-btn-ink ml-1.5 flex h-12 items-center gap-2 overflow-hidden rounded-full px-5.5 text-base font-semibold no-underline transition-[opacity,gap] duration-250 hover:gap-3 hover:opacity-90"
               >
@@ -180,7 +180,7 @@ export default function Navbar() {
                 >
                   ↗
                 </span>
-              </a>
+              </Link>
             </div>
           </LayoutGroup>
 

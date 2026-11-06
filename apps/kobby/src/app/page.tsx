@@ -61,7 +61,7 @@ const ABOUT_PHOTOS: StripPhoto[] = [
   },
 ];
 
-const SECTION_X ="px-[clamp(20px,5vw,80px)]";
+const SECTION_X = "px-[clamp(20px,5vw,80px)]";
 const H2 = "m-0 text-[clamp(44px,6vw,96px)] leading-[.95] font-bold tracking-[-0.058em]";
 
 export default function Home() {
@@ -70,19 +70,24 @@ export default function Home() {
       <PageIntro lineDelay={120} lineStep={80} fadeDelay={520} hero />
 
       {/* ------------------------------------------------------------- Hero */}
+      {/* Phones read top to bottom: headline, a line about me, the pass, then
+          the name. Desktop keeps copy left, pass hanging right, name along the
+          foot. */}
       <section
         id="top"
         aria-label="Introduction"
-        className="hero wide:min-h-[max(100vh,880px)] relative overflow-hidden"
+        className="hero wide:block wide:min-h-[max(100vh,880px)] relative flex flex-col overflow-hidden"
       >
-        <BadgeLanyard />
+        <div className="wide:contents order-2">
+          <BadgeLanyard />
+        </div>
 
         <div
-          className={`relative z-2 mx-auto box-border max-w-360 ${SECTION_X} wide:pt-[clamp(150px,21vh,230px)] pt-[calc(900px*var(--badge-s)+24px)] pb-[calc(15vw+48px)]`}
+          className={`relative z-2 order-1 mx-auto box-border w-full max-w-360 ${SECTION_X} wide:pt-[clamp(150px,21vh,230px)] wide:pb-[calc(15vw+48px)] pt-32 pb-12`}
         >
           <h1
             aria-label="I build digital experiences that feel as good as they work."
-            className="wide:max-w-[58%] m-0 max-w-full text-[clamp(38px,6.3vw,112px)] leading-[.98] font-bold tracking-[-0.058em]"
+            className="wide:max-w-[58%] wide:text-[clamp(38px,6.3vw,112px)] m-0 max-w-full text-[clamp(34px,9vw,64px)] leading-[.98] font-bold tracking-[-0.058em]"
           >
             {HEADLINE.map((line) => (
               <span
@@ -98,43 +103,58 @@ export default function Home() {
           </h1>
           <p
             data-fade=""
-            className="text-ink-2 mt-9 mb-0 max-w-125 text-[clamp(17px,1.35vw,20px)] leading-normal text-pretty"
+            className="text-ink-2 wide:mt-9 wide:ml-0 wide:max-w-125 wide:text-left mt-8 mb-0 ml-auto max-w-76 text-right text-[clamp(17px,1.35vw,20px)] leading-normal text-pretty"
           >
             I&apos;m Gideon Hoenyefia, a full-stack engineer turning ambitious ideas into fast,
-            intuitive, and beautifully crafted products, from the database to the interface.
+            intuitive, and beautifully crafted products, from the interface to the database.
           </p>
           <ul
             data-fade=""
-            className="text-ink-2 mt-8 mb-0 flex list-none flex-col gap-2.25 p-0 font-mono text-[clamp(11px,1vw,14px)] tracking-[0.12em]"
+            className="text-ink-2 wide:flex mt-8 mb-0 hidden list-none flex-col gap-2.25 p-0 font-mono text-[clamp(11px,1vw,14px)] tracking-[0.12em]"
           >
             {HERO_FACTS.map((f) => (
               <li key={f}>{f}</li>
             ))}
           </ul>
-          <div data-fade="" className="mt-11 flex flex-wrap items-center gap-8">
-            <a
+          <div data-fade="" className="wide:flex mt-11 hidden flex-wrap items-center gap-8">
+            <Link
               href="#work"
               className="border-ink flex items-center gap-2.5 border-b-[1.5px] pb-1 text-[clamp(17px,1.4vw,21px)] font-medium no-underline transition-[gap] duration-250 hover:gap-3.5"
             >
               See selected work <span aria-hidden="true">↓</span>
-            </a>
-            <a
+            </Link>
+            <Link
               href="#contact"
               className="text-ink-2 hover:text-ink flex items-center gap-2 text-[clamp(15px,1.2vw,18px)] font-medium no-underline transition-colors"
             >
               Let&apos;s Connect <span aria-hidden="true">↗</span>
-            </a>
+            </Link>
           </div>
         </div>
 
+        {/* Desktop: one line along the foot, cropped at the baseline. */}
         <div
           aria-hidden="true"
           data-name=""
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-1 overflow-hidden"
+          className="wide:block pointer-events-none absolute inset-x-0 bottom-0 z-1 hidden overflow-hidden"
         >
           {/* Scaled to exactly span the viewport so the full name always shows. */}
           <FitText className="text-ink translate-x-[-0.035em] translate-y-[0.17em] pr-[0.02em] text-[10.6vw] leading-[.78] font-extrabold tracking-[-0.07em] transition-colors duration-250">
             GIDEON HOENYEFIA
+          </FitText>
+        </div>
+
+        {/* Phones: stacked on two lines, sized so HOENYEFIA spans the width,
+            rising up under the pass. */}
+        <div
+          aria-hidden="true"
+          data-name=""
+          className={`wide:hidden pointer-events-none relative z-0 order-3 mt-0 ${SECTION_X} pb-6`}
+        >
+          <FitText className="text-ink pr-[0.02em] text-[17vw] leading-[.84] font-extrabold tracking-[-0.07em] transition-colors duration-250">
+            GIDEON
+            <br />
+            HOENYEFIA
           </FitText>
         </div>
       </section>
@@ -200,7 +220,11 @@ export default function Home() {
         aria-labelledby="about-title"
         className="bg-paper-2 mt-[clamp(96px,10vw,140px)] transition-colors duration-250"
       >
-        <div className={`mx-auto box-border max-w-360 ${SECTION_X} py-[clamp(96px,11vw,160px)]`}>
+        {/* Phones end on the sliding strip, so the section closes tight
+            beneath it rather than adding a full section gap. */}
+        <div
+          className={`mx-auto box-border max-w-360 ${SECTION_X} wide:pb-[clamp(96px,11vw,160px)] pt-[clamp(96px,11vw,160px)] pb-8`}
+        >
           <span data-reveal="" className="eyebrow mb-10 block">
             02 / ABOUT
           </span>
@@ -212,37 +236,37 @@ export default function Home() {
               Curiosity drives me. Craft defines my work.
             </h2>
             <div className="flex max-w-155 flex-col gap-5.5 pt-2">
-              <p className="m-0 text-[clamp(18px,1.5vw,22px)] leading-[1.6] text-pretty text-ink-2">
+              <p className="text-ink-2 m-0 text-[clamp(18px,1.5vw,22px)] leading-[1.6] text-pretty">
                 I&apos;m a full-stack engineer based in{" "}
-                <Keyword icon={<MapPin weight="fill" />} motion="bounce">
+                <Keyword icon={<MapPin weight="fill" />} motion="bounce" trail=",">
                   Accra
-                </Keyword>
-                , turning abstract ideas into clean, scalable products, from the{" "}
-                <Keyword icon={<Database weight="fill" />} motion="pop">
-                  database
                 </Keyword>{" "}
-                to the{" "}
+                turning abstract ideas into clean, scalable products, from the{" "}
                 <Keyword icon={<Cursor weight="fill" />} motion="wiggle">
                   interface
                 </Keyword>{" "}
-                people actually use.
+                people see to the{" "}
+                <Keyword icon={<Database weight="fill" />} motion="pop">
+                  database
+                </Keyword>{" "}
+                underneath.
               </p>
-              <p className="m-0 text-[17px] leading-[1.7] text-pretty text-ink-2">
+              <p className="text-ink-2 m-0 text-[17px] leading-[1.7] text-pretty">
                 Over 3+ years I&apos;ve shipped an{" "}
                 <Keyword icon={<IdentificationBadge weight="fill" />} motion="flip">
                   accreditation platform
                 </Keyword>{" "}
-                for an international athletics event, a{" "}
+                for the African Athletics Championships, a{" "}
                 <Keyword icon={<Compass weight="fill" />} motion="spin">
-                  directory
+                  business directory
                 </Keyword>{" "}
-                connecting Ghanaians across Ghana and the UK, and{" "}
+                connecting Ghanaian businesses and communities across Ghana and the UK, and{" "}
                 <Keyword icon={<PencilSimpleLine weight="fill" />} motion="wiggle">
                   CMS-powered sites
                 </Keyword>{" "}
-                that small teams run themselves.
+                that let small teams manage their own content.
               </p>
-              <p className="m-0 text-[17px] leading-[1.7] text-pretty text-ink-2">
+              <p className="text-ink-2 m-0 text-[17px] leading-[1.7] text-pretty">
                 I believe code should be efficient, maintainable, and purposeful. Alongside
                 building, I&apos;m drawn to{" "}
                 <Keyword icon={<ShieldCheck weight="fill" />} motion="pop">
@@ -250,27 +274,26 @@ export default function Home() {
                 </Keyword>{" "}
                 and the part it plays in products people can trust.
               </p>
-              <p className="m-0 text-[17px] leading-[1.7] text-pretty text-ink-2">
+              <p className="text-ink-2 m-0 text-[17px] leading-[1.7] text-pretty">
                 Off the keyboard you&apos;ll find me on the{" "}
-                <Keyword icon={<Basketball weight="fill" />} motion="spin">
+                <Keyword icon={<Basketball weight="fill" />} motion="spin" trail=",">
                   basketball court
-                </Keyword>
-                , deep in a{" "}
-                <Keyword icon={<Flask weight="fill" />} motion="wiggle">
+                </Keyword>{" "}
+                deep in a{" "}
+                <Keyword icon={<Flask weight="fill" />} motion="wiggle" trail=",">
                   side project
-                </Keyword>
-                , or with a good{" "}
-                <Keyword icon={<BookOpen weight="fill" />} motion="flip">
+                </Keyword>{" "}
+                or with a good{" "}
+                <Keyword icon={<BookOpen weight="fill" />} motion="flip" trail=".">
                   book
                 </Keyword>
-                .
               </p>
-              <a
+              <Link
                 href="#capabilities"
                 className="border-ink mt-2 flex items-center gap-2.5 self-start border-b-[1.5px] pb-0.75 text-base font-semibold no-underline transition-[gap] duration-250 hover:gap-4"
               >
                 More about me <span aria-hidden="true">→</span>
-              </a>
+              </Link>
             </div>
           </div>
           <div data-reveal="" className="mt-[clamp(56px,7vw,96px)]">
@@ -283,7 +306,7 @@ export default function Home() {
       <section
         id="capabilities"
         aria-labelledby="cap-title"
-        className={`mx-auto box-border max-w-360 ${SECTION_X} py-[clamp(96px,11vw,160px)]`}
+        className={`mx-auto box-border max-w-360 ${SECTION_X} wide:pt-[clamp(96px,11vw,160px)] pt-16 pb-[clamp(96px,11vw,160px)]`}
       >
         <div data-reveal="" className="mb-[clamp(48px,6vw,80px)] flex flex-col gap-7">
           <span className="eyebrow">03 / CAPABILITIES</span>

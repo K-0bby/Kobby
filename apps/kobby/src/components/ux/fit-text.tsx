@@ -7,12 +7,18 @@ import { cn } from "@repo/ui";
 const MEASURE_PX = 100;
 
 /**
- * A single line of display text sized to exactly fill its container's width,
+ * Display text sized so its widest line exactly fills its container's width,
  * re-fitted on resize and once webfonts load. The className should carry a
  * `text-[…vw]` fallback close to the fitted size so the server render (and
  * no-JS) is already near-correct.
  */
-export default function FitText({ children, className }: { children: string; className?: string }) {
+export default function FitText({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -21,9 +27,14 @@ export default function FitText({ children, className }: { children: string; cla
     if (!el || !box) return;
 
     const fit = () => {
+      // Fit to the content box: clientWidth includes the container's padding,
+      // which would push the text past its gutter.
+      const cs = getComputedStyle(box);
+      const avail =
+        box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
       el.style.fontSize = `${MEASURE_PX}px`;
       const w = el.scrollWidth;
-      if (w) el.style.fontSize = `${((MEASURE_PX * box.clientWidth) / w).toFixed(2)}px`;
+      if (w && avail > 0) el.style.fontSize = `${((MEASURE_PX * avail) / w).toFixed(2)}px`;
     };
     fit();
     document.fonts?.ready.then(fit);

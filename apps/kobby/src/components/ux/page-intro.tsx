@@ -69,8 +69,8 @@ export default function PageIntro({
     });
 
     if (hero) {
-      const name = main?.querySelector<HTMLElement>("[data-name] > div");
-      if (name) {
+      // Desktop and phone each have their own name block; animate whichever shows.
+      main?.querySelectorAll<HTMLElement>("[data-name] > div").forEach((name) => {
         anims.push(
           name.animate(
             [
@@ -80,7 +80,7 @@ export default function PageIntro({
             { duration: DURATION.name, delay: NAME_DELAY, easing: EASE_OUT, fill: "backwards" }
           )
         );
-      }
+      });
       const badge = document.querySelector<HTMLElement>("[data-badge-layer]");
       if (badge) {
         anims.push(

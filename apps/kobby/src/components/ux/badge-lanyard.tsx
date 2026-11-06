@@ -26,8 +26,15 @@ const MIN_DRAG_DT = 0.008;
 /** Card yaw from angular velocity, and its clamp (deg). */
 const YAW_GAIN = 0.06;
 const YAW_LIMIT = 10;
-/** Distance (px, unscaled) from the layer's top to the strap pivot. */
+/** Distance (px, unscaled) from the layer's top to the strap pivot (desktop). */
 const PIVOT_OFFSET = 80;
+/**
+ * On phones the pass sits in the page flow, so the strap reaches up from it:
+ * strap (400) + clip (77) − overlap (34) = 443px above the layer's top.
+ */
+const MOBILE_PIVOT_OFFSET = 443;
+/** On phones the pass rests with a slight lean. */
+const MOBILE_REST_TILT = -4;
 const DESKTOP = "(min-width: 980px)";
 
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
@@ -52,9 +59,12 @@ export default function BadgeLanyard() {
     if (!layer || !rig || !holder) return;
     if (prefersReducedMotion()) return;
 
+    const desktop = window.matchMedia(DESKTOP);
+    const restAngle = () => (desktop.matches ? 0 : MOBILE_REST_TILT);
+
     let th = START_ANGLE; // angle (deg)
     let om = 0; // angular velocity (deg/s)
-    let target = 0;
+    let target = restAngle();
     let dragging = false;
     let grabOff = 0;
     let dragT = 0;
@@ -67,7 +77,9 @@ export default function BadgeLanyard() {
 
     const pivot = () => {
       const r = layer.getBoundingClientRect();
-      return { x: r.left + r.width / 2, y: r.top - PIVOT_OFFSET * scale() };
+      // Both swing from the top of the strap; on phones that's far above.
+      const offset = (desktop.matches ? PIVOT_OFFSET : MOBILE_PIVOT_OFFSET) * scale();
+      return { x: r.left + r.width / 2, y: r.top - offset };
     };
 
     const angleTo = (x: number, y: number) => {
@@ -83,7 +95,7 @@ export default function BadgeLanyard() {
         om = om * 0.5 + ((nt - th) / dt) * 0.5;
         th = nt;
         dragT = now;
-      } else if (e.pointerType === "mouse") {
+      } else if (e.pointerType === "mouse" && desktop.matches) {
         const p = pivot();
         target = clamp(
           (-(e.clientX - p.x) / window.innerWidth) * SWAY_GAIN,
@@ -136,6 +148,12 @@ export default function BadgeLanyard() {
       raf = requestAnimationFrame(loop);
     };
 
+    // Crossing the breakpoint swaps between strap and lean.
+    const onBreakpoint = () => {
+      target = restAngle();
+    };
+    desktop.addEventListener("change", onBreakpoint);
+
     // Skip style writes while the hero is scrolled away.
     const io = new IntersectionObserver(([e]) => {
       visible = !!e?.isIntersecting;
@@ -151,6 +169,7 @@ export default function BadgeLanyard() {
     return () => {
       cancelAnimationFrame(raf);
       io.disconnect();
+      desktop.removeEventListener("change", onBreakpoint);
       holder.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
@@ -162,14 +181,17 @@ export default function BadgeLanyard() {
     <div
       ref={layerRef}
       data-badge-layer=""
-      className="wide:left-[calc(100%-clamp(210px,21vw,360px))] absolute top-0 left-1/2 z-3 -ml-42.5 h-px w-85 origin-[170px_0] scale-(--badge-s)"
+      // Phones: the pass sits in the hero's flow, centred, its height reserved
+      // at the scaled size. Desktop: it hangs from the top on its strap.
+      className="wide:absolute wide:top-0 wide:left-[calc(100%-clamp(210px,21vw,360px))] wide:-ml-42.5 wide:h-px wide:z-3 relative z-1 mx-auto h-[calc(512px*var(--badge-s))] w-85 shrink-0 origin-[170px_0] scale-(--badge-s)"
     >
       <div
         ref={rigRef}
-        className="absolute -top-20 left-0 w-85 origin-[170px_0] will-change-transform"
+        className="wide:-top-20 absolute -top-110.75 left-0 w-85 origin-[170px_0] will-change-transform"
       >
-        {/* Strap */}
-        <div aria-hidden="true" className="relative h-100">
+        {/* Strap — on phones it runs up behind the headline, so it's kept
+            faint enough to read through. */}
+        <div aria-hidden="true" className="wide:opacity-100 relative h-100 opacity-25">
           <div className="lanyard-strap lanyard-strap--left">
             <div className="lanyard-stitch" />
             <div className="lanyard-text rotate-180">
@@ -186,7 +208,10 @@ export default function BadgeLanyard() {
         </div>
 
         {/* Clip */}
-        <div aria-hidden="true" className="relative z-3 mt-3.5 -mb-8.5 flex flex-col items-center">
+        <div
+          aria-hidden="true"
+          className="relative z-3 mt-3.5 -mb-8.5 flex flex-col items-center"
+        >
           <div className="lanyard-clip-ring" />
           <div className="lanyard-clip-bar" />
           <div className="lanyard-clip-hook" />

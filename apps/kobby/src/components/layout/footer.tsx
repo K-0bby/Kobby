@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import CopyEmailButton from "@/components/ux/copy-email-button";
 import LocalTime from "@/components/ux/local-time";
 import { useLenis } from "@/provider/lenis-provider";
@@ -92,17 +93,17 @@ export default function Footer() {
 
         <div className="mt-[clamp(48px,6vw,80px)] flex flex-wrap items-center justify-between gap-x-12 gap-y-7">
           <div className="flex min-w-0 flex-wrap items-center gap-4.5">
-            <a
+            <Link
               href={`mailto:${contact.email}`}
               className="hover:text-signal text-[clamp(24px,3.4vw,52px)] font-medium tracking-[-0.035em] wrap-anywhere text-[#F5F5F2] no-underline transition-colors duration-150"
             >
               {contact.email}
-            </a>
+            </Link>
             <CopyEmailButton email={contact.email} />
           </div>
           <div className="flex flex-wrap gap-x-7 gap-y-3">
             {socials.map((s) => (
-              <a
+              <Link
                 key={s.label}
                 href={s.href}
                 target="_blank"
@@ -111,7 +112,7 @@ export default function Footer() {
               >
                 {s.label}
                 <span aria-hidden="true">↗</span>
-              </a>
+              </Link>
             ))}
           </div>
         </div>

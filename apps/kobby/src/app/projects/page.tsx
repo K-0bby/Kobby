@@ -64,19 +64,24 @@ export default function ProjectsPage() {
               key={p.slug}
               data-view=""
               href={projectHref(p.slug)}
-              className="border-line ease-out-soft flex flex-wrap items-baseline gap-x-8 gap-y-2 border-b py-5 text-inherit no-underline transition-[padding,background-color] duration-350 hover:pl-4"
+              className="border-line ease-out-soft wide:flex wide:flex-wrap wide:gap-x-8 wide:py-5 wide:hover:pl-4 grid grid-cols-[auto_minmax(0,1fr)_auto] items-baseline gap-x-3 gap-y-2 border-b py-4 text-inherit no-underline transition-[padding,background-color] duration-350"
             >
-              <span className="text-ink-3 flex-[0_0_40px] font-mono text-xs">{pad2(i + 1)}</span>
-              <span className="flex-[1_1_240px] text-[clamp(20px,1.8vw,26px)] font-semibold tracking-[-0.03em]">
+              <span className="text-ink-3 wide:flex-[0_0_40px] col-start-1 row-start-1 font-mono text-xs">
+                {pad2(i + 1)}
+              </span>
+              <span className="wide:flex-[1_1_240px] col-start-2 row-start-1 min-w-0 text-[clamp(20px,1.8vw,26px)] font-semibold tracking-[-0.03em]">
                 {p.short}
               </span>
-              <span className="text-ink-2 flex-[0_1_200px] font-mono text-[11px] font-medium tracking-[0.14em]">
+              <span className="text-ink-2 wide:flex-[0_1_200px] col-span-2 col-start-2 row-start-2 font-mono text-[11px] font-medium tracking-[0.14em]">
                 {p.category}
               </span>
-              <span className="text-ink-3 flex-[2_1_320px] font-mono text-xs leading-[1.7] tracking-[0.08em]">
+              <span className="text-ink-3 wide:flex-[2_1_320px] col-span-2 col-start-2 row-start-3 min-w-0 font-mono text-xs leading-[1.7] tracking-[0.08em]">
                 {stackLine(p)}
               </span>
-              <span aria-hidden="true" className="flex-none text-lg">
+              <span
+                aria-hidden="true"
+                className="col-start-3 row-start-1 flex-none justify-self-end text-lg"
+              >
                 ↗
               </span>
             </Link>

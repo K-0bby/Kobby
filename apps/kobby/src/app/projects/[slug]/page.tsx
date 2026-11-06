@@ -82,7 +82,7 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
       v: (
         <span className="flex flex-wrap gap-x-4 gap-y-1">
           {links.map((l) => (
-            <a
+            <Link
               key={l.href}
               href={l.href}
               target="_blank"
@@ -90,7 +90,7 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
               className="border-ink flex items-center gap-1.5 border-b no-underline transition-[gap] duration-250 hover:gap-2.5"
             >
               {l.label} <span aria-hidden="true">↗</span>
-            </a>
+            </Link>
           ))}
         </span>
       ),
