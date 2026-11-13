@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Arrow from "@/components/ux/arrow";
 
 const TICK_MS = 15_000;
 
@@ -35,7 +36,7 @@ export default function LocalTime() {
     <span className="inline-flex items-center gap-2">
       <span>ACCRA, GH</span>
       <span aria-hidden="true" className="text-signal">
-        →
+        <Arrow dir="right" />
       </span>
       <time aria-label={time ? `Local time in Accra: ${time}` : "Local time in Accra"} className="tabular-nums text-[#D6D6DA]">
         {h}

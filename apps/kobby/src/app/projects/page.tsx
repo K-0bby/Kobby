@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageIntro from "@/components/ux/page-intro";
-import CaseStudyCard from "@/components/projects/case-study-card";
-import OtherWorkCard from "@/components/projects/other-work-card";
-import {
-  featuredProjects,
-  otherProjects,
-  pad2,
-  projectHref,
-  projects,
-  stackLine,
-} from "@/data/data";
+import StackedProjects from "@/components/projects/stacked-projects";
+import Arrow from "@/components/ux/arrow";
+import { featuredProjects, pad2, projectHref, projects, stackLine } from "@/data/data";
+import { H2, H2_COUNT, LEDE, SECTION_HEAD } from "@/lib/typography";
+import { tintStyle } from "@/lib/tint";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -20,19 +15,21 @@ export const metadata: Metadata = {
 
 const SECTION = "mx-auto box-border max-w-360 px-[clamp(20px,5vw,80px)]";
 
+/**
+ * Projects, in three beats: the intro, the case studies (the strongest,
+ * most visual work, as the same card deck as the home page), then the full
+ * index of everything for scanning.
+ */
 export default function ProjectsPage() {
   return (
     <main>
       <PageIntro lineDelay={80} lineStep={90} fadeDelay={380} />
 
-      {/* ------------------------------------------------------- Intro + index */}
+      {/* --------------------------------------------------------------- Intro */}
       <section
         aria-labelledby="pj-title"
         className={`${SECTION} pt-[clamp(150px,20vh,220px)] pb-[clamp(64px,8vw,112px)]`}
       >
-        <span data-fade="" className="eyebrow mb-8 block">
-          PROJECTS / {pad2(projects.length)}
-        </span>
         <h1
           id="pj-title"
           aria-label="Projects I've built, and how they came together."
@@ -52,13 +49,39 @@ export default function ProjectsPage() {
         </h1>
         <p
           data-fade=""
-          className="text-ink-2 mt-8 mb-0 max-w-135 text-[clamp(17px,1.35vw,20px)] leading-normal text-pretty"
+          className="text-ink-2 mt-8 mb-0 max-w-135 text-[18px] leading-normal text-pretty"
         >
-          Platforms, directories, and websites built end to end, from data models through to the
-          interfaces people use.
+          Platforms, directories, and websites built end to end, from the interface to the data
+          models underneath.
         </p>
+      </section>
 
-        <div data-fade="" className="border-ink mt-[clamp(56px,7vw,96px)] border-t">
+      {/* -------------------------------------------------------- Case studies */}
+      <section aria-labelledby="cs-title" className={`${SECTION} pb-[clamp(96px,11vw,160px)]`}>
+        <div data-reveal="" className={SECTION_HEAD}>
+          <h2 id="cs-title" className={H2}>
+            Case studies
+            <span className={H2_COUNT}>({pad2(featuredProjects.length)})</span>
+          </h2>
+          <p className={LEDE}>
+            The work I&apos;d show first: what each project solved, how it&apos;s built, and a
+            walk through the screens.
+          </p>
+        </div>
+        <StackedProjects projects={featuredProjects} />
+      </section>
+
+      {/* -------------------------------------------------------- All projects */}
+      <section aria-labelledby="all-title" className={`${SECTION} pb-[clamp(96px,11vw,160px)]`}>
+        <div data-reveal="" className={SECTION_HEAD}>
+          <h2 id="all-title" className={H2}>
+            All projects
+            <span className={H2_COUNT}>({pad2(projects.length)})</span>
+          </h2>
+          <p className={LEDE}>Everything I&apos;ve built, at a glance. Open any one for the full story.</p>
+        </div>
+
+        <div data-reveal="" className="border-ink border-t">
           {projects.map((p, i) => (
             <Link
               key={p.slug}
@@ -71,6 +94,11 @@ export default function ProjectsPage() {
               </span>
               <span className="wide:flex-[1_1_240px] col-start-2 row-start-1 min-w-0 text-[clamp(20px,1.8vw,26px)] font-semibold tracking-[-0.03em]">
                 {p.short}
+                {p.status === "in-progress" && (
+                  <span className="tint-ink ml-3 align-middle font-mono text-[10px] font-medium tracking-[0.16em]" style={tintStyle(p.hue, p.brand)}>
+                    ● IN PROGRESS
+                  </span>
+                )}
               </span>
               <span className="text-ink-2 wide:flex-[0_1_200px] col-span-2 col-start-2 row-start-2 font-mono text-[11px] font-medium tracking-[0.14em]">
                 {p.category}
@@ -82,38 +110,9 @@ export default function ProjectsPage() {
                 aria-hidden="true"
                 className="col-start-3 row-start-1 flex-none justify-self-end text-lg"
               >
-                ↗
+                <Arrow dir="up-right" />
               </span>
             </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* -------------------------------------------------------- Case studies */}
-      <section aria-labelledby="cs-title" className={`${SECTION} pb-[clamp(96px,11vw,160px)]`}>
-        <div data-reveal="" className="mb-8 flex items-center justify-between gap-4">
-          <h2 id="cs-title" className="eyebrow m-0">
-            01 / CASE STUDIES
-          </h2>
-          <span className="eyebrow">{pad2(featuredProjects.length)} PROJECTS</span>
-        </div>
-        <div className="flex flex-col gap-6">
-          {featuredProjects.map((p, i) => (
-            <CaseStudyCard key={p.slug} project={p} index={i} />
-          ))}
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------------- Other work */}
-      <section aria-labelledby="ow-title" className={`${SECTION} pb-[clamp(96px,11vw,160px)]`}>
-        <div data-reveal="" className="mb-8 flex items-center justify-between gap-4">
-          <h2 id="ow-title" className="eyebrow m-0">
-            02 / OTHER WORK
-          </h2>
-        </div>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] gap-x-6 gap-y-12">
-          {otherProjects.map((p) => (
-            <OtherWorkCard key={p.slug} project={p} />
           ))}
         </div>
       </section>

@@ -7,6 +7,7 @@ import LocalTime from "@/components/ux/local-time";
 import { useLenis } from "@/provider/lenis-provider";
 import { contact, socials } from "@/data/data";
 import { DURATION, EASE_OUT, prefersReducedMotion } from "@/lib/motion";
+import Arrow from "@/components/ux/arrow";
 
 /** Font size used to measure the outlined name before scaling it to fit. */
 const MEASURE_PX = 100;
@@ -86,7 +87,7 @@ export default function Footer() {
         >
           Have something worth <span className="text-signal">building</span>?
         </h2>
-        <p className="mt-7 max-w-125 text-[clamp(17px,1.35vw,20px)] leading-normal text-pretty text-[#A3A3AA]">
+        <p className="mt-7 max-w-125 text-[18px] leading-normal text-pretty text-[#A3A3AA]">
           I&apos;m always interested in thoughtful ideas, ambitious products, and meaningful
           collaborations.
         </p>
@@ -111,7 +112,7 @@ export default function Footer() {
                 className="hover:text-signal flex items-center gap-1.5 font-mono text-[13px] font-medium tracking-[0.16em] text-[#D6D6DA] no-underline transition-[color,gap] duration-250 hover:gap-2.5"
               >
                 {s.label}
-                <span aria-hidden="true">↗</span>
+                <Arrow dir="up-right" />
               </Link>
             ))}
           </div>
@@ -135,7 +136,7 @@ export default function Footer() {
             onClick={toTop}
             className="hover:text-signal flex cursor-pointer items-center gap-2 border-0 bg-transparent px-0 py-1.5 font-[inherit] tracking-[0.2em] text-[#D6D6DA] transition-[color,gap] duration-250 hover:gap-3"
           >
-            BACK TO TOP <span aria-hidden="true">↑</span>
+            BACK TO TOP <Arrow dir="up" />
           </button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageIntro from "@/components/ux/page-intro";
+import Arrow from "@/components/ux/arrow";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -25,16 +26,16 @@ export default function BlogPage() {
         </div>
         <p
           data-fade=""
-          className="text-ink-2 mt-8 mb-0 max-w-130 text-[clamp(17px,1.35vw,20px)] leading-normal text-pretty"
+          className="text-ink-2 mt-8 mb-0 max-w-130 text-[18px] leading-normal text-pretty"
         >
           Notes on building for the web are on the way. Until then, the work speaks for itself.
         </p>
         <div data-fade="" className="mt-11">
           <Link
             href="/projects"
-            className="border-ink inline-flex items-center gap-2.5 border-b-[1.5px] pb-1 text-[clamp(17px,1.4vw,21px)] font-medium no-underline transition-[gap] duration-250 hover:gap-3.5"
+            className="border-ink inline-flex items-center gap-2.5 border-b-[1.5px] pb-1 text-[16px] font-medium no-underline transition-[gap] duration-250 hover:gap-3.5"
           >
-            See the projects <span aria-hidden="true">→</span>
+            See the projects <Arrow dir="right" />
           </Link>
         </div>
       </section>

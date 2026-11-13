@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { CURSOR_LERP } from "@/lib/motion";
+import Arrow from "@/components/ux/arrow";
 
 /** Off-screen park position until the pointer first moves. */
 const PARKED = -200;
@@ -73,7 +74,7 @@ export default function ViewCursor() {
         className="absolute -top-14 -left-14 flex size-28 flex-col items-center justify-center gap-1.5 rounded-full bg-btn font-mono text-[13px] font-medium tracking-[0.18em] text-btn-ink shadow-[0_20px_40px_-12px_rgb(0_0_0/0.35)] transition-transform duration-400 ease-out-soft"
       >
         <span>VIEW</span>
-        <span>↗</span>
+        <Arrow dir="up-right" />
       </div>
     </div>
   );

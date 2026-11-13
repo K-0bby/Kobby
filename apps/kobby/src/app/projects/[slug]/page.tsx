@@ -5,8 +5,10 @@ import { notFound, permanentRedirect } from "next/navigation";
 import PageIntro from "@/components/ux/page-intro";
 import ParallaxImage from "@/components/ux/parallax-image";
 import Walkthrough from "@/components/projects/walkthrough";
+import { tintStyle } from "@/lib/tint";
 import { getProject, pad2, projectHref, projects } from "@/data/data";
 import type { Project } from "@/types/project";
+import Arrow from "@/components/ux/arrow";
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -23,7 +25,7 @@ export async function generateMetadata(props: PageProps<"/projects/[slug]">): Pr
     openGraph: {
       title: `${p.title} — Gideon Hoenyefia`,
       description: p.summary,
-      images: [p.image],
+      images: p.image ? [p.image] : undefined,
     },
   };
 }
@@ -89,7 +91,7 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
               rel="noopener noreferrer"
               className="border-ink flex items-center gap-1.5 border-b no-underline transition-[gap] duration-250 hover:gap-2.5"
             >
-              {l.label} <span aria-hidden="true">↗</span>
+              {l.label} <Arrow dir="up-right" />
             </Link>
           ))}
         </span>
@@ -111,7 +113,7 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
             href="/projects"
             className="text-ink-2 hover:text-ink flex items-center gap-2 font-mono text-[13px] font-medium tracking-[0.14em] no-underline transition-[gap,color] duration-250 hover:gap-3.5"
           >
-            <span aria-hidden="true">←</span> ALL PROJECTS
+            <Arrow dir="left" /> ALL PROJECTS
           </Link>
           <span className="eyebrow">
             CASE STUDY {pad2(i + 1)} / {pad2(projects.length)}
@@ -131,7 +133,7 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
         </div>
         <p
           data-fade=""
-          className="text-ink-2 mt-8 mb-0 max-w-180 text-[clamp(18px,1.5vw,22px)] leading-normal text-pretty"
+          className="text-ink-2 mt-8 mb-0 max-w-180 text-[18px] leading-normal text-pretty"
         >
           {p.summary}
         </p>
@@ -152,14 +154,28 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
 
       {/* ---------------------------------------------------------- Hero shot */}
       <section aria-label="Project hero image" className={SECTION}>
-        <div
-          data-reveal=""
-          className="bg-panel-a relative aspect-video overflow-hidden rounded-[20px]"
-        >
-          <div className="absolute inset-[clamp(20px,4.5vw,72px)_clamp(20px,6vw,110px)_0] overflow-hidden rounded-t-xl bg-white shadow-[0_30px_60px_-30px_rgb(0_0_0/0.5),0_0_0_1px_rgb(0_0_0/0.06)]">
-            <ParallaxImage src={p.image} alt={alt} />
+        {p.image ? (
+          <div
+            data-reveal=""
+            className="bg-panel-a relative aspect-video overflow-hidden rounded-[20px]"
+          >
+            <div className="absolute inset-[clamp(20px,4.5vw,72px)_clamp(20px,6vw,110px)_0] overflow-hidden rounded-t-xl bg-white shadow-[0_30px_60px_-30px_rgb(0_0_0/0.5),0_0_0_1px_rgb(0_0_0/0.06)]">
+              <ParallaxImage src={p.image} alt={alt} />
+            </div>
           </div>
-        </div>
+        ) : (
+          // Work in progress without screenshots yet: hold the space in the
+          // project's colour.
+          <div
+            data-reveal=""
+            style={tintStyle(p.hue, p.brand)}
+            className="shot-panel shot-panel--deep relative grid aspect-video place-items-center overflow-hidden rounded-[20px]"
+          >
+            <span className="rounded-full bg-black/35 px-3.5 py-2 font-mono text-[12px] font-medium tracking-[0.16em] text-white/85 backdrop-blur-sm">
+              SCREENS COMING SOON
+            </span>
+          </div>
+        )}
       </section>
 
       {/* --------------------------------------------------------- Case study */}
@@ -181,7 +197,7 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
             </div>
             <div className="max-w-180">
               {"text" in s ? (
-                <p className="m-0 text-[clamp(18px,1.5vw,21px)] leading-[1.55] text-pretty">
+                <p className="m-0 text-[16px] leading-[1.55] text-pretty">
                   {s.text}
                 </p>
               ) : (
@@ -189,7 +205,7 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
                   {s.list.map((t, n) => (
                     <li
                       key={t}
-                      className="border-line flex items-baseline gap-5 border-b py-4.5 text-lg leading-[1.45]"
+                      className="border-line flex items-baseline gap-5 border-b py-4.5 text-[16px] leading-[1.45]"
                     >
                       <span className="text-ink-3 min-w-6 font-mono text-xs">{pad2(n + 1)}</span>
                       {t}
@@ -218,7 +234,7 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
             </h2>
           </div>
           <div data-reveal="">
-            <Walkthrough steps={p.walkthrough} hue={p.hue} name={p.title} />
+            <Walkthrough steps={p.walkthrough} hue={p.hue} brand={p.brand} name={p.title} />
           </div>
         </section>
       ) : null}
@@ -267,7 +283,7 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
           href={projectHref(next.slug)}
           className={`${SECTION} ease-out-soft block py-[clamp(64px,8vw,120px)] text-inherit no-underline transition-[padding] duration-400 hover:pl-[clamp(36px,6vw,104px)]`}
         >
-          <span className="eyebrow mb-6 block">NEXT PROJECT →</span>
+          <span className="eyebrow mb-6 flex items-center gap-2">NEXT PROJECT <Arrow dir="right" /></span>
           <span className="block text-[clamp(44px,8vw,140px)] leading-[.92] font-bold tracking-[-0.06em] text-balance">
             {next.short}
           </span>

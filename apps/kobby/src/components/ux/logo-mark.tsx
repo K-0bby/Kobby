@@ -10,7 +10,7 @@ export default function LogoMark({ className }: { className?: string }) {
       // Landing spot for the preloader's monogram as it flies into the nav.
       data-logo-mark=""
       className={cn(
-        "relative flex size-11.5 items-center justify-center rounded-full bg-mark text-[17px] font-black tracking-[-0.08em] text-[#FAFAF8] shadow-[inset_0_0_0_1px_rgb(255_255_255/0.12)] transition-transform duration-250 ease-out",
+        "relative flex size-10 items-center justify-center rounded-full bg-mark text-[15px] font-black tracking-[-0.08em] text-[#FAFAF8] shadow-[inset_0_0_0_1px_rgb(255_255_255/0.12)] transition-transform duration-250 ease-out",
         className
       )}
     >

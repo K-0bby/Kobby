@@ -41,7 +41,7 @@ export default function Keyword({ children, icon, motion, trail }: KeywordProps)
       >
         {icon}
       </span>
-      {trail && <span className="-ml-0.5">{trail}</span>}
+      {trail && <span className="-ml-1">{trail}</span>}
     </span>
   );
 }

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@repo/ui";
 import { EASE_OUT_BEZIER, REEL } from "@/lib/motion";
+import { tintStyle } from "@/lib/tint";
 
 interface ShotStageProps {
   shots: string[];
@@ -13,6 +14,8 @@ interface ShotStageProps {
   alts: string[];
   /** Hue (0–360) of the panel tint. */
   hue: number;
+  /** Exact brand colour, overriding the hue-derived tint. */
+  brand?: string;
   sizes: string;
   className?: string;
   children?: React.ReactNode;
@@ -28,6 +31,7 @@ export default function ShotStage({
   active,
   alts,
   hue,
+  brand,
   sizes,
   className,
   children,
@@ -38,7 +42,7 @@ export default function ShotStage({
   return (
     <div
       // The tint hue is per project; light/dark lightness lives in CSS.
-      style={{ ["--tint-h" as string]: hue }}
+      style={tintStyle(hue, brand)}
       className={cn("shot-panel relative overflow-hidden", className)}
     >
       <div className="absolute top-[9%] right-0 bottom-0 left-[7%] overflow-hidden rounded-tl-2xl bg-white shadow-[0_30px_60px_-30px_rgb(0_0_0/0.5),0_0_0_1px_rgb(0_0_0/0.06)]">

@@ -384,13 +384,42 @@ html.preloading {
 
 /* --- Project panel tints --------------------------------------------------
    Each project sets --tint-h (a hue); lightness and chroma are fixed here so
-   every tint sits in the same soft family, deepened for dark mode. */
+   every tint sits in the same soft family, deepened for dark mode. A project
+   with an exact brand colour overrides them via --panel-* / --tint-* (lib/tint.ts). */
 .shot-panel {
-  background: oklch(0.9 0.055 var(--tint-h));
+  background: var(--panel-soft, oklch(0.9 0.055 var(--tint-h)));
   transition: background-color 0.25s ease;
 }
 html[data-theme="dark"] .shot-panel {
-  background: oklch(0.32 0.05 var(--tint-h));
+  background: var(--panel-soft-dark, oklch(0.32 0.05 var(--tint-h)));
+}
+/* Featured cards: a rich, lit-from-the-corner version of the same hue. */
+.shot-panel.shot-panel--deep,
+html[data-theme="dark"] .shot-panel.shot-panel--deep {
+  background: var(
+    --panel-deep,
+    radial-gradient(
+      130% 95% at 12% 0%,
+      oklch(0.62 0.12 var(--tint-h)),
+      oklch(0.36 0.08 var(--tint-h)) 55%,
+      oklch(0.2 0.04 var(--tint-h))
+    )
+  );
+}
+
+/* Text and tiles tinted with a project's hue (set --tint-h on an ancestor). */
+.tint-ink {
+  color: var(--tint-ink, oklch(0.52 0.15 var(--tint-h)));
+}
+html[data-theme="dark"] .tint-ink {
+  color: var(--tint-ink-dark, oklch(0.78 0.12 var(--tint-h)));
+}
+.tint-tile {
+  background: var(
+    --tint-tile,
+    linear-gradient(145deg, oklch(0.62 0.14 var(--tint-h)), oklch(0.46 0.12 var(--tint-h)))
+  );
+  color: #fff;
 }
 
 /* Striped placeholder for a missing screenshot. */

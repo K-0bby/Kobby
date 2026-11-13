@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Arrow from "@/components/ux/arrow";
 
 export default function NotFound() {
   return (
@@ -11,15 +12,15 @@ export default function NotFound() {
         <div className="mt-11 flex flex-wrap items-center gap-8">
           <Link
             href="/"
-            className="border-ink inline-flex items-center gap-2.5 border-b-[1.5px] pb-1 text-[clamp(17px,1.4vw,21px)] font-medium no-underline transition-[gap] duration-250 hover:gap-3.5"
+            className="border-ink inline-flex items-center gap-2.5 border-b-[1.5px] pb-1 text-[16px] font-medium no-underline transition-[gap] duration-250 hover:gap-3.5"
           >
-            Back home <span aria-hidden="true">→</span>
+            Back home <Arrow dir="right" />
           </Link>
           <Link
             href="/projects"
-            className="text-ink-2 hover:text-ink text-[clamp(15px,1.2vw,18px)] font-medium no-underline transition-colors"
+            className="text-ink-2 hover:text-ink text-[15px] font-medium no-underline transition-colors"
           >
-            All projects ↗
+            All projects <Arrow dir="up-right" />
           </Link>
         </div>
       </section>

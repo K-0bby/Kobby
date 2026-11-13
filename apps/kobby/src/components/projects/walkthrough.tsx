@@ -10,6 +10,8 @@ import { EASE_OUT_BEZIER, WALKTHROUGH } from "@/lib/motion";
 interface WalkthroughProps {
   steps: WalkthroughStep[];
   hue: number;
+  /** Exact brand colour, overriding the hue-derived tint. */
+  brand?: string;
   /** Project name, used in screen alt text. */
   name: string;
 }
@@ -21,7 +23,7 @@ interface WalkthroughProps {
  * can be chosen directly, which hands control to the visitor and stops the
  * auto-advance.
  */
-export default function Walkthrough({ steps, hue, name }: WalkthroughProps) {
+export default function Walkthrough({ steps, hue, brand, name }: WalkthroughProps) {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const baseId = useId();
@@ -121,7 +123,7 @@ export default function Walkthrough({ steps, hue, name }: WalkthroughProps) {
                     exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
                     transition={{ duration: WALKTHROUGH.open, ease: EASE_OUT_BEZIER }}
                   >
-                    <span className="block pt-2.5 pl-10.5 text-[15px] leading-normal text-pretty text-ink-2">
+                    <span className="block pt-2.5 pl-10.5 text-[16px] leading-normal text-pretty text-ink-2">
                       {s.text}
                     </span>
                     {autoplay && (
@@ -157,6 +159,7 @@ export default function Walkthrough({ steps, hue, name }: WalkthroughProps) {
           active={active}
           alts={steps.map((s) => `${name}: ${s.title}`)}
           hue={hue}
+          brand={brand}
           sizes="(min-width: 980px) 60vw, 92vw"
           className="aspect-16/11 rounded-[28px]"
         />

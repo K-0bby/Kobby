@@ -2,7 +2,7 @@ import type { ContactDetails, Project, SocialLink } from "@/types/project";
 
 // Display order is the array order. Featured projects render as case-study
 // cards (home stack + /projects); the rest appear under "Also built".
-export const projects: Project[] = [
+const PROJECT_DATA: Project[] = [
   {
     id: 1,
     slug: "accra-2026",
@@ -14,6 +14,11 @@ export const projects: Project[] = [
     client: "Ghana Athletics Association",
     image: "/projects/accra/accreditation-system.png",
     hue: 80,
+    headline: "Accrediting an African championship, end to end",
+    highlights: [
+      { value: "4", label: "Interface languages" },
+      { value: "2", label: "Next.js apps, one API" },
+    ],
     walkthrough: [
       {
         src: "/projects/accra/Accreditation-Portal-05-31-2026_07_29_PM.png",
@@ -83,6 +88,11 @@ export const projects: Project[] = [
     client: "Me Fie",
     image: "/projects/mefie-d/mefied.png",
     hue: 135,
+    headline: "One directory for Ghanaian businesses, at home and abroad",
+    highlights: [
+      { value: "2", label: "Countries: Ghana and the UK" },
+      { value: "3", label: "Businesses, events, communities" },
+    ],
     walkthrough: [
       {
         src: "/projects/mefie-d/mefie-1.png",
@@ -129,9 +139,77 @@ export const projects: Project[] = [
     ],
   },
   {
+    id: 10,
+    slug: "yahnda",
+    featured: true,
+    title: "YAHNDA",
+    short: "YAHNDA",
+    category: "TRUST PLATFORM",
+    year: "2026",
+    client: "YAHNDA",
+    image: "/projects/yahnda/yahnda-1.png",
+    hue: 280,
+    headline: "Check the seller before you send the money",
+    highlights: [
+      { value: "3", label: "Apps in one monorepo" },
+      { value: "4", label: "Trust queues: KYC to legal" },
+    ],
+    summary:
+      "A trust-verification platform for Ghanaian businesses. Buyers check a seller before they send money, and sellers prove they're real with verification, reviews, and a trust badge they can share.",
+    challenge:
+      "Much of Ghana's buying and selling happens through Instagram, TikTok, and WhatsApp handles. A buyer often has to send money before they can tell whether a seller is real, and honest businesses have no simple way to prove they are.",
+    approach:
+      "YAHNDA puts a trust check in front of the payment. Anyone can look a seller up by business name or social handle, browse by category, and read verified reviews before they buy. Businesses go through verification, invite their customers to review them, and earn a trust badge and a YAHNDA Trust URL to put on their social pages. Behind it, a trust console lets the team work through KYC checks, review moderation, fraud cases, and legal dossiers, with every decision in an audit log.",
+    features: [
+      "Seller lookup by business name or social handle",
+      "Verified trust badge and a shareable Trust URL",
+      "Review invitations, with moderation behind them",
+      "KYC, fraud, and audit console for the trust team",
+    ],
+    decisions:
+      "It runs as three Next.js apps in one Turborepo monorepo — the public site, the merchant portal, and the admin console — sharing a component library, theme, and domain model. Data flows through TanStack Query over typed Axios services proxied to the backend API, React Hook Form and Zod guard every form, and search state lives in the URL. Image hosts are allowlisted rather than wildcarded, so the image optimizer can't be turned into an open proxy.",
+    walkthrough: [
+      {
+        src: "/projects/yahnda/yahnda-1.png",
+        title: "Check any seller",
+        text: "The front door is a single lookup: paste a business name or a social link and see whether that seller has been checked, before any money moves.",
+      },
+      {
+        src: "/projects/yahnda/yahnda-2.png",
+        title: "Read the results",
+        text: "Matches show at a glance whether a business is verified, claimed, and how it's been reviewed, so an unverified seller stands out.",
+      },
+      {
+        src: "/projects/yahnda/yahnda-3.png",
+        title: "Get verified",
+        text: "Businesses choose how far to be verified. Every tier includes a Trust URL for their social pages, review invitations, and linked accounts.",
+      },
+      {
+        src: "/projects/yahnda/yahnda-4.png",
+        title: "The trust console",
+        text: "The team works through KYC checks, review moderation, fraud cases, and legal dossiers from one console, with an audit log behind every decision.",
+      },
+    ],
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "shadcn/ui",
+      "TanStack Query",
+      "Zod",
+      "Turborepo",
+    ],
+    gallery: [
+      "/projects/yahnda/yahnda-2.png",
+      "/projects/yahnda/yahnda-3.png",
+      "/projects/yahnda/yahnda-4.png",
+    ],
+  },
+  {
     id: 3,
     slug: "ens-creatives",
-    featured: true,
+    // Moved to "Also built" when YAHNDA joined the featured work.
+    featured: false,
     title: "EnS Creatives",
     short: "EnS Creatives",
     category: "FULL-STACK · CMS",
@@ -211,6 +289,10 @@ export const projects: Project[] = [
     client: "Me Fie",
     image: "/projects/Me-fie.png",
     hue: 120,
+    headline: "Bringing people closer to Ghana, one draw at a time",
+    highlights: [
+      { value: "3", label: "Ways in: draws, winners, giving back" },
+    ],
     walkthrough: [
       {
         src: "/projects/me-fie/me-fie-3.png",
@@ -361,6 +443,7 @@ export const projects: Project[] = [
     id: 5,
     slug: "kweku-smoke",
     featured: false,
+    status: "in-progress",
     title: "Kweku Smoke",
     short: "Kweku Smoke",
     category: "ARTIST WEBSITE",
@@ -405,10 +488,136 @@ export const projects: Project[] = [
       "/projects/digi-growth/digi-growth-5.png",
     ],
   },
+  {
+    id: 11,
+    slug: "evora",
+    featured: false,
+    status: "in-progress",
+    title: "Evora",
+    short: "Evora",
+    category: "EVENT ATTENDANCE",
+    year: "2026",
+    client: "Evora",
+    // Screenshots to come — the card shows a "screens coming soon" panel until then.
+    image: "",
+    hue: 45,
+    summary:
+      "Event attendance, made simple. Organisations create an event, share a custom sign-in form or run it on a tablet kiosk at the door, and finish with attendance records and reports.",
+    features: [
+      "Event creation, held as a draft until the doors open",
+      "Custom attendance forms with preset fields",
+      "Full-screen tablet kiosk for sign-in at the door",
+      "Attendance records and reports, ready to export",
+    ],
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Turborepo",
+      "Express.js",
+      "tRPC",
+      "Prisma",
+      "PostgreSQL",
+      "Cloudflare",
+      "Better Auth",
+    ],
+    link: "https://evora-rust.vercel.app",
+    gallery: [],
+  },
+  {
+    id: 12,
+    slug: "afrora",
+    featured: false,
+    status: "in-progress",
+    title: "Afróra",
+    short: "Afróra",
+    category: "FASHION MARKETPLACE",
+    year: "2026",
+    client: "Afróra",
+    image: "/projects/afrora/afrora-1.png",
+    hue: 38,
+    brand: "#EE5A29",
+    summary:
+      "An African fashion marketplace where shoppers find authentic pieces from verified independent vendors, protected by buyer protection that releases payment only when an order arrives as described.",
+    features: [
+      "Buyer protection: payment released on delivery as described",
+      "Verified shops and independent vendors",
+      "Product search with category and price filters",
+      "Vendor dashboard for orders, earnings, and payouts",
+    ],
+    walkthrough: [
+      {
+        src: "/projects/afrora/afrora-1.png",
+        title: "Fresh from the makers",
+        text: "New pieces from African designers and labels up front, with buyer protection, verified shops, and independent vendors set out from the start.",
+      },
+      {
+        src: "/projects/afrora/afrora-2.png",
+        title: "Shop everything",
+        text: "Thrift finds, bespoke tailoring, and brand-new staples in one catalogue, filtered by category and price range.",
+      },
+      {
+        src: "/projects/afrora/afrora-4.png",
+        title: "Curated collections",
+        text: "Categories are presented as collections, from accessories and jewellery to footwear, so browsing feels like walking through a shop.",
+      },
+      {
+        src: "/projects/afrora/afrora-3.png",
+        title: "Explore the vendors",
+        text: "Shoppers can browse the shops themselves, filtered by type, rating, and location, with verified shops marked clearly.",
+      },
+      {
+        src: "/projects/afrora/afrora-5.png",
+        title: "The vendor dashboard",
+        text: "Each seller runs their shop from one dashboard: revenue, payments pending release, orders, inquiries, and payouts.",
+      },
+    ],
+    technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
+    link: "https://afrora.vercel.app",
+    gallery: [
+      "/projects/afrora/afrora-2.png",
+      "/projects/afrora/afrora-3.png",
+      "/projects/afrora/afrora-4.png",
+      "/projects/afrora/afrora-5.png",
+    ],
+  },
+];
+
+/**
+ * Display order across the site: the All projects list, case-study numbering
+ * and "Next project". Featured work first, then in-progress, then the rest.
+ * Projects not listed here follow in the order they appear above.
+ */
+const PROJECT_ORDER = [
+  "accra-2026",
+  "mefie-directory",
+  "yahnda",
+  "mefie",
+  "evora",
+  "afrora",
+  "kweku-smoke",
+  "ens-creatives",
+  "ghanaian-support-network",
+];
+
+export const projects: Project[] = [
+  ...PROJECT_ORDER.map((slug) => PROJECT_DATA.find((p) => p.slug === slug)).filter(
+    (p): p is Project => !!p
+  ),
+  ...PROJECT_DATA.filter((p) => !PROJECT_ORDER.includes(p.slug)),
 ];
 
 export const featuredProjects = projects.filter((p) => p.featured);
 export const otherProjects = projects.filter((p) => !p.featured);
+
+/**
+ * The home page's "Recent work" grid, hand-picked and in this order. The rest
+ * of the non-featured work lives on /projects.
+ */
+const HOME_RECENT = ["evora", "afrora", "kweku-smoke", "ens-creatives"];
+export const homeWebsites = HOME_RECENT.map((slug) => projects.find((p) => p.slug === slug)).filter(
+  (p): p is Project => !!p
+);
 
 export const projectHref = (slug: string) => `/projects/${slug}`;
 
@@ -417,8 +626,9 @@ export const getProject = (slug: string) => projects.find((p) => p.slug === slug
 /** "Next.js, TypeScript" → "NEXT.JS · TYPESCRIPT" — the mono stack line. */
 export const stackLine = (p: Project) => p.technologies.join(" · ").toUpperCase();
 
-/** Every screen a project has, cover first, without duplicates. */
-export const projectShots = (p: Project) => Array.from(new Set([p.image, ...p.gallery]));
+/** Every screen a project has, cover first, without duplicates or empty slots. */
+export const projectShots = (p: Project) =>
+  Array.from(new Set([p.image, ...p.gallery])).filter(Boolean);
 
 /** Two-digit index label: 1 → "01". */
 export const pad2 = (n: number) => String(n).padStart(2, "0");

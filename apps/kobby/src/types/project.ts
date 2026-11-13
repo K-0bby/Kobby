@@ -21,6 +21,12 @@ export interface Project {
   image: string;
   /** One-paragraph pitch used on cards and the case-study intro. */
   summary: string;
+  /** Set to "in-progress" for ongoing work; shown as a status in the Recent work grid. */
+  status?: "in-progress";
+  /** A short, punchy line for the featured card's big headline. */
+  headline?: string;
+  /** Up to two key facts for the featured card's footer — only real ones. */
+  highlights?: { value: string; label: string }[];
   /** Longer overview; falls back to `summary` when absent. */
   overview?: string;
   role?: string;
@@ -32,6 +38,11 @@ export interface Project {
   technologies: string[];
   /** Hue (0–360) of the project's tinted panel behind its screenshots. */
   hue: number;
+  /**
+   * Exact brand colour (hex) for projects whose look the card should match;
+   * overrides the hue-derived panel, tag and tile colours.
+   */
+  brand?: string;
   /**
    * Guided tour of the product, one step per screen, shown as the
    * case-study walkthrough. Without it the page falls back to a plain gallery.

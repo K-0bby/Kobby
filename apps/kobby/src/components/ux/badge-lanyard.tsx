@@ -48,6 +48,15 @@ const YAW_GAIN = 0.018;
 const YAW_LIMIT = 12;
 /** Idle sway: a gentle sideways breeze toward the mouse (px/s²). */
 const SWAY_FORCE = 260;
+/**
+ * Hover push: moving the cursor across the card brushes it along. Each pixel
+ * of pointer movement adds this much velocity (px/s), sideways and vertically,
+ * plus a little spin, all capped so a fast flick can't launch it.
+ */
+const HOVER_PUSH_X = 5.5;
+const HOVER_PUSH_Y = 3;
+const HOVER_SPIN = 1.1;
+const HOVER_MAX_SPEED = 900;
 
 /** Drop-in: start this far above the resting spot, with a sideways nudge. */
 const DROP_HEIGHT = 760;
@@ -160,10 +169,11 @@ class Rope {
 }
 
 /**
- * Grab it and move it anywhere within the strap's reach on desktop; let go and
- * it falls, catches and swings. On load it drops in from above. Touch devices
- * get the drop and swing only, so page scroll is never hijacked. Reduced
- * motion hangs it still.
+ * Grab it — mouse or finger — and move it anywhere within the strap's reach;
+ * let go and it falls, catches and swings. Hovering and moving the cursor
+ * across it brushes it along. On load it drops in from above. A scroll that
+ * starts on the card moves the card, not the page. Reduced motion hangs it
+ * still.
  */
 export default function BadgeLanyard() {
   const layerRef = useRef<HTMLDivElement>(null);
@@ -197,7 +207,8 @@ export default function BadgeLanyard() {
     let tiltV = 0;
     let breeze = 0;
 
-    // Drag state.
+    // Pointer state.
+    let hovering = false;
     let dragging = false;
     let grab: Pt = { x: 0, y: 0 };
     let dragT = 0;
@@ -319,6 +330,17 @@ export default function BadgeLanyard() {
         // A soft breeze toward the pointer.
         const r = layer.getBoundingClientRect();
         breeze = clamp((e.clientX - (r.left + r.width / 2)) / window.innerWidth, -1, 1) * SWAY_FORCE;
+
+        // Brushing across the card pushes it the way the cursor is moving.
+        if (hovering && !held) {
+          const s = scale();
+          v = { x: v.x + (e.movementX / s) * HOVER_PUSH_X, y: v.y + (e.movementY / s) * HOVER_PUSH_Y };
+          const speed = Math.hypot(v.x, v.y);
+          if (speed > HOVER_MAX_SPEED) {
+            v = { x: (v.x / speed) * HOVER_MAX_SPEED, y: (v.y / speed) * HOVER_MAX_SPEED };
+          }
+          tiltV -= e.movementX * HOVER_SPIN;
+        }
       }
     };
 
@@ -332,9 +354,11 @@ export default function BadgeLanyard() {
     };
 
     const onDown = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse" && !desktop.matches) return;
+      // Mouse, pen or finger — the card can be grabbed on any device.
       if (held) return;
       e.preventDefault();
+      // Keep receiving the finger's moves even if it slides off the card.
+      holder.setPointerCapture?.(e.pointerId);
       const p = toLayer(e.clientX, e.clientY);
       grab = { x: p.x - c.x, y: p.y - c.y };
       dragging = true;
@@ -427,6 +451,14 @@ export default function BadgeLanyard() {
     // on desktop and never reports as on screen.
     io.observe(layer.closest("section") ?? layer);
 
+    const onEnter = (e: PointerEvent) => {
+      if (e.pointerType === "mouse") hovering = true;
+    };
+    const onLeave = () => {
+      hovering = false;
+    };
+    holder.addEventListener("pointerenter", onEnter);
+    holder.addEventListener("pointerleave", onLeave);
     holder.addEventListener("pointerdown", onDown);
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
@@ -437,6 +469,8 @@ export default function BadgeLanyard() {
       cancelAnimationFrame(raf);
       io.disconnect();
       desktop.removeEventListener("change", onBreakpoint);
+      holder.removeEventListener("pointerenter", onEnter);
+      holder.removeEventListener("pointerleave", onLeave);
       holder.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
@@ -545,7 +579,7 @@ export default function BadgeLanyard() {
             ref={holderRef}
             role="img"
             aria-label="Developer ID badge: Gideon Hoenyefia, Full-Stack Engineer. Next.js, Express.js, PostgreSQL. Available."
-            className="badge-holder relative box-border w-85 cursor-grab touch-pan-y rounded-[22px] px-3.5 pt-11.5 pb-3.5 select-none"
+            className="badge-holder relative box-border w-85 cursor-grab touch-none rounded-[22px] px-3.5 pt-11.5 pb-3.5 select-none"
           >
             <div className="badge-hole top-4.25 left-1/2 -ml-8.25 h-2.5 w-16.5 rounded-md" />
             <div className="badge-hole top-4 left-5 size-3 rounded-full" />

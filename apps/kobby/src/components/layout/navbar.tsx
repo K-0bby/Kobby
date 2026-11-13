@@ -11,6 +11,7 @@ import { useTheme } from "@/hooks/use-theme";
 import { useLenis } from "@/provider/lenis-provider";
 import { RESUME_URL } from "@/data/data";
 import { EASE_OUT_BEZIER, NAV_MOTION, PILL_SPRING } from "@/lib/motion";
+import Arrow from "@/components/ux/arrow";
 
 /** Scroll distance (px) after which the pill lifts with a deeper shadow. */
 const SCROLLED_AT = 24;
@@ -133,7 +134,7 @@ export default function Navbar() {
         <nav
           aria-label="Primary"
           className={cn(
-            "border-line bg-nav pointer-events-auto flex h-15 items-center gap-1 rounded-full border px-1.5 backdrop-blur-md transition-[box-shadow,background-color,border-color] duration-250",
+            "border-line bg-nav pointer-events-auto flex h-13.5 items-center gap-1 rounded-full border px-1.5 backdrop-blur-md transition-[box-shadow,background-color,border-color] duration-250",
             shadow
           )}
         >
@@ -147,7 +148,7 @@ export default function Navbar() {
 
           {/* Wide: links + Resume. The active pill slides between links. */}
           <LayoutGroup id="nav">
-            <div className="nav:flex hidden items-center gap-1">
+            <div className="nav:flex hidden items-center gap-0.5">
               {links.map((l) => {
                 const on = active === l.id;
                 return (
@@ -155,7 +156,7 @@ export default function Navbar() {
                     key={l.id}
                     href={l.href}
                     aria-current={on ? "page" : undefined}
-                    className="text-ink hover:bg-paper-2 relative rounded-full px-4.5 py-2.75 text-base font-medium no-underline transition-colors duration-150"
+                    className="text-ink hover:bg-paper-2 relative rounded-full px-3.5 py-2.25 text-[16px] font-medium no-underline transition-colors duration-150"
                   >
                     {on && (
                       <motion.span
@@ -171,14 +172,14 @@ export default function Navbar() {
               })}
               <Link
                 href={resume}
-                className="group/resume bg-btn text-btn-ink hover:text-btn-ink ml-1.5 flex h-12 items-center gap-2 overflow-hidden rounded-full px-5.5 text-base font-semibold no-underline transition-[opacity,gap] duration-250 hover:gap-3 hover:opacity-90"
+                className="group/resume bg-btn text-btn-ink hover:text-btn-ink ml-1.5 flex h-10 items-center gap-2 overflow-hidden rounded-full px-4.5 text-[15px] font-semibold no-underline transition-[opacity,gap] duration-250 hover:gap-3 hover:opacity-90"
               >
                 Resume
                 <span
                   aria-hidden="true"
                   className="-mr-1 inline-block w-0 -translate-x-2 opacity-0 transition-[width,translate,opacity] duration-250 group-hover/resume:w-3 group-hover/resume:translate-x-0 group-hover/resume:opacity-100"
                 >
-                  ↗
+                  <Arrow dir="up-right" />
                 </span>
               </Link>
             </div>
@@ -190,7 +191,7 @@ export default function Navbar() {
               type="button"
               onClick={toggle}
               aria-label={themeLabel}
-              className="text-ink hover:bg-paper-2 flex size-11.5 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent transition-colors"
+              className="text-ink hover:bg-paper-2 flex size-10 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent transition-colors"
             >
               <ThemeIcon dark={dark} />
             </button>
@@ -200,7 +201,7 @@ export default function Navbar() {
               onClick={() => setMenuPath(menuOpen ? null : pathname)}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
-              className="bg-btn text-btn-ink relative h-11.5 min-w-20 cursor-pointer overflow-hidden rounded-full border-0 px-4.5 text-[15px] font-semibold"
+              className="bg-btn text-btn-ink relative h-10 min-w-18 cursor-pointer overflow-hidden rounded-full border-0 px-4 text-sm font-semibold"
             >
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
@@ -224,7 +225,7 @@ export default function Navbar() {
           onClick={toggle}
           aria-label={themeLabel}
           className={cn(
-            "border-line bg-nav text-ink nav:flex pointer-events-auto hidden size-15 cursor-pointer items-center justify-center rounded-full border backdrop-blur-md transition-[background-color,border-color,box-shadow,rotate] duration-250 hover:-rotate-14",
+            "border-line bg-nav text-ink nav:flex pointer-events-auto hidden size-13.5 cursor-pointer items-center justify-center rounded-full border backdrop-blur-md transition-[background-color,border-color,box-shadow,rotate] duration-250 hover:-rotate-14",
             shadow
           )}
         >
@@ -251,7 +252,7 @@ export default function Navbar() {
               role="dialog"
               aria-modal="true"
               aria-label="Menu"
-              className="border-line bg-surface nav:hidden fixed top-22.5 right-4 left-4 z-49 flex origin-top flex-col rounded-[28px] border p-3 shadow-[0_30px_60px_-20px_rgb(0_0_0/0.25)]"
+              className="border-line bg-surface nav:hidden fixed top-20 right-4 left-4 z-49 flex origin-top flex-col rounded-[28px] border p-3 shadow-[0_30px_60px_-20px_rgb(0_0_0/0.25)]"
               initial={reduce ? { opacity: 0 } : { opacity: 0, y: -12, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.98 }}

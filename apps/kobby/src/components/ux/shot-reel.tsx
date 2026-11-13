@@ -4,14 +4,19 @@ import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
 import ShotStage from "@/components/ux/shot-stage";
 import { REEL } from "@/lib/motion";
+import { tintStyle } from "@/lib/tint";
 
 interface ShotReelProps {
   shots: string[];
   /** Alt text stem; each shot gets "<alt>, screen n". */
   alt: string;
   hue: number;
+  /** Exact brand colour, overriding the hue-derived tint. */
+  brand?: string;
   sizes: string;
   className?: string;
+  /** "soft" = pale tint (default); "deep" = rich gradient for featured cards. */
+  tone?: "soft" | "deep";
 }
 
 /**
@@ -21,7 +26,15 @@ interface ShotReelProps {
  * The active bar's fill is a CSS animation, and its end is what advances the
  * reel — so pausing the animation (hover, off-screen) pauses the timer too.
  */
-export default function ShotReel({ shots, alt, hue, sizes, className }: ShotReelProps) {
+export default function ShotReel({
+  shots,
+  alt,
+  hue,
+  brand,
+  sizes,
+  className,
+  tone = "soft",
+}: ShotReelProps) {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
@@ -41,6 +54,23 @@ export default function ShotReel({ shots, alt, hue, sizes, className }: ShotReel
     return () => io.disconnect();
   }, []);
 
+  // No screenshots yet: hold the space with the project's tinted panel and a
+  // quiet label, so the card still reads as finished rather than broken.
+  if (count === 0) {
+    return (
+      <div ref={ref} className={className}>
+        <div
+          style={tintStyle(hue, brand)}
+          className={`shot-panel ${tone === "deep" ? "shot-panel--deep" : ""} absolute inset-0 grid place-items-center`}
+        >
+          <span className="rounded-full bg-black/35 px-3 py-1.5 font-mono text-[11px] font-medium tracking-[0.16em] text-white/85 backdrop-blur-sm">
+            SCREENS COMING SOON
+          </span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       ref={ref}
@@ -53,8 +83,9 @@ export default function ShotReel({ shots, alt, hue, sizes, className }: ShotReel
         active={active}
         alts={shots.map((_, i) => `${alt}, screen ${i + 1}`)}
         hue={hue}
+        brand={brand}
         sizes={sizes}
-        className="absolute inset-0"
+        className={tone === "deep" ? "shot-panel--deep absolute inset-0" : "absolute inset-0"}
       >
         {/* Progress segments — decorative; the card itself is the link. */}
         {count > 1 && !reduce && (
