@@ -498,17 +498,29 @@ const PROJECT_DATA: Project[] = [
     category: "EVENT ATTENDANCE",
     year: "2026",
     client: "Evora",
-    // Screenshots to come — the card shows a "screens coming soon" panel until then.
-    image: "",
+    image: "/projects/evora/evora-1.png",
     hue: 45,
+    brand: "#C26E3F",
+    headline: "Every attendee, one simple form",
     summary:
       "Event attendance, made simple. Organisations create an event, share a custom sign-in form or run it on a tablet kiosk at the door, and finish with attendance records and reports.",
+    role: "My own product, designed and built solo: the brand and interface, the Express API, the database, and the deployment.",
+    challenge:
+      "Most organisations still take attendance in two halves: a paper sheet at the door, then a spreadsheet afterwards. The door gets a queue, the handwriting gets guessed at, someone spends the next morning typing it all up, and every event ends up in its own file, so there is never one record of who came to what.",
+    approach:
+      "Evora collapses both halves into one form. An organiser drafts an event, builds its sign-in form from preset fields, and opens it when the doors do. Attendees sign in on their own phones or on a tablet running full-screen at the entrance, and every response lands straight in one attendance record shared across events, searchable, filterable, and ready to export. Teams are invitation-only, with roles, so each organisation keeps its own events and data to itself.",
     features: [
-      "Event creation, held as a draft until the doors open",
-      "Custom attendance forms with preset fields",
+      "Events held as drafts until the doors open",
+      "Form builder with preset attendance fields",
       "Full-screen tablet kiosk for sign-in at the door",
-      "Attendance records and reports, ready to export",
+      "One attendance record across events, with reports",
+      "Excel and CSV export",
+      "Invitation-only teams with roles",
     ],
+    decisions:
+      "It runs as a Turborepo monorepo with a Next.js app talking to an Express API through tRPC, so types flow from the Prisma schema to the screen: change a field in PostgreSQL and every place that uses it fails to compile rather than failing at the door on event night. Better Auth handles sessions, invitations, and roles without a paid auth service, and event images are stored in Cloudflare R2.",
+    results:
+      "Evora is still being built and hasn't run a live event yet, so there are no numbers to report. The next step is a first real event.",
     technologies: [
       "Next.js",
       "TypeScript",
@@ -522,7 +534,24 @@ const PROJECT_DATA: Project[] = [
       "Better Auth",
     ],
     link: "https://evora-rust.vercel.app",
-    gallery: [],
+    walkthrough: [
+      {
+        src: "/projects/evora/evora-1.png",
+        title: "One simple form",
+        text: "Organisations create beautiful attendance forms, capture responses in seconds, and turn every event into clear reports.",
+      },
+      {
+        src: "/projects/evora/evora-2.png",
+        title: "Invitation-only sign in",
+        text: "Each organisation's team signs in to manage its own events, forms and attendance. New members join by invite from an organiser.",
+      },
+      {
+        src: "/projects/evora/evora-3.png",
+        title: "Attendance, ready to export",
+        text: "Every check-in lands in one searchable record, filterable by event and sex, and exports to Excel or CSV in a click.",
+      },
+    ],
+    gallery: ["/projects/evora/evora-2.png", "/projects/evora/evora-3.png"],
   },
   {
     id: 12,

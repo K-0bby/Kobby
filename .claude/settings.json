@@ -17,7 +17,10 @@
       "Bash(perl -0pi -e ' *)",
       "Bash(perl -0pi -e 's|  hue: number;\\\\n|  hue: number;\\\\n  /**\\\\n   * Exact brand colour \\(hex\\) for projects whose look the card should match;\\\\n   * overrides the hue-derived panel, tag and tile colours.\\\\n   */\\\\n  brand?: string;\\\\n|' src/types/project.ts)",
       "Bash(perl -0pi -e 's|\\(image: \"/projects/afrora/afrora-1.png\",\\\\n    \\)hue: 35,|${1}hue: 38,\\\\n    brand: \"#EE5A29\",|' src/data/data.ts)",
-      "Bash(bash /private/tmp/claude-501/-Users-gideonkorblahoenyefia-Desktop-Kobby-MyProjects-kobby-v2/90b5b98e-bd0d-41ec-bf57-3c2d6012f13b/scratchpad/brand.sh)"
+      "Bash(bash /private/tmp/claude-501/-Users-gideonkorblahoenyefia-Desktop-Kobby-MyProjects-kobby-v2/90b5b98e-bd0d-41ec-bf57-3c2d6012f13b/scratchpad/brand.sh)",
+      "Bash(mv \"evora-—-Event-attendance-made-simple-11-18-2026_06_20_AM.png\" evora-1.png)",
+      "Bash(mv \"Screenshot 2026-11-18 at 06.21.40.png\" evora-2.png)",
+      "Bash(mv \"Screenshot 2026-11-19 at 10.59.17.png\" evora-3.png)"
     ],
     "additionalDirectories": [
       "/Users/gideonkorblahoenyefia/Desktop/Kobby/MyProjects/kobby-v2/apps/kobby/src/components/projects"
