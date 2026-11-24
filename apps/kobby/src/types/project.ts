@@ -48,6 +48,8 @@ export interface Project {
    * case-study walkthrough. Without it the page falls back to a plain gallery.
    */
   walkthrough?: WalkthroughStep[];
+  /** Backend architecture, for projects with a server of their own. */
+  architecture?: Architecture;
   /** Live URL. Omit when there is no healthy public deployment. */
   link?: string;
   repo?: string;
@@ -58,6 +60,31 @@ export interface WalkthroughStep {
   src: string;
   title: string;
   text: string;
+}
+
+/** One architecture decision record: the problem, the call made, what it bought. */
+export interface ArchitectureDecision {
+  title: string;
+  context: string;
+  decision: string;
+  outcome: string;
+}
+
+/**
+ * How a project with its own backend is put together: a system diagram, the
+ * parts in it, and the decisions behind them.
+ */
+export interface Architecture {
+  /**
+   * "backend" for a server built here; "frontend" for apps built on someone
+   * else's API, where the write-up covers the app layer. Defaults to backend.
+   */
+  scope?: "backend" | "frontend";
+  diagram?: { src: string; width: number; height: number; alt: string };
+  /** One or two sentences on the overall shape of the system. */
+  summary: string;
+  parts: { name: string; text: string }[];
+  decisions: ArchitectureDecision[];
 }
 
 export interface ContactDetails {

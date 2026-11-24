@@ -5,6 +5,7 @@ import { notFound, permanentRedirect } from "next/navigation";
 import PageIntro from "@/components/ux/page-intro";
 import ParallaxImage from "@/components/ux/parallax-image";
 import Walkthrough from "@/components/projects/walkthrough";
+import Architecture from "@/components/projects/architecture";
 import { tintStyle } from "@/lib/tint";
 import { getProject, pad2, projectHref, projects } from "@/data/data";
 import type { Project } from "@/types/project";
@@ -238,6 +239,37 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
           </div>
         </section>
       ) : null}
+
+      {/* ------------------------------------------------------- Architecture */}
+      {p.architecture && (
+        <section
+          aria-labelledby="a-title"
+          className={`${SECTION} pb-[clamp(96px,11vw,160px)] ${p.walkthrough?.length ? "" : "pt-[clamp(64px,8vw,112px)]"}`}
+        >
+          <div className="border-line border-t pt-[clamp(56px,7vw,96px)]">
+            <div
+              data-reveal=""
+              className="mb-[clamp(36px,5vw,64px)] grid grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] items-end gap-x-12 gap-y-6"
+            >
+              <div className="flex flex-col gap-6">
+                <span className="eyebrow">
+                  {p.architecture.scope === "frontend" ? "FRONTEND ARCHITECTURE" : "ARCHITECTURE"}
+                </span>
+                <h2
+                  id="a-title"
+                  className="m-0 max-w-[14ch] text-[clamp(36px,4.6vw,72px)] leading-[.95] font-bold tracking-[-0.055em] text-balance"
+                >
+                  Under the hood.
+                </h2>
+              </div>
+              <p className="text-ink-2 wide:justify-self-end m-0 max-w-120 text-[18px] leading-normal text-pretty">
+                {p.architecture.summary}
+              </p>
+            </div>
+            <Architecture data={p.architecture} name={p.title} />
+          </div>
+        </section>
+      )}
 
       {/* ------------------------------------------------------------ Gallery */}
       {!p.walkthrough?.length && p.gallery.length > 0 && (
